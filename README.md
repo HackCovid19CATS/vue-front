@@ -20,5 +20,16 @@ npm run build
 npm run lint
 ```
 
+### Install vue cli
+```
+npm install -g @vue/cli
+```
+
+### Run vue cli
+```
+vue ui
+```
+
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
