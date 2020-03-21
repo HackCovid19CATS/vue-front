@@ -31,6 +31,7 @@
     <ul>
       <li><router-link to="/subpage">SubPage</router-link></li>
       <li><router-link to="/subpage/message">SubPage with parameter</router-link></li>
+      <li><router-link to="/connexion">Connexion</router-link></li>
     </ul>
   </div>
 </template>

@@ -21,6 +21,11 @@ const routes = [
     component: () => import('../views/Subpage.vue') // Subpage params
   },
   {
+    path:'/connexion',
+    name:'Connexion',
+    component: () => import('../views/Connexion.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
