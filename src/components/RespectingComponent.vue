@@ -1,7 +1,6 @@
 <template>
     <div>
         <Respecting class="picto" />
-        <div class="directive">En rentrant chez vous</div>
         <div class="message">En respectant ces quelques consignes vous limiterez les risques pour vous et pour le personnel présent dans les lieux de vente</div>
     </div>
 </template>

@@ -1,16 +1,43 @@
+// Small devices (landscape phones, 576px and up)
+$small-device: 576px;
+// Medium devices (tablets, 768px and up)
+$medium-device: 768px;
+// Large devices (desktops, 992px and up)
+$large-device: 992px;
+// Extra large devices (large desktops, 1200px and up)
+$extra-large-device: 1200px;
+
 .box {
   margin-left: auto;
   margin-right: auto;
-  max-width: 800px;
+  background-color: white;
+  height: 100vh;
 }
 
 .bar {
   text-align: right;
+  height: 50px;
 }
 
 .close {
   border: none;
   background-color: white;
   color: #FEAD54;
-  font-size: 24px;
+  font-size: 36px;
+  margin-right: 20px;
+}
+
+@media (min-width: $small-device) {
+}
+
+@media (min-width: $medium-device) {
+  .box {
+    max-width: $medium-device;
+  }
+}
+
+@media (min-width: $large-device) {
+}
+
+@media (min-width: $extra-large-device) {
 }

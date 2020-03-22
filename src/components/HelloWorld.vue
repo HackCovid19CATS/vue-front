@@ -18,6 +18,7 @@
       <li><router-link to="/infos" style="color: coral!important;">Infos maquette</router-link></li> |
       <li><router-link to="/infos/tuto" style="color: coral!important;">Tuto maquette</router-link></li> |
       <li><router-link to="/contribution" style="color: coral!important;">Contribution maquette</router-link></li> |
+      <li><router-link to="/welcome" style="color: coral!important;">Welcome maquette</router-link></li> |
     </ul>
     <h3>Les Liens Essentiels</h3>
     <ul>

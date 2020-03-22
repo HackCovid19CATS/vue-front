@@ -1,11 +1,9 @@
 <template>
-    <div>
+    <div class="box">
         <div class="bar">
-            <button type="button" class="close" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
+            <button type="button" class="close" aria-label="Close" @click="onClose()">x</button>
         </div>
-        <swiper class="swiper" :options="swiperOption">
+        <swiper class="swiper box" :options="swiperOption">
             <swiper-slide>
                 <div class="title">Les consignes</div>
                 <div class="subtitle">pour faire ses courses</div>
@@ -52,6 +50,11 @@
             Swiper,
             SwiperSlide,
         },
+        methods: {
+            onClose() {
+                this.$router.push('/home');
+            },
+        },
         data() {
             return {
                 swiperOption: {
@@ -69,11 +72,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '../scss/commun.scss';
     @import '../scss/infos.scss';
-
-    .bar {
-        text-align: right;
-    }
 
     .swiper-button-prev,
     .swiper-button-next {
@@ -99,12 +99,6 @@
         background: #079BAB !important;
     }
 
-    .close {
-        border: none;
-        background-color: white;
-        color: #FEAD54;
-        font-size: 24px;
-    }
 </style>
 
 

@@ -1,10 +1,5 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Accueil</router-link> |
-      <router-link to="/about">A propos</router-link> |
-      <a @click="$router.go(-1)" style="cursor: pointer">Retour</a>
-    </div>
     <router-view/>
   </div>
 </template>
@@ -32,5 +27,6 @@
   }
 
   body{
+    background-color: #E5E5E5 !important;
   }
 </style>
