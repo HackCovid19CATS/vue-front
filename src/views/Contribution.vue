@@ -1,7 +1,7 @@
 <template>
-    <div class="box">
+    <div class="box box-container">
         <div class="bar">
-            <button type="button" class="close" aria-label="Close">
+            <button type="button" class="close" aria-label="Close" @click="onClose()">
                 <span aria-hidden="true">×</span>
             </button>
         </div>
@@ -65,11 +65,20 @@
             WearingMask,
             Gloves,
         },
+        methods: {
+            onClose() {
+                this.$router.push('/home');
+            },
+        },
     }
 </script>
 
 <style lang="scss" scoped>
     @import '../scss/commun.scss';
+
+    .box-container {
+        padding: 20px;
+    }
 
     .title {
         font-style: normal;

@@ -9,7 +9,6 @@
 
 <script>
     import L from 'leaflet';
-    import axios from 'axios';
 
     export default {
         name: "Map",
@@ -28,6 +27,7 @@
             console.warn("Lat : " + this.latitude);
             console.warn("Long : " + this.longitude);
             console.warn("Prec : " + this.accuracy);
+
             this.constructMap();
         },
 
@@ -50,13 +50,6 @@
                     fillOpacity: 0.5,
                     radius: (this.accuracy * 0.360)
                 }).addTo(map);
-
-
-                console.log("before axios");
-                axios
-                    .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-                    .then(response => (console.log(response)));
-
 
 
                 let myIcon = L.icon({
