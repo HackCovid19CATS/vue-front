@@ -15,7 +15,6 @@
 
 <script>
     import BeforeLeavingHome from '../assets/before_leaving_home.svg';
-    import {Swiper, SwiperSlide} from "vue-awesome-swiper";
 
     export default {
         name: "BeforeLeavingHomeComponent",
