@@ -29,8 +29,8 @@
             }
         },
         mounted: function(){
-            this.longitude = 48.8412793; //window.sessionStorage.getItem('userLong');
-            this.latitude = 2.3750354; //window.sessionStorage.getItem('userLat');
+            this.longitude = 2.3750354; //window.sessionStorage.getItem('userLong');
+            this.latitude = 48.8412793; //window.sessionStorage.getItem('userLat');
             this.accuracy = 100; //window.sessionStorage.getItem('accuracy')
             console.warn("Lat : " + this.latitude);
             console.warn("Long : " + this.longitude);
