@@ -49,7 +49,7 @@
             Port des gants
             <div class="checkbox"></div>
         </div>
-        <button class="contribute">Contribuer</button>
+        <button class="contribute" v-on:click="contribute">Contribuer</button>
     </div>
 </template>
 
@@ -57,6 +57,7 @@
     import Distance from '../assets/distance.svg';
     import WearingMask from '../assets/mask.svg';
     import Gloves from '../assets/gloves.svg';
+    import axios from "axios";
 
     export default {
         name: "Contribution",
@@ -65,6 +66,37 @@
             WearingMask,
             Gloves,
         },
+        data: function () {
+            return {
+                // TODO A remplacer par des valeurs extraites du formulaire
+                input: {
+                    "lieuId": "sze4r8ze4re",
+                    "etatDesStocksPourcent": "30",
+                    "ouvert": "false",
+                    "latitude": "1221",
+                    "longitude": "1221",
+                    "osmNodeId": "123",
+                    "tempsDAttente": "456",
+                    "portDesGants": "false",
+                    "portDuMasque": "false",
+                    "respectDesDistances": "true"
+                }
+            }
+        },
+        methods: {
+            contribute: function () {
+                axios({
+                    method: "POST",
+                    "url": "https://anuvapyjkj.execute-api.eu-west-3.amazonaws.com/Dev/lieu",
+                    "data": this.input,
+                    "headers": {"content-type": "application/json"}
+                }).then(result => {
+                    alert(result.data);
+                }, error => {
+                    console.error(error);
+                });
+            }
+        }
     }
 </script>
 
