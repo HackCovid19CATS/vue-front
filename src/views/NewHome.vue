@@ -208,6 +208,7 @@
                 }
 
                 this.showDetail = true;
+                this.clicked = true;
             },
             showStores() {
                 const groceryStore = ['bakery', 'butcher', 'cheese', 'convenience', 'deli', 'dairy', 'farm', 'frozen_food', 'organic', 'pasta', 'pastry', 'seafood', 'department_store', 'general', 'supermarket'];
