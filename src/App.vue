@@ -15,9 +15,6 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/infos/tuto">Les bons gestes</router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/connexion">Find-me</router-link>
-          </li>
         </ul>
       </nav>
     </div>
