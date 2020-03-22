@@ -1,7 +1,15 @@
+// Small devices (landscape phones, 576px and up)
+$small-device: 576px;
+// Medium devices (tablets, 768px and up)
+$medium-device: 768px;
+// Large devices (desktops, 992px and up)
+$large-device: 992px;
+// Extra large devices (large desktops, 1200px and up)
+$extra-large-device: 1200px;
 
 ul {
   display: inline-block;
-  width: 600px;
+  width: 200px;
   padding-left: 0px;
   text-align: left;
   list-style: none;
@@ -68,4 +76,34 @@ li {
   line-height: 21px;
   text-align: center;
   color: #015468;
+}
+
+@media (min-width: $small-device) {
+  ul {
+    width: 300px;
+  }
+}
+
+@media (min-width: $medium-device) {
+  ul {
+    margin-top: 20px;
+    width: 500px;
+  }
+
+  li {
+    font-size: 18px;
+    margin-bottom: 50px;
+  }
+
+  li::before {
+    font-size: 36px;
+    margin-right: 10px;
+  }
+
+}
+
+@media (min-width: $large-device) {
+}
+
+@media (min-width: $extra-large-device) {
 }
