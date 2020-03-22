@@ -3,7 +3,7 @@
 
 
     <div v-if="width < 800">
-      <img alt="Vue logo" src="../assets/cats-mini.png">
+      <img src="../assets/ÇA-mini.png" height="100" width="170"/>
     </div>
     <div v-else>
       <img alt="Vue logo" src="../assets/cats.png">
