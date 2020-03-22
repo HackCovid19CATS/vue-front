@@ -8,6 +8,10 @@
                 <button class="btn btn-block btn-primary" @click="trouver"> Localisez-moi !</button>
             </div>
 
+            <div class="d-block d-sm-none" style="margin-top: 5%;height: 20px">
+                <br> <p style="color:white">b</p>
+            </div>
+
             <div class="input-group col-lg-6 col-xs-12">
                 <input class="form-control" placeholder="rentrez votre addresse exacte" v-model="userAddress">
                 <div class="input-group-append">
@@ -95,7 +99,7 @@
             },
 
             resetData : function(){
-                this.userAddress = "1 rue de la mairie saint clément de riviere"
+                this.userAddress = null
                 this.hasData     = false
                 this.code        = null
                 this.rue         = null

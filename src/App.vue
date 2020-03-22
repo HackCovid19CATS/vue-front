@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
+      <router-link to="/">Accueil</router-link> |
+      <router-link to="/about">A propos</router-link> |
       <a @click="$router.go(-1)" style="cursor: pointer">Retour</a>
     </div>
     <router-view/>

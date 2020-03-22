@@ -1,7 +1,6 @@
 <template>
 
     <div>
-        <h1>Map <img src="@/assets/marker.png"> </h1>
         <div style="width: 100vw; height: 100vh" id="map"></div>
     </div>
 
@@ -49,7 +48,7 @@
                     color: 'teal',
                     fillColor: 'teal',
                     fillOpacity: 0.5,
-                    radius: (10 * 0.360)
+                    radius: (this.accuracy * 0.360)
                 }).addTo(map);
 
                 let myIcon = L.icon({

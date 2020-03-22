@@ -1,6 +1,10 @@
 <template>
 
-    <user-coordinate></user-coordinate>
+    <div style="background: url('@/assets/map-pin.jpg')">
+        <user-coordinate></user-coordinate>
+    </div>
+
+
     
 </template>
 
