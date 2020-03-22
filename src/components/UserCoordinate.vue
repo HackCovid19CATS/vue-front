@@ -63,6 +63,7 @@
                 latitude    : null,
                 longitude   : null,
                 formated    : null,
+                accuracy    : null,
 
             };
         },
@@ -72,7 +73,9 @@
             storeUserData : function (){
                 window.sessionStorage.setItem('userLong' , this.longitude);
                 window.sessionStorage.setItem('userLat' , this.latitude);
-                this.$router.push({name: 'map'});
+                window.sessionStorage.setItem('accuracy' , (this.accuracy != null) ? this.accuracy : 100)
+                this.$router.push({name: 'Map'});
+                //this.$router.Location = '/map';
             },
 
             trouver : function () {
@@ -101,6 +104,7 @@
                 this.latitude    = null
                 this.longitude   = null
                 this.formated    = null
+                this.accuracy    = null
             },
 
             queryToAdress : function(){
@@ -108,6 +112,7 @@
             },
 
             queryFromCoo : function(position){
+                this.accuracy = position.coords.accuracy;
                 this.validAdress(`${position.coords.latitude},${position.coords.longitude}`)
             },
 
