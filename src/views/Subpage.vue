@@ -2,28 +2,35 @@
 
 <template>
 
-    <div class="row">
+    <div class="container">
 
-        <div class="jumbotron">
-            Bienvenue sur la subpage !
-        </div>
+        <div class="row">
 
-        <div v-if="$route.params.mess">
-            {{$route.params.mess}}
+            <div class="jumbotron col-12">
+                Bienvenue sur la subpage !
+            </div>
+
+            <div v-if="$route.params.mess">
+                {{$route.params.mess}}
+            </div>
+
         </div>
 
     </div>
+
+
     
 </template>
 
 <script>
-    import 'bootstrap';
 
     export default {
         name: "Subpage"
     }
 </script>
 
-<style scoped>
+<style>
+
+    @import "/node_modules/bootstrap/scss/bootstrap.scss";
 
 </style>

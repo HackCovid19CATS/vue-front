@@ -1,11 +1,9 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/infos">Infos</router-link> |
-      <router-link to="/infos/tuto">Tuto</router-link> |
-      <router-link to="/thankyou">Thank you</router-link>
+      <router-link to="/">Accueil</router-link> |
+      <router-link to="/about">A propos</router-link> |
+      <a @click="$router.go(-1)" style="cursor: pointer">Retour</a>
     </div>
     <router-view/>
   </div>
@@ -20,16 +18,20 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
+  #nav {
+    padding: 30px;
+  }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  #nav a {
+    font-weight: bold;
+    color: #2c3e50;
+  }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+  #nav a.router-link-exact-active {
+    color: #42b983;
+  }
+
+  body{
+    background: wheat!important;
+  }
 </style>
