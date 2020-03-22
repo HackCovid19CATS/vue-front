@@ -1,6 +1,6 @@
 <template>
 
-    <div class="container" style="">
+    <div class="box">
 
         <div class="row" style="margin-top:10%">
 

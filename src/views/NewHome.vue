@@ -1,9 +1,11 @@
 <template>
-    <div class="box">
+    <div id="app" class="box">
+
         <div class="header">
             <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." />
             <Information class="icon-information" @click="onInformation()"/>
         </div>
+
         <div class="map" id="map"></div>
         <div class="footer box">
             <ul class="filters">
@@ -12,63 +14,33 @@
                 <li><button>Tabac</button></li>
             </ul>
         </div>
-        <div class="detail box" :class="{ visible: showDetail }">
-            <div class="store-information">{{this.storeName}}</div>
-            <div class="store-information">{{this.storeAddress}}</div>
-            <div class="waiting">
-                <div class="detail-title">Temps d’attente</div>
-                <div>
-                    <Clock class="waiting-picto" />
-                    <div class="waiting-value">45 min en moyenne</div>
-                </div>
-            </div>
-            <div class="inventory">
-                <div class="detail-title">Etat des stocks</div>
-                <Empty class="inventory-status"  :class="{ visible: inventoryStatus === 'empty' }"/>
-                <PartlyFilled class="inventory-status"  :class="{ visible: inventoryStatus === 'partly-filled' }"/>
-                <WellFilled class="inventory-status"  :class="{ visible: inventoryStatus === 'well-filled' }"/>
-            </div>
-            <div class="rules">
-                <div class="detail-title">Respect des règles</div>
-                <div class="rules-icon active">
-                    <IconDistance  />
-                </div>
-                <div class="rules-icon">
-                    <IconMask class="rules-icon" />
-                </div>
-                <div class="rules-icon">
-                    <IconGloves class="rules-icon" />
-                </div>
-            </div>
-            <button class="contribute" v-on:click="onContribute">Contribuer</button>
-        </div>
+
+        <box-detail-shop
+                @boxclosed="boxClosed($event)"
+                :value="clicked"
+                :storeName="storeName"
+                :storeAddress="storeAddress"
+                :inventoryStatus="inventoryStatus">
+        </box-detail-shop>
+
     </div>
 </template>
 
 <script>
-    import Information from '../assets/information.svg';
+
     import L from "leaflet";
     import axios from "axios";
-    import Clock from '../assets/clock.svg';
-    import Empty from '../assets/empty.svg';
-    import PartlyFilled from '../assets/partly-filled.svg';
-    import WellFilled from '../assets/well-filled.svg';
-    import IconDistance from '../assets/icon-distance.svg';
-    import IconMask from '../assets/icon-mask.svg';
-    import IconGloves from '../assets/icon-gloves.svg';
+    import BoxDetailShop from "../components/BoxDetailShop";
+    import Information from '../assets/information.svg';
 
     export default {
         name: "NewHome",
+
         components: {
+            BoxDetailShop,
             Information,
-            Clock,
-            Empty,
-            PartlyFilled,
-            WellFilled,
-            IconDistance,
-            IconMask,
-            IconGloves
         },
+
         data: function(){
             return{
                 showDetail: false,
@@ -78,8 +50,10 @@
                 accuracy: null,
                 storeName: null,
                 storeAddress: null,
+                clicked:false,
             }
         },
+
         mounted: function(){
             this.longitude = 2.3750354; //window.sessionStorage.getItem('userLong');
             this.latitude = 48.8412793; //window.sessionStorage.getItem('userLat');
@@ -89,10 +63,13 @@
             console.warn("Prec : " + this.accuracy);
             this.constructMap();
         },
+
         methods:{
-            onContribute: function () {
-                this.$router.push('/contribution')
+
+            boxClosed(clicked){
+                this.clicked = clicked;
             },
+
             onInformation() {
                 this.$router.push('/infos/tuto');
             },
@@ -122,8 +99,8 @@
                 console.log(response);
 
                 let myIcon = L.icon({
-                    iconUrl: require('../assets/marker.png'),
-                    iconSize: [25, 38],
+                    iconUrl: require('../assets/pin-red.png'),
+                    iconSize: [25, 34],
                 });
 
                 response.data.elements.forEach(element => {
@@ -134,7 +111,10 @@
                         icon : myIcon,
                     }).addTo(map);
 
-                    marker.on('click', () => {this.showOneStore(element)});
+                    marker.on('click', () => {
+                        this.showOneStore(element);
+                        this.clicked = true;
+                    });
                 });
             },
             constructMap : function(){
@@ -192,7 +172,13 @@
 
     .map {
         width: 100%;
-        height: calc(100vh - 136px);
+        height: calc(100vh - 200px);
+    }
+
+    @media (max-width: 800px) {
+        .map {
+            height: calc(100vh - 275px);
+        }
     }
 
     ul.filters {
