@@ -54,7 +54,7 @@
 
         data: function(){
             return {
-                userAddress : "1 rue de la mairie saint clément de riviere",
+                userAddress : null,
                 hasData     : false,
                 code        : null,
                 rue         : null,
