@@ -89,14 +89,14 @@
                 this.$router.push('/home');
             },
             contribute: function () {
-                this.input.lieuId = md5(new Date().getTime() + this.input.latitude + this.input.longitude);
+                this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
                 axios({
                     method: "POST",
-                    "url": "https://anuvapyjkj.execute-api.eu-west-3.amazonaws.com/Dev/lieu",
+                    "url": "https://55baggikjj.execute-api.eu-west-3.amazonaws.com/dev/api",
                     "data": this.input,
                     "headers": {"content-type": "application/json"}
                 }).then(result => {
-                    alert("Merci pour cette contribution : " + result);
+                    alert("Merci pour cette contribution : " + this.input.lieuId  + " " + result);
                 }, error => {
                     console.error(error);
                 });

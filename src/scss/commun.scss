@@ -16,7 +16,7 @@ $extra-large-device: 1200px;
 
 .bar {
   text-align: right;
-  height: 50px;
+  height: 20px;
 }
 
 .close {
@@ -33,6 +33,10 @@ $extra-large-device: 1200px;
 @media (min-width: $medium-device) {
   .box {
     max-width: $medium-device;
+  }
+
+  .close {
+    font-size: 48px;
   }
 }
 

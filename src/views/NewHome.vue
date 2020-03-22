@@ -2,16 +2,16 @@
     <div id="app" class="box">
 
         <div class="header">
-            <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." />
+            <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." v-on:keyup.enter="onEnter"/>
             <Information class="icon-information" @click="onInformation()"/>
         </div>
 
         <div class="map" id="map"></div>
         <div class="footer box">
             <ul class="filters">
-                <li><button>Alimentation</button></li>
-                <li><button>Pharmacie</button></li>
-                <li><button>Tabac</button></li>
+                <li><button :class="{ active: showGrocery }" @click="onShowGrocery()">Alimentation</button></li>
+                <li><button :class="{ active: showMedical }" @click="onShowMedical()">Pharmacie</button></li>
+                <li><button :class="{ active: showNews }" @click="onShowNews()">Tabac</button></li>
             </ul>
         </div>
 
@@ -22,7 +22,6 @@
                 :storeAddress="storeAddress"
                 :inventoryStatus="inventoryStatus">
         </box-detail-shop>
-
     </div>
 </template>
 
@@ -43,10 +42,19 @@
 
         data: function(){
             return{
+                latitude: 48.853123,
+                longitude: 2.349924,
+                address: 'Ma position',
+                map: null,
                 showDetail: false,
+                showGrocery: true,
+                showMedical: false,
+                showNews: false,
+                myLocation: null,
+                area: null,
+                stores: [],
+                markers: [],
                 inventoryStatus: 'well-filled', //'unknown', 'partly-filled', 'well-filled'
-                latitude: null,
-                longitude: null,
                 accuracy: null,
                 storeName: null,
                 storeAddress: null,
@@ -55,27 +63,137 @@
         },
 
         mounted: function(){
-            this.longitude = 2.3750354; //window.sessionStorage.getItem('userLong');
-            this.latitude = 48.8412793; //window.sessionStorage.getItem('userLat');
-            this.accuracy = 100; //window.sessionStorage.getItem('accuracy')
-            console.warn("Lat : " + this.latitude);
-            console.warn("Long : " + this.longitude);
-            console.warn("Prec : " + this.accuracy);
-            this.constructMap();
+            this.accuracy = 2000;
+            this.locateMe();
         },
 
         methods:{
 
-            boxClosed(clicked){
+            boxClosed(clicked) {
                 this.clicked = clicked;
+            },
+
+            locateMe: function () {
+                let options = {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                };
+
+                navigator.geolocation.getCurrentPosition(this.showMyLocation, this.locateError, options);
+            },
+            locateError : function(err){
+                console.warn( `ERREUR (${err.code}): ${err.message}`);
+                this.constructMap();
+            },
+            showMyLocation : function(position){
+                this.latitude = position.coords.latitude;
+                this.longitude = position.coords.longitude;
+
+                this.constructMap();
+            },
+            navigatorError : function(err){
+                let erreur = `ERREUR (${err.code}): ${err.message}`
+                console.warn(erreur);
+                alert(erreur)
+            },
+            onEnter(event) {
+                const query = event.target.value.split(' ').join('%20');
+                axios
+                    .get(`https://nominatim.openstreetmap.org/search/${query}?format=json&addressdetails=1&limit=1`)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            this.latitude = response.data[0]['lat'];
+                            this.longitude = response.data[0]['lon'];
+                            if (this.area !== null) {
+                                this.map.removeLayer(this.area);
+                            }
+                            if (this.myLocation !== null) {
+                                this.map.removeLayer(this.myLocation);
+                            }
+                            this.removeMarkers();
+                            this.map.panTo(new L.LatLng(this.latitude, this.longitude));
+                            this.setArea();
+                            this.setMyLocation();
+                            this.searchStore();
+                        }
+                    });
+            },
+            onClose() {
+                this.showDetail = false;
+            },
+            onContribute: function () {
+                this.$router.push('/contribution')
             },
 
             onInformation() {
                 this.$router.push('/infos/tuto');
             },
+            removeMarkers() {
+                this.markers.forEach(marker => {
+                    this.map.removeLayer(marker);
+                });
+                this.markers = [];
+            },
+            onShowGrocery() {
+                this.removeMarkers();
+                this.showGrocery = true;
+                this.showMedical = false;
+                this.showNews = false;
+                this.showStores();
+            },
+            onShowMedical() {
+                this.removeMarkers();
+                this.showGrocery = false;
+                this.showMedical = true;
+                this.showNews = false;
+                this.showStores();
+            },
+            onShowNews() {
+                this.removeMarkers();
+                this.showGrocery = false;
+                this.showMedical = false;
+                this.showNews = true;
+                this.showStores();
+            },
+            setArea() {
+                this.area = L.circle([this.latitude, this.longitude], {
+                    color: 'teal',
+                    fillColor: 'teal',
+                    fillOpacity: 0.5,
+                    radius: (this.accuracy * 0.360)
+                }).addTo(this.map);
+            },
+            setMyLocation() {
+                let myIcon = L.icon({
+                    iconUrl: require('../assets/locator_me.png'),
+                    iconSize: [26, 26],
+                });
+
+                this.myLocation = L.marker([this.latitude, this.longitude],{
+                    title:"maison",
+                    icon : myIcon,
+                }).addTo(this.map).bindPopup(this.address);
+            },
+            searchStore() {
+                const overpass_query = `
+                    [out:json];
+                    (
+                        node(around:1000.0, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
+                        node(around:1000.0, ${this.latitude}, ${this.longitude}) ["shop"];
+                    );
+                    out center;
+                    `;
+                axios
+                    .get('http://overpass-api.de/api/interpreter?data=' + overpass_query)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            this.stores = response.data.elements;
+                            this.showStores();
+                        }
+                    });
+            },
             showOneStore(element) {
-                console.log("show one shop");
-                console.log(element.id);
                 if (element.tags['name'] !== undefined) {
                     this.storeName = element.tags.name;
                 }
@@ -91,63 +209,78 @@
 
                 this.showDetail = true;
             },
-            showStores(map, response) {
-                console.log("SHOW STORE");
-                if (response.status !== 200) {
-                    return
-                }
-                console.log(response);
+            showStores() {
+                const groceryStore = ['bakery', 'butcher', 'cheese', 'convenience', 'deli', 'dairy', 'farm', 'frozen_food', 'organic', 'pasta', 'pastry', 'seafood', 'department_store', 'general', 'supermarket'];
+                const medicalStore = ['pharmacy'];
+                const newsStore = ['kiosk', 'newsagent', 'e-cigarettet', 'tobacco'];
 
-                let myIcon = L.icon({
-                    iconUrl: require('../assets/pin-red.png'),
-                    iconSize: [25, 34],
+                let iconGrocery = L.icon({
+                    iconUrl: require('../assets/locator_grocery_ok.png'),
+                    iconSize: [24, 33],
+                });
+                let iconMedical = L.icon({
+                    iconUrl: require('../assets/locator_pharmacy_ok.png'),
+                    iconSize: [24, 33],
+                });
+                let iconNews = L.icon({
+                    iconUrl: require('../assets/locator_newspapers_ok.png'),
+                    iconSize: [24, 33],
                 });
 
-                response.data.elements.forEach(element => {
-                    console.log(element)
-                    console.log(element.tags.name);
-                    const marker = L.marker([element.lat, element.lon],{
-                        title:"maison",
-                        icon : myIcon,
-                    }).addTo(map);
-
-                    marker.on('click', () => {
-                        this.showOneStore(element);
-                        this.clicked = true;
-                    });
+                this.stores.forEach(element => {
+                    if (newsStore.includes(element.tags['shop'])) {
+                        if (this.showNews) {
+                            const marker = L.marker([element.lat, element.lon],{
+                                title: "Boutique",
+                                icon : iconNews,
+                            }).addTo(this.map);
+                            marker.on('click', () => {this.showOneStore(element)});
+                            this.markers.push(marker);
+                        }
+                    } else if (medicalStore.includes(element.tags['amenity'])) {
+                        if (this.showMedical) {
+                            const marker = L.marker([element.lat, element.lon],{
+                                title: "Boutique",
+                                icon : iconMedical,
+                            }).addTo(this.map);
+                            marker.on('click', () => {this.showOneStore(element)});
+                            this.markers.push(marker);
+                        }
+                    } else if (groceryStore.includes(element.tags['shop'])) {
+                        if (this.showGrocery) {
+                            const marker = L.marker([element.lat, element.lon],{
+                                title: "Boutique",
+                                icon : iconGrocery,
+                            }).addTo(this.map);
+                            marker.on('click', () => {this.showOneStore(element)});
+                            this.markers.push(marker);
+                        }
+                    }
                 });
             },
             constructMap : function(){
-                const map = new L.Map('map', {
+                axios
+                    .get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.latitude}&lon=${this.longitude}`)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            this.address = response.data.display_name;
+                        }
+                    });
+
+                this.map = new L.Map('map', {
                     center: new L.LatLng(this.latitude,this.longitude),
                     zoom: 15,
                     maxZoom: 18,
                 });
 
                 const osm = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-                map.addLayer(osm);
+                this.map.addLayer(osm);
 
-                L.circle([this.latitude, this.longitude], {
-                    color: 'teal',
-                    fillColor: 'teal',
-                    fillOpacity: 0.5,
-                    radius: (this.accuracy * 0.360)
-                }).addTo(map);
+                this.setArea();
 
-                const overpass_query = '[out:json]; (node(around:500.0,' + this.latitude.toString() + ',' + this.longitude.toString() + ')[shop=convenience];); out center;';
-                axios
-                    .get('http://overpass-api.de/api/interpreter?data=' + overpass_query)
-                    .then(response => (this.showStores(map, response)));
+                this.setMyLocation();
 
-                let myIcon = L.icon({
-                    iconUrl: require('../assets/marker.png'),
-                    iconSize: [25, 38],
-                });
-
-                L.marker([this.latitude, this.longitude],{
-                    title:"maison",
-                    icon : myIcon,
-                }).addTo(map).bindPopup('Ma position');
+                this.searchStore();
             }
         },
     }
@@ -198,6 +331,11 @@
             padding-right: 20px;
             padding-top: 5px;
             padding-bottom: 5px;
+
+            &.active {
+                background-color: #079BAB;
+                color: white;
+            }
         }
 
     }
@@ -213,6 +351,7 @@
         border-radius: 6px;
         background-color: #ECECEC;
         color: #454545;
+        outline: none;
     }
 
     .icon-information {

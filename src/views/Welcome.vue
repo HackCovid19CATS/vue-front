@@ -2,7 +2,7 @@
     <div class="box">
         <swiper class="swiper mi-height" :options="swiperOption">
             <swiper-slide>
-                <BeforeLeavingHome class="picto"/>
+                <BeforeLeavingHome class="welcome-picto"/>
                 <div class="title">
                     <div class="line1">Quelques recommandations</div>
                     <div class="line2">avant de sortir faire vos courses</div>
@@ -17,7 +17,7 @@
                 </div>
             </swiper-slide>
             <swiper-slide>
-                <AtThePointOfSale class="picto"/>
+                <AtThePointOfSale class="welcome-picto"/>
                 <div class="title">
                     <div class="line1">Quelques recommandations</div>
                     <div class="line2">sur le lieu de vente</div>
@@ -32,7 +32,7 @@
                 </div>
             </swiper-slide>
             <swiper-slide>
-                <WhenYouGetHome class="picto"/>
+                <WhenYouGetHome class="welcome-picto"/>
                 <div class="title">
                     <div class="line1">Quelques recommandations</div>
                     <div class="line2">en rentrant chez vous</div>
@@ -47,8 +47,8 @@
                 </div>
             </swiper-slide>
             <swiper-slide>
-                <Respecting class="picto"/>
-                <div>
+                <Respecting class="welcome-picto"/>
+                <div class="respecting">
                     En respectant ces quelques consignes vous limiterez les risques<br />pour vous et pour le personnel présent dans les lieux de vente
                 </div>
             </swiper-slide>
@@ -119,9 +119,10 @@
         height: 50vh;
     }
 
-    .picto {
+    .welcome-picto {
         height: 60px;
         width: 60px;
+        margin-bottom: 20px;
     }
 
     .title {
@@ -171,6 +172,11 @@
         background: #079BAB !important;
     }
 
+    .respecting {
+        width: 200px;
+        margin: auto;
+    }
+
     .welcome-box {
         background-color: #015468;
         height: 50vh;
@@ -186,7 +192,7 @@
     }
 
     .welcome-message {
-        margin-top: 40px;
+        margin-top: 10px;
         padding-left: 40px;
         padding-right: 40px;
         font-style: normal;
@@ -203,7 +209,7 @@
     }
 
     button.contribute {
-        margin-top: 35px;
+        margin-top: 10px;
         margin-left: 40px;
         margin-right: 40px;
         margin-bottom: 35px;
@@ -221,6 +227,10 @@
 
     // Small devices (landscape phones)
     @media (min-width: $small-device) {
+        .respecting {
+            width: 300px;
+        }
+
         .picto {
             height: 100px;
             width: 100px;
@@ -243,6 +253,17 @@
         .welcome-title {
             font-size: 28px;
             line-height: 34px;
+            margin-top: 40px;
+        }
+
+        .welcome-message {
+            margin-top: 40px;
+            font-size: 16px;
+        }
+
+        button.contribute {
+            margin-top: 40px;
+            font-size: 20px;
         }
     }
 
