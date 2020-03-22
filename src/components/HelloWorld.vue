@@ -15,6 +15,8 @@
       <li><router-link to="/subpage">Sous page simple</router-link></li> |
       <li><router-link to="/subpage/message">Sous page avec slug</router-link></li> |
       <li><router-link to="/connexion" style="color: coral!important;">Connexion maquette</router-link></li>
+      <li><router-link to="/infos" style="color: coral!important;">Infos maquette</router-link></li>
+      <li><router-link to="/infos/tuto" style="color: coral!important;">Tuto maquette</router-link></li>
     </ul>
     <h3>Les Liens Essentiels</h3>
     <ul>

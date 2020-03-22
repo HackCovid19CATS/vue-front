@@ -32,6 +32,5 @@
   }
 
   body{
-    background: wheat!important;
   }
 </style>
