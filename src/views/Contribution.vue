@@ -92,7 +92,7 @@
                 this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
                 axios({
                     method: "POST",
-                    "url": "https://anuvapyjkj.execute-api.eu-west-3.amazonaws.com/Dev/lieu",
+                    "url": "https://55baggikjj.execute-api.eu-west-3.amazonaws.com/dev/api",
                     "data": this.input,
                     "headers": {"content-type": "application/json"}
                 }).then(result => {
