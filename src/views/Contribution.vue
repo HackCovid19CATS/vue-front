@@ -58,6 +58,7 @@
     import WearingMask from '../assets/mask.svg';
     import Gloves from '../assets/gloves.svg';
     import axios from "axios";
+    import md5 from 'crypto-js/md5';
 
     export default {
         name: "Contribution",
@@ -70,7 +71,7 @@
             return {
                 // TODO A remplacer par des valeurs extraites du formulaire
                 input: {
-                    "lieuId": "sze4r8ze4re",
+                    "lieuId": null,
                     "etatDesStocksPourcent": "30",
                     "ouvert": "false",
                     "latitude": "1221",
@@ -88,13 +89,14 @@
                 this.$router.push('/home');
             },
             contribute: function () {
+                this.input.lieuId = md5(new Date().getTime() + this.input.latitude + this.input.longitude);
                 axios({
                     method: "POST",
                     "url": "https://anuvapyjkj.execute-api.eu-west-3.amazonaws.com/Dev/lieu",
                     "data": this.input,
                     "headers": {"content-type": "application/json"}
                 }).then(result => {
-                    alert(result.data);
+                    alert("Merci pour cette contribution : " + result);
                 }, error => {
                     console.error(error);
                 });
