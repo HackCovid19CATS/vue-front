@@ -20,7 +20,9 @@
                 :value="clicked"
                 :storeName="storeName"
                 :storeAddress="storeAddress"
-                :inventoryStatus="inventoryStatus">
+                :inventoryStatus="inventoryStatus"
+                :lieuxId="lieuxId"
+        >
         </box-detail-shop>
     </div>
 </template>

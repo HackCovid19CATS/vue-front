@@ -84,6 +84,13 @@
                 }
             }
         },
+
+        mounted: function(){
+
+            console.warn(this.id)
+
+        },
+
         methods: {
             onClose() {
                 this.$router.push('/home');
