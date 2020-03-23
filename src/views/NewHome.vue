@@ -306,12 +306,12 @@
 
     .map {
         width: 100%;
-        height: calc(100vh - 200px);
+        height: calc(100vh - 150px);
     }
 
     @media (max-width: 800px) {
         .map {
-            height: calc(100vh - 315px);
+            height: calc(100vh - 150px);
         }
     }
 
