@@ -20,6 +20,9 @@
                 :value="clicked"
                 :storeName="storeName"
                 :storeAddress="storeAddress"
+				:storeOsmId="storeOsmId"
+				:storeLon="storeLon"
+				:storeLat="storeLat"
 				:storeStocks="storeStocks"
 				:storeStatus="storeStatus"
 				:storeWaiting="storeWaiting"
@@ -60,7 +63,7 @@
                 area: null,
                 stores: [],
                 markers: [],
-                inventoryStatus: 'well-filled', //'unknown', 'partly-filled', 'well-filled'
+                //inventoryStatus: 'well-filled', //'unknown', 'partly-filled', 'well-filled'
                 accuracy: null,
                 storeName: null,
                 storeAddress: null,
@@ -215,8 +218,8 @@
             },
 			searchContributions() {				
 				axios
-                    //.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?nodeId=${this.storeOsmId}')
-					.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?nodeId=cbd4e2c449505fe0930f226c22894e46')
+                    //.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?LieuId=${this.storeOsmId}')
+					.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?LieuId=cfc9cfa1812f0526d6e2342a41ed0f3e')
                     .then((response) => {
                         if (response.status === 200) {
 							console.log(response.data);
@@ -225,8 +228,7 @@
 							this.storeWaiting = response.data.tempsDAttente;
 							this.storeGloves = response.data.portDesGants;
 							this.storeMasks = response.data.portDuMasque;
-							this.storeDistance = response.data.respectDesDistances;
-							
+							this.storeDistance = response.data.respectDesDistances;		
                         }
                     })
 					.catch(error => console.log(error));
