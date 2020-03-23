@@ -298,7 +298,7 @@
 
     .footer {
         width: 100%;
-        height: 68px;
+        height: 78px;
         background-color: white;
         position: absolute;
         bottom: 0;
@@ -311,7 +311,7 @@
 
     @media (max-width: 800px) {
         .map {
-            height: calc(100vh - 275px);
+            height: calc(100vh - 315px);
         }
     }
 
