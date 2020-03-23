@@ -17,11 +17,11 @@
         <div class="subtitle">Temps d’attente</div>
         <div class="question">Combien de temps vous avez attendu ?</div>
         <ul class="how-long">
-            <li class="active">10 min</li>
-            <li>20 min</li>
-            <li>30 min</li>
-            <li>40 min</li>
-            <li>+50 min</li>
+            <li :class="{active : indexInputAttente == 0}" @click="setTimeAttente(10 , 0)">10 min</li>
+            <li :class="{active : indexInputAttente == 1}" @click="setTimeAttente(20 , 1)">20 min</li>
+            <li :class="{active : indexInputAttente == 2}" @click="setTimeAttente(30 , 2)">30 min</li>
+            <li :class="{active : indexInputAttente == 3}" @click="setTimeAttente(40 , 3)">40 min</li>
+            <li :class="{active : indexInputAttente == 4}" @click="setTimeAttente(50 , 4)">+50 min</li>
         </ul>
         <div class="subtitle">Stock</div>
         <div class="question">Quel est l’état du stock du magasin ?</div>
@@ -68,7 +68,10 @@
             Gloves,
         },
         data: function () {
+
             return {
+                inputTimeClicked : false ,
+                indexInputAttente : null,
                 // TODO A remplacer par des valeurs extraites du formulaire
                 input: {
                     "lieuId": null,
@@ -90,11 +93,22 @@
             console.warn(this.id)
 
         },
-
         methods: {
             onClose() {
                 this.$router.push('/home');
             },
+
+            setTimeAttente(temps , index){
+                if(index == this.indexInputAttente){
+                    this.input.tempsDAttente = null;
+                    this.indexInputAttente = null;
+                }else{
+                    this.input.tempsDAttente = temps;
+                    this.indexInputAttente = index;
+                }
+
+            },
+
             contribute: function () {
                 this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
                 axios({
@@ -107,7 +121,7 @@
                 }, error => {
                     console.error(error);
                 });
-            }
+            },
         }
     }
 </script>
