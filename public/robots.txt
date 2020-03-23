@@ -1,0 +1,3 @@
+# Blocage du crawling pour tous les agents
+User-agent: *
+Disallow: /
