@@ -84,6 +84,13 @@
                 }
             }
         },
+
+        mounted: function(){
+
+            console.warn(this.id)
+
+        },
+
         methods: {
             onClose() {
                 this.$router.push('/home');
@@ -92,7 +99,7 @@
                 this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
                 axios({
                     method: "POST",
-                    "url": "https://55baggikjj.execute-api.eu-west-3.amazonaws.com/dev/api",
+                    "url": "https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store",
                     "data": this.input,
                     "headers": {"content-type": "application/json"}
                 }).then(result => {

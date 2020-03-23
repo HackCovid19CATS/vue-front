@@ -8,28 +8,30 @@
 
         <div class="store-information">{{storeName}}</div>
         <div class="store-information">{{storeAddress}}</div>
+		<div class="">- Ouvert? : {{storeStatus}}</div>
+		<div class="">- OSM Id : {{storeOsmId}}</div>
         <div class="waiting">
             <div class="detail-title">Temps d’attente</div>
             <div>
                 <Clock class="waiting-picto" />
-                <div class="waiting-value">45 min en moyenne</div>
+                <div class="waiting-value">{{storeWaiting}} min en moyenne</div>
             </div>
         </div>
         <div class="inventory">
-            <div class="detail-title">Etat des stocks</div>
-            <Empty class="inventory-status"  :class="{ visible: inventoryStatus === 'empty' }"/>
-            <PartlyFilled class="inventory-status"  :class="{ visible: inventoryStatus === 'partly-filled' }"/>
-            <WellFilled class="inventory-status"  :class="{ visible: inventoryStatus === 'well-filled' }"/>
+            <div class="detail-title">Etat des stocks : {{storeStocks}}</div>
+            <Empty class="inventory-status"  :class="{ visible: storeStocks < 33 }"/>
+            <PartlyFilled class="inventory-status"  :class="{ visible: storeStocks === 'partly-filled' }"/>
+            <WellFilled class="inventory-status"  :class="{ visible: storeStocks > 66 }"/>
         </div>
         <div class="rules">
             <div class="detail-title">Respect des règles</div>
-            <div class="rules-icon active">
-                <IconDistance  />
+            <div class="rules-icon" :class="{ active: storeDistance === 'true' }">
+                <IconDistance />
             </div>
-            <div class="rules-icon">
+            <div class="rules-icon" :class="{ active: storeMasks === 'true' }">
                 <IconMask class="rules-icon" />
             </div>
-            <div class="rules-icon">
+            <div class="rules-icon" :class="{ active: storeGloves === 'true' }">
                 <IconGloves class="rules-icon" />
             </div>
         </div>
@@ -66,7 +68,7 @@
             }
         },
 
-        props:["storeName" , "storeAddress" , "inventoryStatus" , "value"],
+        props:["storeName" , "storeAddress" , "storeOsmId" , "storeLon" , "storeLat", "storeStocks" , "storeStatus" , "storeWaiting" , "storeGloves" , "storeMasks" , "storeDistance" , "value"],
 
         methods:{
 
