@@ -185,7 +185,7 @@
                     out center;
                     `;
                 axios
-                    .get('http://overpass-api.de/api/interpreter?data=' + overpass_query)
+                    .get('https://overpass-api.de/api/interpreter?data=' + overpass_query)
                     .then((response) => {
                         if (response.status === 200) {
                             this.stores = response.data.elements;
