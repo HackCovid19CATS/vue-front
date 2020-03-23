@@ -42,7 +42,7 @@
                         <li>Lavez-vous les mains</li>
                         <li>Désinfectez les poignets de votre chariot</li>
                         <li>Posez les paquets par terre pendant 3 à 4 h</li>
-                        <li>Enlevez les emballages et lavez les fruits et légumens</li>
+                        <li>Enlevez les emballages et lavez les fruits et légumes</li>
                     </ul>
                 </div>
             </swiper-slide>
@@ -64,7 +64,7 @@
             </div>
             <div class="welcome-title">Bienvenue</div>
             <div class="welcome-message">
-                Se renseigner sur le temps d’attente, l’état des stocks et le respect des règles de sécurité est primordiale avant de vous déplacer en magasin.
+                Se renseigner sur le temps d’attente, l’état des stocks et le respect des règles de sécurité est primordial avant de vous déplacer en magasin.
                 Aidez-nous à renseigner ces informations en partageant votre expérience !
             </div>
             <button class="contribute" v-on:click="onSubmit">Commencer</button>
