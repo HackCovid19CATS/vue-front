@@ -20,7 +20,13 @@
                 :value="clicked"
                 :storeName="storeName"
                 :storeAddress="storeAddress"
-                :inventoryStatus="inventoryStatus">
+				:storeStocks="storeStocks"
+				:storeStatus="storeStatus"
+				:storeWaiting="storeWaiting"
+				:storeGloves="storeGloves"
+				:storeMasks="storeMasks"
+				:storeDistance="storeDistance"
+				>
         </box-detail-shop>
     </div>
 </template>
@@ -58,7 +64,20 @@
                 accuracy: null,
                 storeName: null,
                 storeAddress: null,
-                clicked:false,
+				storeId: 'ze4r8ze4re',
+				storeOsmType : null,
+				storeOsmId : 123,
+				storecategory : null,
+				storeType : null,
+				storeLon : 1221,
+				storeLat : 1221,
+				storeStocks : 30,
+				storeStatus : true,
+				storeWaiting : 456,
+				storeGloves : true,
+				storeMasks : false,
+				storeDistance : true,
+                clicked:false
             }
         },
 
@@ -184,16 +203,38 @@
                     );
                     out center;
                     `;
-                axios
+				axios
                     .get('https://overpass-api.de/api/interpreter?data=' + overpass_query)
                     .then((response) => {
                         if (response.status === 200) {
+							// Ajout des établissements dans la liste
                             this.stores = response.data.elements;
                             this.showStores();
                         }
                     });
             },
+			searchContributions() {				
+				axios
+                    //.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?nodeId=${this.storeOsmId}')
+					.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?nodeId=cbd4e2c449505fe0930f226c22894e46')
+                    .then((response) => {
+                        if (response.status === 200) {
+							console.log(response.data);
+							this.storeStocks = response.data.etatDesStocksPourcent;
+							this.storeStatus = response.data.ouvert;
+							this.storeWaiting = response.data.tempsDAttente;
+							this.storeGloves = response.data.portDesGants;
+							this.storeMasks = response.data.portDuMasque;
+							this.storeDistance = response.data.respectDesDistances;
+							
+                        }
+                    })
+					.catch(error => console.log(error));
+				
+            },
             showOneStore(element) {
+				// Au clic sur un établissement, affichage du détail
+				
                 if (element.tags['name'] !== undefined) {
                     this.storeName = element.tags.name;
                 }
@@ -206,9 +247,35 @@
                 } else {
                     this.storeAddress = null;
                 }
+				if (element.tags['place_id'] !== undefined) {
+                    this.storeId = element.tags.place_id;
+                }
+				if (element.tags['osm_id'] !== undefined) {
+                    this.storeOsmId = element.tags.osm_id;
+                }
+				if (element.tags['osm_type'] !== undefined) {
+                    this.storeOsmType = element.tags.osm_type;
+                }
+				if (element.tags['category'] !== undefined) {
+                    this.storecategory = element.tags.category;
+                }
+				if (element.tags['type'] !== undefined) {
+                    this.storeType = element.tags.type;
+                }
+				if (element.tags['lon'] !== undefined) {
+                    this.storeLon = element.tags.lon;
+                }
+				if (element.tags['lat'] !== undefined) {
+                    this.storeLat = element.tags.lat;
+                }
 
                 this.showDetail = true;
                 this.clicked = true;
+				
+				this.searchContributions();
+				
+									
+				
             },
             showStores() {
                 const groceryStore = ['bakery', 'butcher', 'cheese', 'convenience', 'deli', 'dairy', 'farm', 'frozen_food', 'organic', 'pasta', 'pastry', 'seafood', 'department_store', 'general', 'supermarket'];
