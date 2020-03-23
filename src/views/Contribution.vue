@@ -11,8 +11,8 @@
             Partagez votre expérience dès votre retour à la maison pour en informer les autres !
         </div>
         <div class="shop-information">
-            <div class="shop-name">LIDL Montpellier Jacou</div>
-            <div class="shop-address">28 rue de jean jaures, Montpellier</div>
+            <div class="shop-name">{{shopName}}</div>
+            <div class="shop-address">{{shopAdress}}</div>
         </div>
         <div class="subtitle">Temps d’attente</div>
         <div class="question">Combien de temps vous avez attendu ?</div>
@@ -67,6 +67,7 @@
             WearingMask,
             Gloves,
         },
+        props:["shopName" , "shopAdress"],
         data: function () {
 
             return {
@@ -158,7 +159,10 @@
                     "data": this.jsonToString(this.input) ,
                     "headers": {"content-type": "application/json"}
                 }).then(result => {
-                    alert("Merci pour cette contribution : " + this.input.lieuId  + " " + result);
+                    //alert("Merci pour cette contribution : " + this.input.lieuId  + " " + result);
+                    console.log(result);
+                    alert("Merci pour votre contribution !");
+                    this.onClose();
                 }, error => {
                     console.error(error);
                 });

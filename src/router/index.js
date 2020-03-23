@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Welcome from "../views/Welcome";
+import Contribution from "../views/Contribution";
 
 Vue.use(VueRouter)
 
@@ -74,6 +75,11 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import('../views/Contribution.vue')
+  },
+  {
+    path: '/contribution/:shopName/:shopAdress',
+    component: Contribution,
+    props: true,
   },
   {
     path: '/welcome',
