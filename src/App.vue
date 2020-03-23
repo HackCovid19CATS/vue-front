@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 
-    <div class="box">
+    <!--<div class="box">
       <nav class="navbar navbar-dark navbar-expand-sm bg-primary justify-content-center" style="color:white">
 
         <ul class="navbar-nav">
@@ -20,7 +20,7 @@
         </ul>
 
       </nav>
-    </div>
+    </div>-->
 
     <router-view/>
   </div>
