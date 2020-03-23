@@ -7,7 +7,7 @@
                 <li>Lavez-vous les mains</li>
                 <li>Désinfectez les poignets de votre chariot</li>
                 <li>Posez les paquets par terre pendant 3 à 4 h</li>
-                <li>Enlevez les emballages et lavez les fruits et légumens</li>
+                <li>Enlevez les emballages et lavez les fruits et légumes</li>
             </ul>
         </div>
     </div>

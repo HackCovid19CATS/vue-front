@@ -90,10 +90,5 @@
     }
   }
 
-  @media (min-width: $large-device) {
-  }
-
-  @media (min-width: $extra-large-device) {
-  }
 </style>
 

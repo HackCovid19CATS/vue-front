@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="box infos">
         <div class="title">Les consignes</div>
         <div class="subtitle">pour faire ses courses</div>
         <BeforeLeavingHomeComponent />
@@ -22,4 +22,8 @@
 
 <style lang="scss" scoped>
     @import '../scss/infos.scss';
+
+    .infos {
+        padding-top: 40px;
+    }
 </style>

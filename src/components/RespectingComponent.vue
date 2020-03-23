@@ -18,4 +18,25 @@
 
 <style lang="scss" scoped>
     @import '../scss/infos.scss';
+
+    .message {
+        padding-bottom: 40px;
+        margin-left: auto;
+        margin-right: auto;
+        width: calc(100% - 40px);
+    }
+
+    @media (min-width: $small-device) {
+        .message {
+            font-size: 24px;
+            line-height: 28px;
+        }
+    }
+
+    @media (min-width: $medium-device) {
+        .message {
+            font-size: 24px;
+            line-height: 28px;
+        }
+    }
 </style>

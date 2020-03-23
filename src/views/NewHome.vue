@@ -127,7 +127,7 @@
             },
 
             onInformation() {
-                this.$router.push('/infos/tuto');
+                this.$router.push('/infos');
             },
             removeMarkers() {
                 this.markers.forEach(marker => {

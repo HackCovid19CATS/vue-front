@@ -1,5 +1,5 @@
 <template>
-    <div class="box">
+    <div class="box welcome">
         <swiper class="swiper mi-height" :options="swiperOption">
             <swiper-slide>
                 <BeforeLeavingHome class="welcome-picto"/>
@@ -42,7 +42,7 @@
                         <li>Lavez-vous les mains</li>
                         <li>Désinfectez les poignets de votre chariot</li>
                         <li>Posez les paquets par terre pendant 3 à 4 h</li>
-                        <li>Enlevez les emballages et lavez les fruits et légumens</li>
+                        <li>Enlevez les emballages et lavez les fruits et légumes</li>
                     </ul>
                 </div>
             </swiper-slide>
@@ -58,9 +58,6 @@
         </swiper>
         <div class="welcome-box">
             <div class="bar">
-                <button type="button" class="welcome-close" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
             </div>
             <div class="welcome-title">Bienvenue</div>
             <div class="welcome-message">
@@ -103,7 +100,11 @@
                         prevEl: '.swiper-button-prev'
                     },
                     pagination: {
-                        el: '.swiper-pagination'
+                        el: '.swiper-pagination',
+                        renderBullet(index, className) {
+                            return `<span class="${className} swiper-pagination-bullet-custom"></span>`
+                        },
+                        //dynamicBullets: true,
                     }
                 }
             }
@@ -114,6 +115,34 @@
 <style lang="scss" scoped>
     @import '../scss/commun.scss';
     @import '../scss/infos.scss';
+
+    .swiper {
+        /deep/
+        .swiper-pagination-bullet-custom {
+            $size: 10px;
+            width: $size !important;
+            height: $size !important;
+            line-height: $size !important;
+            text-align: center;
+            opacity: 0.7;
+            background: rgba(#ECECEC, 0.8);
+            transition: all 200ms;
+
+            &:hover {
+                opacity: 1;
+            }
+
+            &.swiper-pagination-bullet-active {
+                opacity: 1;
+                color: white;
+                background: #079BAB;
+            }
+        }
+    }
+
+    .welcome {
+        padding-top : 10px;
+    }
 
     .mi-height {
         height: 50vh;
@@ -133,7 +162,7 @@
             text-align: left;
             font-style: normal;
             font-weight: normal;
-            font-size: 12px;
+            font-size: 14px;
             line-height: 22px;
             color: #015468;
         }
@@ -142,7 +171,7 @@
             text-align: left;
             font-style: normal;
             font-weight: bold;
-            font-size: 10px;
+            font-size: 12px;
             line-height: 22px;
             color: #FEAD54;
         }
@@ -150,17 +179,16 @@
 
     .swiper-button-prev,
     .swiper-button-next {
-        background-color: #079BAB;
         width: 40px;
         height: 40px;
         border-radius: 100%;
-        opacity: .3;
+
+        &::after {
+            color: #079BAB !important;
+            opacity: .6;
+        }
     }
 
-    .swiper-button-prev:hover,
-    .swiper-button-next:hover {
-        opacity: .9;
-    }
 
     .swiper-button-prev::after,
     .swiper-button-next::after {
@@ -168,12 +196,13 @@
         font-size: 24px;
     }
 
-    .swiper-pagination-bullet {
-        background: #079BAB !important;
+    .swiper-button-prev:hover::after,
+    .swiper-button-next:hover::after {
+        opacity: 0.9;
     }
 
     .respecting {
-        width: 200px;
+        width: calc(100% - 100px);
         margin: auto;
     }
 
@@ -209,7 +238,7 @@
     }
 
     button.contribute {
-        margin-top: 10px;
+        margin-top: 40px;
         margin-left: 40px;
         margin-right: 40px;
         margin-bottom: 35px;
@@ -225,10 +254,16 @@
         width: calc(100% - 80px);
     }
 
-    // Small devices (landscape phones)
+    // Small devices (landscape phones, 576px and up)
     @media (min-width: $small-device) {
-        .respecting {
-            width: 300px;
+
+        .welcome {
+            padding-top : 20px;
+        }
+
+        .welcome-picto {
+            height: 120px;
+            width: 120px;
         }
 
         .picto {
@@ -245,7 +280,7 @@
             }
 
             & .line2 {
-                font-size: 18px;
+                font-size: 16px;
                 line-height: 22px;
             }
         }
@@ -265,22 +300,59 @@
             margin-top: 40px;
             font-size: 20px;
         }
+
+        .respecting {
+            margin-top: 40px;
+            width: calc(100% - 160px);
+            font-size: 24px;
+        }
+
+        .swiper {
+            /deep/
+            .swiper-pagination-bullet-custom {
+                $size: 20px;
+                width: $size !important;
+                height: $size !important;
+                line-height: $size !important;
+            }
+        }
+
     }
 
     // Medium devices (tablets, 768px)
     @media (min-width: $medium-device) {
+        .welcome {
+            padding-top : 40px;
+        }
+
+        .title {
+            & .line1 {
+                font-size: 28px;
+                line-height: 32px;
+            }
+
+            & .line2 {
+                font-size: 26px;
+                line-height: 30px;
+            }
+        }
+
+        .welcome-title {
+            font-size: 42px;
+            line-height: 42px;
+            margin-top: 60px;
+        }
+
+        .welcome-message {
+            margin-top: 40px;
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        button.contribute {
+            margin-top: 60px;
+            font-size: 28px;
+        }
 
     }
-
-    // Large devices (desktops, 992px)
-    @media (min-width: $large-device) {
-
-    }
-
-    // Extra large devices (large desktops)
-    @media (min-width: $extra-large-device) {
-
-    }
-
-
 </style>
