@@ -76,11 +76,11 @@
                 input: {
                     "lieuId": null,
                     "etatDesStocksPourcent": 30,
-                    "ouvert": "false",
-                    "latitude": "1221",
-                    "longitude": "1221",
-                    "osmNodeId": "123",
-                    "tempsDAttente": "456",
+                    "ouvert": false,
+                    "latitude": 1221,
+                    "longitude": 1221,
+                    "osmNodeId": 123,
+                    "tempsDAttente": 456,
                     "portDesGants": false,
                     "portDuMasque": false,
                     "respectDesDistances": true
@@ -141,12 +141,21 @@
 
             },
 
+            jsonToString(j){
+                let json = {};
+                for(let property in j){
+                    json[`${property}`] = `${j[property]}`;
+                }
+                return json;
+            },
+
             contribute: function () {
                 this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
+                console.warn(this.jsonToString(this.input))
                 axios({
                     method: "POST",
                     "url": "https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store",
-                    "data": this.input,
+                    "data": this.jsonToString(this.input) ,
                     "headers": {"content-type": "application/json"}
                 }).then(result => {
                     alert("Merci pour cette contribution : " + this.input.lieuId  + " " + result);
