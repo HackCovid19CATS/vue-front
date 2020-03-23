@@ -203,6 +203,8 @@
                     (
                         node(around:1000.0, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
                         node(around:1000.0, ${this.latitude}, ${this.longitude}) ["shop"];
+                        way(around:1000.0, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
+                        way(around:1000.0, ${this.latitude}, ${this.longitude}) ["shop"];
                     );
                     out center;
                     `;
@@ -300,7 +302,9 @@
                 this.stores.forEach(element => {
                     if (newsStore.includes(element.tags['shop'])) {
                         if (this.showNews) {
-                            const marker = L.marker([element.lat, element.lon],{
+                            const lat = element.lat || element.center.lat;
+                            const lon = element.lon || element.center.lon;    
+                            const marker = L.marker([lat, lon],{
                                 title: "Boutique",
                                 icon : iconNews,
                             }).addTo(this.map);
@@ -309,7 +313,9 @@
                         }
                     } else if (medicalStore.includes(element.tags['amenity'])) {
                         if (this.showMedical) {
-                            const marker = L.marker([element.lat, element.lon],{
+                            const lat = element.lat || element.center.lat;
+                            const lon = element.lon || element.center.lon;    
+                            const marker = L.marker([lat, lon],{
                                 title: "Boutique",
                                 icon : iconMedical,
                             }).addTo(this.map);
@@ -318,7 +324,9 @@
                         }
                     } else if (groceryStore.includes(element.tags['shop'])) {
                         if (this.showGrocery) {
-                            const marker = L.marker([element.lat, element.lon],{
+                            const lat = element.lat || element.center.lat;
+                            const lon = element.lon || element.center.lon;    
+                            const marker = L.marker([lat, lon],{
                                 title: "Boutique",
                                 icon : iconGrocery,
                             }).addTo(this.map);
