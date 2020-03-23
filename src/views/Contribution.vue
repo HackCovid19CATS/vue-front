@@ -17,34 +17,34 @@
         <div class="subtitle">Temps d’attente</div>
         <div class="question">Combien de temps vous avez attendu ?</div>
         <ul class="how-long">
-            <li :class="{active : indexInputAttente == 0}" @click="setTimeAttente(10 , 0)">10 min</li>
-            <li :class="{active : indexInputAttente == 1}" @click="setTimeAttente(20 , 1)">20 min</li>
-            <li :class="{active : indexInputAttente == 2}" @click="setTimeAttente(30 , 2)">30 min</li>
-            <li :class="{active : indexInputAttente == 3}" @click="setTimeAttente(40 , 3)">40 min</li>
-            <li :class="{active : indexInputAttente == 4}" @click="setTimeAttente(50 , 4)">+50 min</li>
+            <li :class="{active : indexInputAttente == 0}" @click="setTimeAttente(10 , 0)" style="cursor: pointer">10 min</li>
+            <li :class="{active : indexInputAttente == 1}" @click="setTimeAttente(20 , 1)" style="cursor: pointer">20 min</li>
+            <li :class="{active : indexInputAttente == 2}" @click="setTimeAttente(30 , 2)" style="cursor: pointer">30 min</li>
+            <li :class="{active : indexInputAttente == 3}" @click="setTimeAttente(40 , 3)" style="cursor: pointer">40 min</li>
+            <li :class="{active : indexInputAttente == 4}" @click="setTimeAttente(50 , 4)" style="cursor: pointer">+50 min</li>
         </ul>
         <div class="subtitle">Stock</div>
         <div class="question">Quel est l’état du stock du magasin ?</div>
         <ul class="stock">
-            <li class="active">Vide</li>
-            <li class="active">En partie rempli</li>
-            <li>Bien rempli</li>
+            <li :class="{active : input.etatDesStocksPourcent >= 29}" @click="setStock(30)">Vide</li>
+            <li :class="{active : input.etatDesStocksPourcent >= 59}" @click="setStock(60)">En partie rempli</li>
+            <li :class="{active : input.etatDesStocksPourcent == 100}" @click="setStock(100)">Bien rempli</li>
         </ul>
         <div class="subtitle">Respect des règles</div>
         <div class="question">
             L’établissement respecte t-il les règles mise en place ?
         </div>
-        <div class="rule active" style="margin-top: 32px">
+        <div :class="classDistance" style="margin-top: 32px" @click="setIconState('respectDesDistances')">
             <Distance class="icon"/>
             Respect des distances
             <div class="checkbox"></div>
         </div>
-        <div class="rule" style="margin-top: 16px">
+        <div :class="classMask" style="margin-top: 16px" @click="setIconState('portDuMasque')">
             <WearingMask class="icon" />
             Port du masque
             <div class="checkbox"></div>
         </div>
-        <div class="rule" style="margin-top: 16px">
+        <div :class="classGloves" style="margin-top: 16px" @click="setIconState('portDesGants')">
             <Gloves class="icon" />
             Port des gants
             <div class="checkbox"></div>
@@ -75,17 +75,38 @@
                 // TODO A remplacer par des valeurs extraites du formulaire
                 input: {
                     "lieuId": null,
-                    "etatDesStocksPourcent": "30",
+                    "etatDesStocksPourcent": 30,
                     "ouvert": "false",
                     "latitude": "1221",
                     "longitude": "1221",
                     "osmNodeId": "123",
                     "tempsDAttente": "456",
-                    "portDesGants": "false",
-                    "portDuMasque": "false",
-                    "respectDesDistances": "true"
+                    "portDesGants": false,
+                    "portDuMasque": false,
+                    "respectDesDistances": true
                 }
             }
+        },
+
+        computed:{
+            classDistance: function () {
+                if(this.input.respectDesDistances){
+                    return "rule active";
+                }
+                return "rule";
+            },
+            classMask: function () {
+                if(this.input.portDuMasque){
+                    return "rule active";
+                }
+                return "rule";
+            },
+            classGloves: function () {
+                if(this.input.portDesGants){
+                    return "rule active";
+                }
+                return "rule";
+            },
         },
 
         mounted: function(){
@@ -93,9 +114,20 @@
             console.warn(this.id)
 
         },
+
         methods: {
             onClose() {
                 this.$router.push('/home');
+            },
+
+            setStock(percent){
+                this.input.etatDesStocksPourcent = percent;
+            },
+
+            setIconState(icon){
+
+                this.input[icon] = !this.input[icon];
+
             },
 
             setTimeAttente(temps , index){
@@ -284,6 +316,7 @@
         display: flex;
         justify-content: space-between;
         border-radius: 6px;
+        cursor: pointer;
 
         & > .icon {
             margin-left: 15px;
