@@ -25,13 +25,13 @@
         </div>
         <div class="rules">
             <div class="detail-title">Respect des règles</div>
-            <div class="rules-icon" :class="{ active: storeDistance === true }">
-                <IconDistance class="rules-icon" />
+            <div class="rules-icon" :class="{ active: storeDistance === 'true' }">
+                <IconDistance />
             </div>
-            <div class="rules-icon" :class="{ active: storeMasks === true }">
+            <div class="rules-icon" :class="{ active: storeMasks === 'true' }">
                 <IconMask class="rules-icon" />
             </div>
-            <div class="rules-icon" :class="{ active: storeGloves === true }">
+            <div class="rules-icon" :class="{ active: storeGloves === 'true' }">
                 <IconGloves class="rules-icon" />
             </div>
         </div>
