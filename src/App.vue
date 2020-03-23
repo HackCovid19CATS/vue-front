@@ -2,10 +2,12 @@
   <div id="app">
 
     <div class="box">
-      <nav class="navbar navbar-dark navbar-expand-sm bg-primary" style="color:white">
-        <router-link class="navbar-brand" to="/">MyShop</router-link>
+      <nav class="navbar navbar-dark navbar-expand-sm bg-primary justify-content-center" style="color:white">
 
         <ul class="navbar-nav">
+          <li class="nav-item">
+            <router-link class="navbar-brand" to="/">MyShop</router-link>
+          </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/">Accueil</router-link>
           </li>
@@ -16,6 +18,7 @@
             <router-link class="nav-link" to="/infos/tuto">Les bons gestes</router-link>
           </li>
         </ul>
+
       </nav>
     </div>
 
