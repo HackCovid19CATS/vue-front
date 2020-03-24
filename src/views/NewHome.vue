@@ -233,7 +233,7 @@
 								this.storeWaiting = response.data[0].tempsDAttente;
 								this.storeGloves = response.data[0].portDesGants;
 								this.storeMasks = response.data[0].portDuMasque;
-								this.storeDistance = response[0].data.respectDesDistances;
+								this.storeDistance = response.data[0].respectDesDistances;
 							} else {
 								this.storeStocks = null;
 								this.storeStatus = null;
