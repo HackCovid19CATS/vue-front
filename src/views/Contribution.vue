@@ -27,23 +27,23 @@
         <div class="subtitle">Stock</div>
         <div class="question">Quel est l’état du stock du magasin ?</div>
         <ul class="stock">
-            <li :class="{active : input.etatDesStocks == 'empty' || input.etatDesStocks == 'partly-filled' || input.etatDesStocks == 'well-filled' }"
+            <li :class="{active : input.EtatDesStocks == 'empty' || input.EtatDesStocks == 'partly-filled' || input.EtatDesStocks == 'well-filled' }"
                 @click="setStock('empty')" style="cursor: pointer">Vide</li>
-            <li :class="{active : input.etatDesStocks == 'partly-filled' || input.etatDesStocks == 'well-filled' }"
+            <li :class="{active : input.EtatDesStocks == 'partly-filled' || input.EtatDesStocks == 'well-filled' }"
                 @click="setStock('partly-filled')" style="cursor: pointer"> En partie rempli</li>
-            <li :class="{active : input.etatDesStocks == 'well-filled'}"
+            <li :class="{active : input.EtatDesStocks == 'well-filled'}"
                 @click="setStock('well-filled')" style="cursor: pointer">Bien rempli</li>
         </ul>
         <div class="subtitle">Respect des règles</div>
         <div class="question">
             L’établissement respecte t-il les règles mise en place ?
         </div>
-        <div :class="classDistance" style="margin-top: 32px" @click="setIconState('respectDesDistances')">
+        <div :class="classDistance" style="margin-top: 32px" @click="setIconState('RespectDesDistances')">
             <Distance class="icon"/>
             Respect des distances
             <div class="checkbox"></div>
         </div>
-        <div :class="classMask" style="margin-top: 16px" @click="setIconState('portDuMasque')">
+        <div :class="classMask" style="margin-top: 16px" @click="setIconState('PortDuMasque')">
             <WearingMask class="icon" />
             Port du masque
             <div class="checkbox"></div>
@@ -79,32 +79,27 @@
                 indexInputAttente : null,
                 // TODO A remplacer par des valeurs extraites du formulaire
                 input: {
-                    "shopId": null,
-                    "etatDesStocks": null,
-                    "ouvert": false,
-                    /*"latitude": 1221,
-                    "longitude": 1221,*/
-                    "osmNodeId": null,
-                    "tempsAttente": null,
+                    "ShopId": null,
+                    "EtatDesStocks": null,
+                    "Ouvert": false,
+                    "OSMNodeId": null,
+                    "TempsAttente": null,
                     "portDesGants": false,
-                    "portDuMasque": false,
-                    "respectDesDistances": false,
-                    "nombreDeContribution" : 21,
-                    "heureDerniereContribution" : null,
-                    "dateDeContribution" : null,
+                    "PortDuMasque": false,
+                    "RespectDesDistances": false,
                 }
             }
         },
 
         computed:{
             classDistance: function () {
-                if(this.input.respectDesDistances){
+                if(this.input.RespectDesDistances){
                     return "rule active";
                 }
                 return "rule";
             },
             classMask: function () {
-                if(this.input.portDuMasque){
+                if(this.input.PortDuMasque){
                     return "rule active";
                 }
                 return "rule";
@@ -117,7 +112,7 @@
             },
             classBtnContribution: function(){
 
-                if(this.input.etatDesStocks != null && this.input.tempsAttente != null ){
+                if(this.input.EtatDesStocks != null && this.input.TempsAttente != null ){
                     return "contribute";
                 }
                 return "contributeDisabled";
@@ -125,7 +120,7 @@
         },
 
         mounted: function(){
-            this.input.shopId = this.shopId;
+            this.input.ShopId = this.shopId;
             console.warn(this.id)
 
         },
@@ -136,7 +131,7 @@
             },
 
             setStock(state){
-                this.input.etatDesStocks = state;
+                this.input.EtatDesStocks = state;
             },
 
             setIconState(icon){
@@ -146,11 +141,11 @@
             },
 
             setTimeAttente(temps , index){
-                if(index == this.indexInputAttente){
-                    this.input.tempsAttente = null;
+                if(index === this.indexInputAttente){
+                    this.input.TempsAttente = null;
                     this.indexInputAttente = null;
                 }else{
-                    this.input.tempsAttente = temps;
+                    this.input.TempsAttente = temps;
                     this.indexInputAttente = index;
                 }
 
@@ -164,30 +159,12 @@
                 return json;
             },
 
-            getCurrentDate (){
-                let d = new Date();
-                let day = (d.getDate() < 10) ? '0' + d.getDate() : d.getDate();
-                let month = ((d.getMonth() + 1) < 10 ) ? '0' + (d.getMonth() + 1) : d.getMonth() + 1;
-                return `${day}/${month}/${d.getFullYear()}`;
-            },
-
-            getCurrentTime(){
-                let d = new Date();
-                let hour = (d.getHours()<10) ? "0"+ d.getHours() : d.getHours();
-                let mins = (d.getMinutes()<10) ? "0"+d.getMinutes(): d.getMinutes();
-                return `${hour}:${mins}`;
-            },
-
             contribute: function () {
                 //this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
-				this.input.osmNodeId = this.shopId;
-				this.input.heureDerniereContribution = this.getCurrentTime();
-                this.input.dateDeContribution = this.getCurrentDate();
+				this.input.OSMNodeId = this.shopId;
 
                 console.warn(this.jsonToString(this.input))
                 console.warn(this.input)
-
-                this.checkInput
 
                 axios({
                     method: "POST",
