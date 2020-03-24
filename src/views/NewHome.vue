@@ -150,7 +150,6 @@
             onContribute: function () {
                 this.$router.push('/contribution')
             },
-
             onInformation() {
                 this.$router.push('/infos');
             },
@@ -254,9 +253,28 @@
                     this.storeName = element.tags.name;
                 }
                 let address = '';
+				let housenumber = '';
+				let street = '';
+				let city = '';
                 if (element.tags['addr:street'] !== undefined) {
-                    address = element.tags['addr:street'];
+                    street = element.tags['addr:street'];
+					// On ne récupère le numéro que si la rue est définie
+					if (element.tags['addr:housenumber'] !== undefined) {
+						housenumber = element.tags['addr:housenumber'] + ', ';
+					}
                 }
+				if (element.tags['addr:city'] !== undefined) {
+                    city =  element.tags['addr:city'];
+                }
+				// Mise en forme de l'adresse
+				if(street !== '') {
+					address = housenumber + street;
+				} 
+				if (address !== '' && city !== '') {
+					address = address + ', ';
+				}
+				address = address + city;
+				
                 if (address.length > 0) {
                     this.storeAddress = address;
                 } else {
@@ -296,7 +314,6 @@
                     iconSize: [24, 33],
                 });
 
-				console.log("this.stores : " + this.stores);
                 this.stores.forEach(element => {
                     if (newsStore.includes(element.tags['shop'])) {
                         if (this.showNews) {
