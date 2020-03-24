@@ -29,6 +29,7 @@
 				:storeGloves="storeGloves"
 				:storeMasks="storeMasks"
 				:storeDistance="storeDistance"
+				:selectedStore="selectedStore"
 				>
         </box-detail-shop>
     </div>
@@ -63,8 +64,9 @@
                 area: null,
                 stores: [],
                 markers: [],
-                //inventoryStatus: 'well-filled', //'unknown', 'partly-filled', 'well-filled'
-                accuracy: null,
+                // inventoryStatus: 'well-filled', //'unknown', 'partly-filled', 'well-filled'
+                contributions: [],
+				accuracy: null,
                 storeName: null,
                 storeAddress: null,
 				storeId: 'ze4r8ze4re',
@@ -80,6 +82,7 @@
 				storeGloves : true,
 				storeMasks : false,
 				storeDistance : true,
+				selectedStore : null,
                 clicked:false
             }
         },
@@ -218,19 +221,23 @@
                         }
                     });
             },
-			searchContributions() {				
+			searchContributions(osmId) {				
 				axios
-                    //.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?LieuId=${this.storeOsmId}')
-					.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?LieuId=cfc9cfa1812f0526d6e2342a41ed0f3e')
+                    .get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?LieuId=' + osmId)
+					//.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OsmNodeId=123')
                     .then((response) => {
                         if (response.status === 200) {
 							console.log(response.data);
-							this.storeStocks = response.data.etatDesStocksPourcent;
-							this.storeStatus = response.data.ouvert;
-							this.storeWaiting = response.data.tempsDAttente;
-							this.storeGloves = response.data.portDesGants;
-							this.storeMasks = response.data.portDuMasque;
-							this.storeDistance = response.data.respectDesDistances;		
+							//this.contributions = response.data[0]; 
+							// TODO a modifier
+							if(response.data !== null && response.data.length > 0) {
+								this.storeStocks = response.data[0].etatDesStocksPourcent;
+								this.storeStatus = response.data[0].ouvert;
+								this.storeWaiting = response.data[0].tempsDAttente;
+								this.storeGloves = response.data[0].portDesGants;
+								this.storeMasks = response.data[0].portDuMasque;
+								this.storeDistance = response[0].data.respectDesDistances;
+							}
                         }
                     })
 					.catch(error => console.log(error));
@@ -238,7 +245,6 @@
             },
             showOneStore(element) {
 				// Au clic sur un établissement, affichage du détail
-				
                 if (element.tags['name'] !== undefined) {
                     this.storeName = element.tags.name;
                 }
@@ -251,34 +257,20 @@
                 } else {
                     this.storeAddress = null;
                 }
-				if (element.tags['place_id'] !== undefined) {
-                    this.storeId = element.tags.place_id;
+				if (element.id !== undefined) {
+                    this.storeOsmId = element.id;
                 }
-				if (element.tags['osm_id'] !== undefined) {
-                    this.storeOsmId = element.tags.osm_id;
+				if (element.lon !== undefined) {
+                    this.storeLon = element.lon;
                 }
-				if (element.tags['osm_type'] !== undefined) {
-                    this.storeOsmType = element.tags.osm_type;
-                }
-				if (element.tags['category'] !== undefined) {
-                    this.storecategory = element.tags.category;
-                }
-				if (element.tags['type'] !== undefined) {
-                    this.storeType = element.tags.type;
-                }
-				if (element.tags['lon'] !== undefined) {
-                    this.storeLon = element.tags.lon;
-                }
-				if (element.tags['lat'] !== undefined) {
-                    this.storeLat = element.tags.lat;
+				if (element.lat !== undefined) {
+                    this.storeLat = element.lat;
                 }
 
                 this.showDetail = true;
                 this.clicked = true;
 				
-				this.searchContributions();
-				
-									
+				this.searchContributions(this.storeOsmId);
 				
             },
             showStores() {
@@ -299,6 +291,7 @@
                     iconSize: [24, 33],
                 });
 
+				console.log("this.stores : " + this.stores);
                 this.stores.forEach(element => {
                     if (newsStore.includes(element.tags['shop'])) {
                         if (this.showNews) {
