@@ -77,7 +77,7 @@
         methods:{
 
             onContribute: function () {
-                this.$router.push(`/contribution/${this.storeName}/${this.storeOsmId}`);
+                this.$router.push(`/contribution/${this.storeName}/${this.storeOsmId}/${this.storeAddress}`);
             },
 
             maskBox: function () {

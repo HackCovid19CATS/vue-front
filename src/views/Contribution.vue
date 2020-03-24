@@ -12,7 +12,8 @@
         </div>
         <div class="shop-information">
             <div class="shop-name">{{shopName}}</div>
-            <div class="shop-address">{{shopAdress}}</div>
+            <div class="shop-address" v-if="shopAdress != 'null'">{{shopAdress}}</div>
+            <div class="shop-address" v-else> Addresse non disponible</div>
         </div>
         <div class="subtitle">Temps d’attente</div>
         <div class="question">Combien de temps vous avez attendu ?</div>
@@ -26,9 +27,12 @@
         <div class="subtitle">Stock</div>
         <div class="question">Quel est l’état du stock du magasin ?</div>
         <ul class="stock">
-            <li :class="{active : input.etatDesStocksPourcent >= 29}" @click="setStock(30)">Vide</li>
-            <li :class="{active : input.etatDesStocksPourcent >= 59}" @click="setStock(60)">En partie rempli</li>
-            <li :class="{active : input.etatDesStocksPourcent == 100}" @click="setStock(100)">Bien rempli</li>
+            <li :class="{active : input.etatDesStocks == 'empty' || input.etatDesStocks == 'partly-filled' || input.etatDesStocks == 'well-filled' }"
+                @click="setStock('empty')" style="cursor: pointer">Vide</li>
+            <li :class="{active : input.etatDesStocks == 'partly-filled' || input.etatDesStocks == 'well-filled' }"
+                @click="setStock('partly-filled')" style="cursor: pointer"> En partie rempli</li>
+            <li :class="{active : input.etatDesStocks == 'well-filled'}"
+                @click="setStock('well-filled')" style="cursor: pointer">Bien rempli</li>
         </ul>
         <div class="subtitle">Respect des règles</div>
         <div class="question">
@@ -49,7 +53,7 @@
             Port des gants
             <div class="checkbox"></div>
         </div>
-        <button class="contribute" v-on:click="contribute">Contribuer</button>
+        <button :class="classBtnContribution" v-on:click="contribute">Contribuer</button>
     </div>
 </template>
 
@@ -58,7 +62,7 @@
     import WearingMask from '../assets/mask.svg';
     import Gloves from '../assets/gloves.svg';
     import axios from "axios";
-    import md5 from 'crypto-js/md5';
+    //import md5 from 'crypto-js/md5';
 
     export default {
         name: "Contribution",
@@ -75,16 +79,20 @@
                 indexInputAttente : null,
                 // TODO A remplacer par des valeurs extraites du formulaire
                 input: {
-                    "lieuId": null,
-                    "etatDesStocksPourcent": 30,
+                    "shopId": null,
+                    "etatDesStocks": null,
                     "ouvert": false,
-                    "latitude": 1221,
-                    "longitude": 1221,
-                    "osmNodeId": 123,
-                    "tempsDAttente": 456,
+                    /*"latitude": 1221,
+                    "longitude": 1221,*/
+                    "osmNodeId": null,
+                    "tempsAttente": null,
                     "portDesGants": false,
                     "portDuMasque": false,
-                    "respectDesDistances": true
+                    "respectDesDistances": false,
+                    "nombreDeContribution" : 21,
+                    "heureDerniereContribution" : null,
+                    "dateDeContribution" : null,
+
                 }
             }
         },
@@ -108,10 +116,17 @@
                 }
                 return "rule";
             },
+            classBtnContribution: function(){
+
+                if(this.input.etatDesStocks != null && this.input.tempsAttente != null ){
+                    return "contribute";
+                }
+                return "contributeDisabled";
+            }
         },
 
         mounted: function(){
-
+            this.input.shopId = this.shopId;
             console.warn(this.id)
 
         },
@@ -121,8 +136,8 @@
                 this.$router.push('/home');
             },
 
-            setStock(percent){
-                this.input.etatDesStocksPourcent = percent;
+            setStock(state){
+                this.input.etatDesStocks = state;
             },
 
             setIconState(icon){
@@ -133,10 +148,10 @@
 
             setTimeAttente(temps , index){
                 if(index == this.indexInputAttente){
-                    this.input.tempsDAttente = null;
+                    this.input.tempsAttente = null;
                     this.indexInputAttente = null;
                 }else{
-                    this.input.tempsDAttente = temps;
+                    this.input.tempsAttente = temps;
                     this.indexInputAttente = index;
                 }
 
@@ -150,14 +165,35 @@
                 return json;
             },
 
+            getCurrentDate (){
+                let d = new Date();
+                let day = (d.getDate() < 10) ? '0' + d.getDate() : d.getDate();
+                let month = ((d.getMonth() + 1) < 10 ) ? '0' + (d.getMonth() + 1) : d.getMonth() + 1;
+                return `${day}/${month}/${d.getFullYear()}`;
+            },
+
+            getCurrentTime(){
+                let d = new Date();
+                let hour = (d.getHours()<10) ? "0"+ d.getHours() : d.getHours();
+                let mins = (d.getMinutes()<10) ? "0"+d.getMinutes(): d.getMinutes();
+                return `${hour}:${mins}`;
+            },
+
             contribute: function () {
-                this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
+                //this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
 				this.input.osmNodeId = this.shopId;
+				this.input.heureDerniereContribution = this.getCurrentTime();
+                this.input.dateDeContribution = this.getCurrentDate();
+
                 console.warn(this.jsonToString(this.input))
+                console.warn(this.input)
+
+                this.checkInput
+
                 axios({
                     method: "POST",
                     "url": "https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store",
-                    "data": this.jsonToString(this.input) ,
+                    "data": this.input ,
                     "headers": {"content-type": "application/json"}
                 }).then(result => {
                     //alert("Merci pour cette contribution : " + this.input.lieuId  + " " + result);
@@ -388,6 +424,22 @@
         display: inline-block;
         font-size: 16px;
         width: 100%;
+        cursor: pointer;
+    }
+
+    button.contributeDisabled {
+        margin-top: 35px;
+        background-color:dimgrey;
+        border-radius: 6px;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        width: 100%;
+        cursor : not-allowed;
     }
 
 </style>
