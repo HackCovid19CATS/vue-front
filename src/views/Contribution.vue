@@ -76,7 +76,7 @@
                 // TODO A remplacer par des valeurs extraites du formulaire
                 input: {
                     "lieuId": null,
-                    "etatDesStocksPourcent": 30,
+                    "etatDesStocksPourcent": -1,
                     "ouvert": false,
                     "latitude": 1221,
                     "longitude": 1221,
@@ -84,7 +84,7 @@
                     "tempsDAttente": 456,
                     "portDesGants": false,
                     "portDuMasque": false,
-                    "respectDesDistances": true
+                    "respectDesDistances": false
                 }
             }
         },
