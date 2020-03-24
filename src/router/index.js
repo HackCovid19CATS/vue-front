@@ -77,7 +77,7 @@ const routes = [
     component: () => import('../views/Contribution.vue')
   },
   {
-    path: '/contribution/:shopName/:shopAdress',
+    path: '/contribution/:shopName/:shopId',
     component: Contribution,
     props: true,
   },

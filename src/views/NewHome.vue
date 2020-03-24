@@ -223,13 +223,11 @@
             },
 			searchContributions(osmId) {				
 				axios
-                    .get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?LieuId=' + osmId)
-					//.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OsmNodeId=123')
+                    .get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OsmNodeId=' + osmId)
                     .then((response) => {
                         if (response.status === 200) {
 							console.log(response.data);
-							//this.contributions = response.data[0]; 
-							// TODO a modifier
+							// TODO a modifier si on doit récupérer un liste en fonction de la réponse de l'API
 							if(response.data !== null && response.data.length > 0) {
 								this.storeStocks = response.data[0].etatDesStocksPourcent;
 								this.storeStatus = response.data[0].ouvert;

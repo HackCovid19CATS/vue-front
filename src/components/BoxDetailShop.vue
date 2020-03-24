@@ -8,8 +8,7 @@
 
         <div class="store-information">{{storeName}}</div>
         <div class="store-information">{{storeAddress}}</div>
-		<div class="">- Ouvert? : {{storeStatus}}</div>
-		<div class="">- OSM Id : {{storeOsmId}}</div>
+		<div class="">Afficher l'indicateur d'ouvertue : {{storeStatus}}</div>
         <div class="waiting">
             <div class="detail-title">Temps d’attente</div>
             <div>
@@ -26,7 +25,7 @@
         <div class="rules">
             <div class="detail-title">Respect des règles</div>
             <div class="rules-icon" :class="{ active: storeDistance === 'true' }">
-                <IconDistance />
+                <IconDistance class="rules-icon" />
             </div>
             <div class="rules-icon" :class="{ active: storeMasks === 'true' }">
                 <IconMask class="rules-icon" />
@@ -37,7 +36,6 @@
         </div>
         <button class="contribute" v-on:click="onContribute">Contribuer</button>
     </div>
-    
 </template>
 
 <script>
@@ -73,7 +71,7 @@
         methods:{
 
             onContribute: function () {
-                this.$router.push(`/contribution/${this.storeName}/${this.storeName}`);
+                this.$router.push(`/contribution/${this.storeName}/${this.storeOsmId}`);
             },
 
             maskBox: function () {

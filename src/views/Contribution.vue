@@ -67,7 +67,7 @@
             WearingMask,
             Gloves,
         },
-        props:["shopName" , "shopAdress"],
+        props:["shopName" , "shopId" , "shopAdress"],
         data: function () {
 
             return {
@@ -152,6 +152,7 @@
 
             contribute: function () {
                 this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
+				this.input.osmNodeId = this.shopId;
                 console.warn(this.jsonToString(this.input))
                 axios({
                     method: "POST",
