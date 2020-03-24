@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="inventory">
-            <div class="detail-title">Etat des stocks : {{storeStocks}}</div>
+            <div class="detail-title">Etat des stocks</div>
             <Empty class="inventory-status"  :class="{ visible: storeStocks < 33 }"/>
             <PartlyFilled class="inventory-status"  :class="{ visible: storeStocks === 'partly-filled' }"/>
             <WellFilled class="inventory-status"  :class="{ visible: storeStocks > 66 }"/>
