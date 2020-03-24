@@ -5,15 +5,21 @@
         <button type="button" class="close" @click="maskBox">
             <span aria-hidden="true">&times;</span>
         </button>
-
+		<div class="store-contribution">Aujourd'hui 12h45 - X contributions</div>
         <div class="store-information">{{storeName}}</div>
         <div class="store-information">{{storeAddress}}</div>
-		<div class="">Afficher l'indicateur d'ouvertue : {{storeStatus}}</div>
+		<!-- <div class="store-status"> -->
+			<!-- <div class="store-status-open" v-if="storeStatus === 'true'">Ouvert :)</div> -->
+			<!-- <div class="store-status-close" v-if="storeStatus === 'false'">Fermé :(</div> -->
+			<!-- <div class="store-status-null" v-else>Inconnu</div> -->
+		<!-- </div> -->
         <div class="waiting">
             <div class="detail-title">Temps d’attente</div>
             <div>
                 <Clock class="waiting-picto" />
-                <div class="waiting-value">{{storeWaiting}} min en moyenne</div>
+                <div class="waiting-value-default" v-if="storeWaiting === 'null' || storeWaiting === ' '">- min en moyenne</div>
+				<div class="waiting-value" v-else>{{storeWaiting}} min en moyenne</div>
+				
             </div>
         </div>
         <div class="inventory">

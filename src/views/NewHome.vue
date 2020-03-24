@@ -69,19 +69,19 @@
 				accuracy: null,
                 storeName: null,
                 storeAddress: null,
-				storeId: 'ze4r8ze4re',
+				storeId: null,
 				storeOsmType : null,
-				storeOsmId : 123,
+				storeOsmId : null,
 				storecategory : null,
 				storeType : null,
 				storeLon : 1221,
 				storeLat : 1221,
-				storeStocks : 30,
-				storeStatus : true,
-				storeWaiting : 456,
+				storeStocks : null,
+				storeStatus : null,
+				storeWaiting : null,
 				storeGloves : true,
-				storeMasks : false,
-				storeDistance : true,
+				storeMasks : null,
+				storeDistance : null,
 				selectedStore : null,
                 clicked:false
             }
@@ -219,7 +219,7 @@
                             this.stores = response.data.elements;
                             this.showStores();
                         }
-                    });
+                    }).catch(error => console.log(error));
             },
 			searchContributions(osmId) {				
 				axios
@@ -235,6 +235,13 @@
 								this.storeGloves = response.data[0].portDesGants;
 								this.storeMasks = response.data[0].portDuMasque;
 								this.storeDistance = response[0].data.respectDesDistances;
+							} else {
+								this.storeStocks = null;
+								this.storeStatus = null;
+								this.storeWaiting = null;
+								this.storeGloves = null;
+								this.storeMasks = null;
+								this.storeDistance = null;
 							}
                         }
                     })
