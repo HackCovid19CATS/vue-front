@@ -24,9 +24,9 @@
         </div>
         <div class="inventory">
             <div class="detail-title">Etat des stocks</div>
-            <Empty class="inventory-status"  :class="{ visible: storeStocks < 33 }"/>
-            <PartlyFilled class="inventory-status"  :class="{ visible: storeStocks === 'partly-filled' }"/>
-            <WellFilled class="inventory-status"  :class="{ visible: storeStocks > 66 }"/>
+            <Empty class="inventory-status"  :class="{ visible: storeStocks == 30 }"/>
+            <PartlyFilled class="inventory-status"  :class="{ visible: storeStocks == 60 }"/>
+            <WellFilled class="inventory-status"  :class="{ visible: storeStocks == 100 }"/>
         </div>
         <div class="rules">
             <div class="detail-title">Respect des règles</div>

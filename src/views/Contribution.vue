@@ -92,7 +92,6 @@
                     "nombreDeContribution" : 21,
                     "heureDerniereContribution" : null,
                     "dateDeContribution" : null,
-
                 }
             }
         },
