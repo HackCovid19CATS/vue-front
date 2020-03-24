@@ -17,8 +17,8 @@
             <div class="detail-title">Temps d’attente</div>
             <div>
                 <Clock class="waiting-picto" />
-                <div class="waiting-value-default" v-if="storeWaiting === 'null' || storeWaiting === ' '">- min en moyenne</div>
-				<div class="waiting-value" v-else>{{storeWaiting}} min en moyenne</div>
+                <div class="waiting-value" v-if="storeWaiting > 0">{{storeWaiting}} min en moyenne</div>
+				<div class="waiting-value" v-else>Non communiqué</div>
 				
             </div>
         </div>
