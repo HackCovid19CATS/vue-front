@@ -5,9 +5,11 @@
         <button type="button" class="close" @click="maskBox">
             <span aria-hidden="true">&times;</span>
         </button>
-		<div class="store-contribution">Aujourd'hui 12h45 - X contributions</div>
+		<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} contributions</div>
+		<div class="store-contribution" v-else >Aucune contribution</div>
         <div class="store-information">{{storeName}}</div>
         <div class="store-information">{{storeAddress}}</div>
+		<!-- Commenté en attendant un avis métier sur l'affichage de cet indicateur -->
 		<!-- <div class="store-status"> -->
 			<!-- <div class="store-status-open" v-if="storeStatus === 'true'">Ouvert :)</div> -->
 			<!-- <div class="store-status-close" v-if="storeStatus === 'false'">Fermé :(</div> -->
@@ -72,7 +74,7 @@
             }
         },
 
-        props:["storeName" , "storeAddress" , "storeOsmId" , "storeLon" , "storeLat", "storeStocks" , "storeStatus" , "storeWaiting" , "storeGloves" , "storeMasks" , "storeDistance" , "value"],
+        props:["storeName" , "storeAddress" , "storeOsmId" , "storeStocks" , "storeStatus" , "storeWaiting" , "storeGloves" , "storeMasks" , "storeDistance" , "storeNumberOfContribution" , "storeTimeOfLastContribution" , "storeDateLastContribution" , "value"],
 
         methods:{
 

@@ -21,14 +21,15 @@
                 :storeName="storeName"
                 :storeAddress="storeAddress"
 				:storeOsmId="storeOsmId"
-				:storeLon="storeLon"
-				:storeLat="storeLat"
 				:storeStocks="storeStocks"
 				:storeStatus="storeStatus"
 				:storeWaiting="storeWaiting"
 				:storeGloves="storeGloves"
 				:storeMasks="storeMasks"
 				:storeDistance="storeDistance"
+				:storeNumberOfContribution="storeNumberOfContribution"
+				:storeTimeOfLastContribution="storeTimeOfLastContribution"
+				:storeDateLastContribution="storeDateLastContribution"
 				:selectedStore="selectedStore"
 				>
         </box-detail-shop>
@@ -64,7 +65,6 @@
                 area: null,
                 stores: [],
                 markers: [],
-                // inventoryStatus: 'well-filled', //'unknown', 'partly-filled', 'well-filled'
                 contributions: [],
 				accuracy: null,
                 storeName: null,
@@ -74,15 +74,16 @@
 				storeOsmId : null,
 				storecategory : null,
 				storeType : null,
-				storeLon : 1221,
-				storeLat : 1221,
-				storeStocks : null,
+				storeStocks : null, // inventoryStatus: 'well-filled', //'unknown', 'partly-filled', 'well-filled'
 				storeStatus : null,
 				storeWaiting : null,
-				storeGloves : true,
+				storeGloves : null,
 				storeMasks : null,
 				storeDistance : null,
 				selectedStore : null,
+				storeNumberOfContribution : null,
+				storeTimeOfLastContribution : null,
+				storeDateLastContribution : null,
                 clicked:false
             }
         },
@@ -225,15 +226,16 @@
                     .get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OsmNodeId=' + osmId)
                     .then((response) => {
                         if (response.status === 200) {
-							console.log(response.data);
-							// TODO a modifier si on doit récupérer un liste en fonction de la réponse de l'API
 							if(response.data !== null && response.data.length > 0) {
-								this.storeStocks = response.data[0].etatDesStocksPourcent;
+								this.storeStocks = response.data[0].etatDesStocks;
 								this.storeStatus = response.data[0].ouvert;
 								this.storeWaiting = response.data[0].tempsDAttente;
 								this.storeGloves = response.data[0].portDesGants;
 								this.storeMasks = response.data[0].portDuMasque;
 								this.storeDistance = response.data[0].respectDesDistances;
+								this.storeNumberOfContribution = response.data[0].nombreDeContribution;
+								this.storeTimeOfLastContribution = response.data[0].heureDerniereContribution;
+								this.storeDateLastContribution = response.data[0].dateDeContribution;
 							} else {
 								this.storeStocks = null;
 								this.storeStatus = null;
@@ -241,6 +243,9 @@
 								this.storeGloves = null;
 								this.storeMasks = null;
 								this.storeDistance = null;
+								this.storeNumberOfContribution = null;
+								this.storeTimeOfLastContribution = null;
+								this.storeDateLastContribution = null;
 							}
                         }
                     })
