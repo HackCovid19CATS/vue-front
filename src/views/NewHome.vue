@@ -17,7 +17,7 @@
 
         <div class="footer box">
             <Information class="icon-information" @click="onInformation()"/>
-            <span style="margin-top: 21px!important;">Rappel des consignes pour faire ses courses</span>
+            <span>Rappel des consignes pour faire ses courses</span>
         </div>
 
 
@@ -434,7 +434,7 @@
         width: 100%;
         height: 78px;
         background-color: white;
-        position: absolute;
+        position: fixed;
         bottom: 0;
     }
 
@@ -490,7 +490,7 @@
     }
 
     .icon-information {
-        margin-top: 21px;
+        /*margin-top: 21px;*/
         margin-left: 20px;
         margin-right: 20px;
         width: 25px;
