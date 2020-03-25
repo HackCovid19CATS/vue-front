@@ -18,11 +18,11 @@
         <div class="subtitle">Temps d’attente</div>
         <div class="question">Combien de temps vous avez attendu ?</div>
         <ul class="how-long">
-            <li :class="{active : indexInputAttente == 0}" @click="setTimeAttente(10 , 0)" style="cursor: pointer">10 min</li>
-            <li :class="{active : indexInputAttente == 1}" @click="setTimeAttente(20 , 1)" style="cursor: pointer">20 min</li>
-            <li :class="{active : indexInputAttente == 2}" @click="setTimeAttente(30 , 2)" style="cursor: pointer">30 min</li>
-            <li :class="{active : indexInputAttente == 3}" @click="setTimeAttente(40 , 3)" style="cursor: pointer">40 min</li>
-            <li :class="{active : indexInputAttente == 4}" @click="setTimeAttente(50 , 4)" style="cursor: pointer">+50 min</li>
+            <li :class="{active : indexInputAttente == 0}" @click="setTimeAttente(0 , 0)" style="cursor: pointer">0 min</li>
+            <li :class="{active : indexInputAttente == 1}" @click="setTimeAttente(10 , 1)" style="cursor: pointer">10 min</li>
+            <li :class="{active : indexInputAttente == 2}" @click="setTimeAttente(20 , 2)" style="cursor: pointer">20 min</li>
+            <li :class="{active : indexInputAttente == 3}" @click="setTimeAttente(30 , 3)" style="cursor: pointer">30 min</li>
+            <li :class="{active : indexInputAttente == 4}" @click="setTimeAttente(40 , 4)" style="cursor: pointer">+40 min</li>
         </ul>
         <div class="subtitle">Stock</div>
         <div class="question">Quel est l’état du stock du magasin ?</div>
