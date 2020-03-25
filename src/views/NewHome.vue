@@ -70,11 +70,8 @@
                 storeName: null,
                 storeAddress: null,
 				storeId: null,
-				storeOsmType : null,
 				storeOsmId : null,
-				storecategory : null,
-				storeType : null,
-				storeStocks : null, // inventoryStatus: 'well-filled', //'unknown', 'partly-filled', 'well-filled'
+				storeStocks : null, // 'empty', 'partly-filled', 'well-filled'
 				storeStatus : null,
 				storeWaiting : null,
 				storeGloves : null,
@@ -221,21 +218,26 @@
                         }
                     }).catch(error => console.log(error));
             },
-			searchContributions(osmId) {				
+			searchContributions(osmId) {
+				console.log("osmId : " + osmId);
 				axios
-                    .get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OsmNodeId=' + osmId)
+                    .get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OSMNodeId=' + osmId)
                     .then((response) => {
                         if (response.status === 200) {
-							if(response.data !== null && response.data.length > 0) {
-								this.storeStocks = response.data[0].etatDesStocks;
-								this.storeStatus = response.data[0].ouvert;
-								this.storeWaiting = response.data[0].tempsDAttente;
-								this.storeGloves = response.data[0].portDesGants;
-								this.storeMasks = response.data[0].portDuMasque;
-								this.storeDistance = response.data[0].respectDesDistances;
-								this.storeNumberOfContribution = response.data[0].nombreDeContribution;
-								this.storeTimeOfLastContribution = response.data[0].heureDerniereContribution;
-								this.storeDateLastContribution = response.data[0].dateDeContribution;
+							console.log("response.data : " + response.data);
+							console.log("response.data.length : " + response.data.length);
+							console.log("esponse.data.etatDesStocks : " + response.data.etatDesStocks);
+							console.log("response.data : " + response.data);
+							if(response.data !== null) {
+								this.storeStocks = response.data.etatDesStocks;
+								this.storeStatus = response.data.ouvert;
+								this.storeWaiting = response.data.tempsAttente;
+								this.storeGloves = response.data.portDesGants;
+								this.storeMasks = response.data.portDuMasque;
+								this.storeDistance = response.data.respectDesDistances;
+								this.storeNumberOfContribution = response.data.nombreDeContribution;
+								this.storeTimeOfLastContribution = response.data.heureDerniereContribution;
+								this.storeDateLastContribution = response.data.dateDeContribution;
 							} else {
 								this.storeStocks = null;
 								this.storeStatus = null;
@@ -247,6 +249,7 @@
 								this.storeTimeOfLastContribution = null;
 								this.storeDateLastContribution = null;
 							}
+							console.log(this);
                         }
                     })
 					.catch(error => console.log(error));
