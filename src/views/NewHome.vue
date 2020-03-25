@@ -172,12 +172,11 @@
                   this.showGrocery = true;
                   this.showMedical = false;
                   this.showNews = false;
-                  this.showStores();
                 } else {
                   this.removeMarkers();
-                  this.showGrocery = !this.showGrocery;
-                  this.showStores();
+                  this.showGrocery = true;
                 }
+              this.showStores();
             },
             onShowMedical() {
               if (this.areAllMarkersSelected()) {
@@ -185,12 +184,11 @@
                 this.showGrocery = false;
                 this.showMedical = true;
                 this.showNews = false;
-                this.showStores();
               } else {
                 this.removeMarkers();
-                this.showMedical = !this.showMedical;
-                this.showStores();
+                this.showMedical = true;
               }
+              this.showStores();
             },
             onShowNews() {
               if (this.areAllMarkersSelected()) {
@@ -198,12 +196,11 @@
                 this.showGrocery = false;
                 this.showMedical = false;
                 this.showNews = true;
-                this.showStores();
               } else {
                 this.removeMarkers();
-                this.showNews = !this.showNews;
-                this.showStores();
+                this.showNews = true;
               }
+              this.showStores();
             },
             setArea() {
                 this.area = L.circle([this.latitude, this.longitude], {
