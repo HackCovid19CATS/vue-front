@@ -11,45 +11,49 @@
             Partagez votre expérience dès votre retour à la maison pour en informer les autres !
         </div>
         <div class="shop-information">
-            <div class="shop-name">LIDL Montpellier Jacou</div>
-            <div class="shop-address">28 rue de jean jaures, Montpellier</div>
+            <div class="shop-name">{{shopName}}</div>
+            <div class="shop-address" v-if="shopAdress != 'null'">{{shopAdress}}</div>
+            <div class="shop-address" v-else> Addresse non disponible</div>
         </div>
         <div class="subtitle">Temps d’attente</div>
         <div class="question">Combien de temps vous avez attendu ?</div>
         <ul class="how-long">
-            <li class="active">10 min</li>
-            <li>20 min</li>
-            <li>30 min</li>
-            <li>40 min</li>
-            <li>+50 min</li>
+            <li :class="{active : indexInputAttente == 0}" @click="setTimeAttente(10 , 0)" style="cursor: pointer">10 min</li>
+            <li :class="{active : indexInputAttente == 1}" @click="setTimeAttente(20 , 1)" style="cursor: pointer">20 min</li>
+            <li :class="{active : indexInputAttente == 2}" @click="setTimeAttente(30 , 2)" style="cursor: pointer">30 min</li>
+            <li :class="{active : indexInputAttente == 3}" @click="setTimeAttente(40 , 3)" style="cursor: pointer">40 min</li>
+            <li :class="{active : indexInputAttente == 4}" @click="setTimeAttente(50 , 4)" style="cursor: pointer">+50 min</li>
         </ul>
         <div class="subtitle">Stock</div>
         <div class="question">Quel est l’état du stock du magasin ?</div>
         <ul class="stock">
-            <li class="active">Vide</li>
-            <li class="active">En partie rempli</li>
-            <li>Bien rempli</li>
+            <li :class="{active : input.EtatDesStocks == 'empty' || input.EtatDesStocks == 'partly-filled' || input.EtatDesStocks == 'well-filled' }"
+                @click="setStock('empty')" style="cursor: pointer">Vide</li>
+            <li :class="{active : input.EtatDesStocks == 'partly-filled' || input.EtatDesStocks == 'well-filled' }"
+                @click="setStock('partly-filled')" style="cursor: pointer"> En partie rempli</li>
+            <li :class="{active : input.EtatDesStocks == 'well-filled'}"
+                @click="setStock('well-filled')" style="cursor: pointer">Bien rempli</li>
         </ul>
         <div class="subtitle">Respect des règles</div>
         <div class="question">
             L’établissement respecte t-il les règles mise en place ?
         </div>
-        <div class="rule active" style="margin-top: 32px">
+        <div :class="classDistance" style="margin-top: 32px" @click="setIconState('RespectDesDistances')">
             <Distance class="icon"/>
             Respect des distances
             <div class="checkbox"></div>
         </div>
-        <div class="rule" style="margin-top: 16px">
+        <div :class="classMask" style="margin-top: 16px" @click="setIconState('PortDuMasque')">
             <WearingMask class="icon" />
             Port du masque
             <div class="checkbox"></div>
         </div>
-        <div class="rule" style="margin-top: 16px">
+        <div :class="classGloves" style="margin-top: 16px" @click="setIconState('portDesGants')">
             <Gloves class="icon" />
             Port des gants
             <div class="checkbox"></div>
         </div>
-        <button class="contribute" v-on:click="contribute">Contribuer</button>
+        <button :class="classBtnContribution" v-on:click="contribute">Contribuer</button>
     </div>
 </template>
 
@@ -58,7 +62,7 @@
     import WearingMask from '../assets/mask.svg';
     import Gloves from '../assets/gloves.svg';
     import axios from "axios";
-    import md5 from 'crypto-js/md5';
+    //import md5 from 'crypto-js/md5';
 
     export default {
         name: "Contribution",
@@ -67,26 +71,56 @@
             WearingMask,
             Gloves,
         },
+        props:["shopName" , "shopId" , "shopAdress"],
         data: function () {
+
             return {
+                inputTimeClicked : false ,
+                indexInputAttente : null,
                 // TODO A remplacer par des valeurs extraites du formulaire
                 input: {
-                    "lieuId": null,
-                    "etatDesStocksPourcent": "30",
-                    "ouvert": "false",
-                    "latitude": "1221",
-                    "longitude": "1221",
-                    "osmNodeId": "123",
-                    "tempsDAttente": "456",
-                    "portDesGants": "false",
-                    "portDuMasque": "false",
-                    "respectDesDistances": "true"
+                    "ShopId": null,
+                    "EtatDesStocks": null,
+                    "Ouvert": false,
+                    "OSMNodeId": null,
+                    "TempsAttente": null,
+                    "portDesGants": false,
+                    "PortDuMasque": false,
+                    "RespectDesDistances": false,
                 }
             }
         },
 
-        mounted: function(){
+        computed:{
+            classDistance: function () {
+                if(this.input.RespectDesDistances){
+                    return "rule active";
+                }
+                return "rule";
+            },
+            classMask: function () {
+                if(this.input.PortDuMasque){
+                    return "rule active";
+                }
+                return "rule";
+            },
+            classGloves: function () {
+                if(this.input.portDesGants){
+                    return "rule active";
+                }
+                return "rule";
+            },
+            classBtnContribution: function(){
 
+                if(this.input.EtatDesStocks != null && this.input.TempsAttente != null ){
+                    return "contribute";
+                }
+                return "contributeDisabled";
+            }
+        },
+
+        mounted: function(){
+            this.input.ShopId = this.shopId;
             console.warn(this.id)
 
         },
@@ -95,19 +129,57 @@
             onClose() {
                 this.$router.push('/home');
             },
+
+            setStock(state){
+                this.input.EtatDesStocks = state;
+            },
+
+            setIconState(icon){
+
+                this.input[icon] = !this.input[icon];
+
+            },
+
+            setTimeAttente(temps , index){
+                if(index === this.indexInputAttente){
+                    this.input.TempsAttente = null;
+                    this.indexInputAttente = null;
+                }else{
+                    this.input.TempsAttente = temps;
+                    this.indexInputAttente = index;
+                }
+
+            },
+
+            jsonToString(j){
+                let json = {};
+                for(let property in j){
+                    json[`${property}`] = `${j[property]}`;
+                }
+                return json;
+            },
+
             contribute: function () {
-                this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
+                //this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
+				this.input.OSMNodeId = this.shopId;
+
+                console.warn(this.jsonToString(this.input))
+                console.warn(this.input)
+
                 axios({
                     method: "POST",
                     "url": "https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store",
-                    "data": this.input,
+                    "data": this.input ,
                     "headers": {"content-type": "application/json"}
                 }).then(result => {
-                    alert("Merci pour cette contribution : " + this.input.lieuId  + " " + result);
+                    //alert("Merci pour cette contribution : " + this.input.lieuId  + " " + result);
+                    console.log(result);
+                    alert("Merci pour votre contribution !");
+                    this.onClose();
                 }, error => {
                     console.error(error);
                 });
-            }
+            },
         }
     }
 </script>
@@ -270,6 +342,7 @@
         display: flex;
         justify-content: space-between;
         border-radius: 6px;
+        cursor: pointer;
 
         & > .icon {
             margin-left: 15px;
@@ -327,6 +400,22 @@
         display: inline-block;
         font-size: 16px;
         width: 100%;
+        cursor: pointer;
+    }
+
+    button.contributeDisabled {
+        margin-top: 35px;
+        background-color:dimgrey;
+        border-radius: 6px;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        width: 100%;
+        cursor : not-allowed;
     }
 
 </style>

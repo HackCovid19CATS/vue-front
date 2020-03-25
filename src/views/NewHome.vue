@@ -29,6 +29,7 @@
 				:storeGloves="storeGloves"
 				:storeMasks="storeMasks"
 				:storeDistance="storeDistance"
+				:selectedStore="selectedStore"
 				>
         </box-detail-shop>
     </div>
@@ -57,29 +58,31 @@
                 map: null,
                 showDetail: false,
                 showGrocery: true,
-                showMedical: false,
-                showNews: false,
+                showMedical: true,
+                showNews: true,
                 myLocation: null,
                 area: null,
                 stores: [],
                 markers: [],
-                //inventoryStatus: 'well-filled', //'unknown', 'partly-filled', 'well-filled'
-                accuracy: null,
+                // inventoryStatus: 'well-filled', //'unknown', 'partly-filled', 'well-filled'
+                contributions: [],
+				accuracy: null,
                 storeName: null,
                 storeAddress: null,
-				storeId: 'ze4r8ze4re',
+				storeId: null,
 				storeOsmType : null,
-				storeOsmId : 123,
+				storeOsmId : null,
 				storecategory : null,
 				storeType : null,
 				storeLon : 1221,
 				storeLat : 1221,
-				storeStocks : 30,
-				storeStatus : true,
-				storeWaiting : 456,
+				storeStocks : null,
+				storeStatus : null,
+				storeWaiting : null,
 				storeGloves : true,
-				storeMasks : false,
-				storeDistance : true,
+				storeMasks : null,
+				storeDistance : null,
+				selectedStore : null,
                 clicked:false
             }
         },
@@ -147,7 +150,6 @@
             onContribute: function () {
                 this.$router.push('/contribution')
             },
-
             onInformation() {
                 this.$router.push('/infos');
             },
@@ -203,6 +205,8 @@
                     (
                         node(around:1000.0, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
                         node(around:1000.0, ${this.latitude}, ${this.longitude}) ["shop"];
+                        way(around:1000.0, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
+                        way(around:1000.0, ${this.latitude}, ${this.longitude}) ["shop"];
                     );
                     out center;
                     `;
@@ -214,21 +218,30 @@
                             this.stores = response.data.elements;
                             this.showStores();
                         }
-                    });
+                    }).catch(error => console.log(error));
             },
-			searchContributions() {				
+			searchContributions(osmId) {				
 				axios
-                    //.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?LieuId=${this.storeOsmId}')
-					.get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?LieuId=cfc9cfa1812f0526d6e2342a41ed0f3e')
+                    .get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OsmNodeId=' + osmId)
                     .then((response) => {
                         if (response.status === 200) {
 							console.log(response.data);
-							this.storeStocks = response.data.etatDesStocksPourcent;
-							this.storeStatus = response.data.ouvert;
-							this.storeWaiting = response.data.tempsDAttente;
-							this.storeGloves = response.data.portDesGants;
-							this.storeMasks = response.data.portDuMasque;
-							this.storeDistance = response.data.respectDesDistances;		
+							// TODO a modifier si on doit récupérer un liste en fonction de la réponse de l'API
+							if(response.data !== null && response.data.length > 0) {
+								this.storeStocks = response.data[0].etatDesStocksPourcent;
+								this.storeStatus = response.data[0].ouvert;
+								this.storeWaiting = response.data[0].tempsDAttente;
+								this.storeGloves = response.data[0].portDesGants;
+								this.storeMasks = response.data[0].portDuMasque;
+								this.storeDistance = response.data[0].respectDesDistances;
+							} else {
+								this.storeStocks = null;
+								this.storeStatus = null;
+								this.storeWaiting = null;
+								this.storeGloves = null;
+								this.storeMasks = null;
+								this.storeDistance = null;
+							}
                         }
                     })
 					.catch(error => console.log(error));
@@ -236,47 +249,51 @@
             },
             showOneStore(element) {
 				// Au clic sur un établissement, affichage du détail
-				
                 if (element.tags['name'] !== undefined) {
                     this.storeName = element.tags.name;
                 }
                 let address = '';
+				let housenumber = '';
+				let street = '';
+				let city = '';
                 if (element.tags['addr:street'] !== undefined) {
-                    address = element.tags['addr:street'];
+                    street = element.tags['addr:street'];
+					// On ne récupère le numéro que si la rue est définie
+					if (element.tags['addr:housenumber'] !== undefined) {
+						housenumber = element.tags['addr:housenumber'] + ', ';
+					}
                 }
+				if (element.tags['addr:city'] !== undefined) {
+                    city =  element.tags['addr:city'];
+                }
+				// Mise en forme de l'adresse
+				if(street !== '') {
+					address = housenumber + street;
+				} 
+				if (address !== '' && city !== '') {
+					address = address + ', ';
+				}
+				address = address + city;
+				
                 if (address.length > 0) {
                     this.storeAddress = address;
                 } else {
                     this.storeAddress = null;
                 }
-				if (element.tags['place_id'] !== undefined) {
-                    this.storeId = element.tags.place_id;
+				if (element.id !== undefined) {
+                    this.storeOsmId = element.id;
                 }
-				if (element.tags['osm_id'] !== undefined) {
-                    this.storeOsmId = element.tags.osm_id;
+				if (element.lon !== undefined) {
+                    this.storeLon = element.lon;
                 }
-				if (element.tags['osm_type'] !== undefined) {
-                    this.storeOsmType = element.tags.osm_type;
-                }
-				if (element.tags['category'] !== undefined) {
-                    this.storecategory = element.tags.category;
-                }
-				if (element.tags['type'] !== undefined) {
-                    this.storeType = element.tags.type;
-                }
-				if (element.tags['lon'] !== undefined) {
-                    this.storeLon = element.tags.lon;
-                }
-				if (element.tags['lat'] !== undefined) {
-                    this.storeLat = element.tags.lat;
+				if (element.lat !== undefined) {
+                    this.storeLat = element.lat;
                 }
 
                 this.showDetail = true;
                 this.clicked = true;
 				
-				this.searchContributions();
-				
-									
+				this.searchContributions(this.storeOsmId);
 				
             },
             showStores() {
@@ -300,7 +317,9 @@
                 this.stores.forEach(element => {
                     if (newsStore.includes(element.tags['shop'])) {
                         if (this.showNews) {
-                            const marker = L.marker([element.lat, element.lon],{
+                            const lat = element.lat || element.center.lat;
+                            const lon = element.lon || element.center.lon;    
+                            const marker = L.marker([lat, lon],{
                                 title: "Boutique",
                                 icon : iconNews,
                             }).addTo(this.map);
@@ -309,7 +328,9 @@
                         }
                     } else if (medicalStore.includes(element.tags['amenity'])) {
                         if (this.showMedical) {
-                            const marker = L.marker([element.lat, element.lon],{
+                            const lat = element.lat || element.center.lat;
+                            const lon = element.lon || element.center.lon;    
+                            const marker = L.marker([lat, lon],{
                                 title: "Boutique",
                                 icon : iconMedical,
                             }).addTo(this.map);
@@ -318,7 +339,9 @@
                         }
                     } else if (groceryStore.includes(element.tags['shop'])) {
                         if (this.showGrocery) {
-                            const marker = L.marker([element.lat, element.lon],{
+                            const lat = element.lat || element.center.lat;
+                            const lon = element.lon || element.center.lon;    
+                            const marker = L.marker([lat, lon],{
                                 title: "Boutique",
                                 icon : iconGrocery,
                             }).addTo(this.map);
