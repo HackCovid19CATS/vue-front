@@ -27,23 +27,23 @@
         <div class="subtitle">Stock</div>
         <div class="question">Quel est l’état du stock du magasin ?</div>
         <ul class="stock">
-            <li :class="{active : input.EtatDesStocks == 'empty' || input.EtatDesStocks == 'partly-filled' || input.EtatDesStocks == 'well-filled' }"
+            <li :class="{active : input.etatDesStocks == 'empty' || input.etatDesStocks == 'partly-filled' || input.etatDesStocks == 'well-filled' }"
                 @click="setStock('empty')" style="cursor: pointer">Vide</li>
-            <li :class="{active : input.EtatDesStocks == 'partly-filled' || input.EtatDesStocks == 'well-filled' }"
+            <li :class="{active : input.etatDesStocks == 'partly-filled' || input.etatDesStocks == 'well-filled' }"
                 @click="setStock('partly-filled')" style="cursor: pointer"> En partie rempli</li>
-            <li :class="{active : input.EtatDesStocks == 'well-filled'}"
+            <li :class="{active : input.etatDesStocks == 'well-filled'}"
                 @click="setStock('well-filled')" style="cursor: pointer">Bien rempli</li>
         </ul>
         <div class="subtitle">Respect des règles</div>
         <div class="question">
             L’établissement respecte t-il les règles mise en place ?
         </div>
-        <div :class="classDistance" style="margin-top: 32px" @click="setIconState('RespectDesDistances')">
+        <div :class="classDistance" style="margin-top: 32px" @click="setIconState('respectDesDistances')">
             <Distance class="icon"/>
             Respect des distances
             <div class="checkbox"></div>
         </div>
-        <div :class="classMask" style="margin-top: 16px" @click="setIconState('PortDuMasque')">
+        <div :class="classMask" style="margin-top: 16px" @click="setIconState('portDuMasque')">
             <WearingMask class="icon" />
             Port du masque
             <div class="checkbox"></div>
@@ -62,7 +62,6 @@
     import WearingMask from '../assets/mask.svg';
     import Gloves from '../assets/gloves.svg';
     import axios from "axios";
-    //import md5 from 'crypto-js/md5';
 
     export default {
         name: "Contribution",
@@ -77,29 +76,27 @@
             return {
                 inputTimeClicked : false ,
                 indexInputAttente : null,
-                // TODO A remplacer par des valeurs extraites du formulaire
                 input: {
-                    "ShopId": null,
-                    "EtatDesStocks": null,
-                    "Ouvert": false,
-                    "OSMNodeId": null,
-                    "TempsAttente": null,
+                    "etatDesStocks": null,
+                    "ouvert": true,
+                    "osmNodeId": null,
+                    "tempsAttente": null,
                     "portDesGants": false,
-                    "PortDuMasque": false,
-                    "RespectDesDistances": false,
+                    "portDuMasque": false,
+                    "respectDesDistances": false,
                 }
             }
         },
 
         computed:{
             classDistance: function () {
-                if(this.input.RespectDesDistances){
+                if(this.input.respectDesDistances){
                     return "rule active";
                 }
                 return "rule";
             },
             classMask: function () {
-                if(this.input.PortDuMasque){
+                if(this.input.portDuMasque){
                     return "rule active";
                 }
                 return "rule";
@@ -112,7 +109,7 @@
             },
             classBtnContribution: function(){
 
-                if(this.input.EtatDesStocks != null && this.input.TempsAttente != null ){
+                if(this.input.etatDesStocks != null && this.input.tempsAttente != null ){
                     return "contribute";
                 }
                 return "contributeDisabled";
@@ -120,9 +117,6 @@
         },
 
         mounted: function(){
-            this.input.ShopId = this.shopId;
-            console.warn(this.id)
-
         },
 
         methods: {
@@ -131,7 +125,7 @@
             },
 
             setStock(state){
-                this.input.EtatDesStocks = state;
+                this.input.etatDesStocks = state;
             },
 
             setIconState(icon){
@@ -142,10 +136,10 @@
 
             setTimeAttente(temps , index){
                 if(index === this.indexInputAttente){
-                    this.input.TempsAttente = null;
+                    this.input.tempsAttente = null;
                     this.indexInputAttente = null;
                 }else{
-                    this.input.TempsAttente = temps;
+                    this.input.tempsAttente = temps;
                     this.indexInputAttente = index;
                 }
 
@@ -160,8 +154,7 @@
             },
 
             contribute: function () {
-                //this.input.lieuId = "" + md5(new Date().getTime() + this.input.latitude + this.input.longitude);
-				this.input.OSMNodeId = this.shopId;
+				this.input.osmNodeId = this.shopId;
 
                 console.warn(this.jsonToString(this.input))
                 console.warn(this.input)
@@ -172,7 +165,6 @@
                     "data": this.input ,
                     "headers": {"content-type": "application/json"}
                 }).then(result => {
-                    //alert("Merci pour cette contribution : " + this.input.lieuId  + " " + result);
                     console.log(result);
                     alert("Merci pour votre contribution !");
                     this.onClose();
