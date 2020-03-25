@@ -5,7 +5,7 @@
         <button type="button" class="close" @click="maskBox">
             <span aria-hidden="true">&times;</span>
         </button>
-		<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} contributions</div>
+		<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} contribution(s)</div>
 		<div class="store-contribution" v-else >Aucune contribution</div>
         <div class="store-information">{{storeName}}</div>
         <div class="store-information">{{storeAddress}}</div>
