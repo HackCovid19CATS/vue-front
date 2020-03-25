@@ -7,7 +7,8 @@
         </button>
 		<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} contribution(s)</div>
 		<div class="store-contribution" v-else >Aucune contribution</div>
-        <div class="store-information">{{storeName}}</div>
+        <div class="store-information" v-if="storeName === ''" >Non référencé</div>
+		<div class="store-information" v-else >{{storeName}}</div>
         <div class="store-information">{{storeAddress}}</div>
 		<!-- Commenté en attendant un avis métier sur l'affichage de cet indicateur -->
 		<!-- <div class="store-status"> -->

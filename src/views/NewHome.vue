@@ -263,6 +263,7 @@
             },
             showOneStore(element) {
 				// Au clic sur un établissement, affichage du détail
+				this.storeName = '';
                 if (element.tags['name'] !== undefined) {
                     this.storeName = element.tags.name;
                 }
