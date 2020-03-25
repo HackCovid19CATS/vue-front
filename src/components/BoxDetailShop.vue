@@ -5,7 +5,7 @@
         <button type="button" class="close" @click="maskBox">
             <span aria-hidden="true">&times;</span>
         </button>
-		<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} contributions</div>
+		<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} contribution(s)</div>
 		<div class="store-contribution" v-else >Aucune contribution</div>
         <div class="store-information">{{storeName}}</div>
         <div class="store-information">{{storeAddress}}</div>
@@ -15,33 +15,38 @@
 			<!-- <div class="store-status-close" v-if="storeStatus === 'false'">Fermé :(</div> -->
 			<!-- <div class="store-status-null" v-else>Inconnu</div> -->
 		<!-- </div> -->
-        <div class="waiting">
-            <div class="detail-title">Temps d’attente</div>
-            <div>
-                <Clock class="waiting-picto" />
-                <div class="waiting-value" v-if="storeWaiting > 0">{{storeWaiting}} min en moyenne</div>
-				<div class="waiting-value" v-else>Non communiqué</div>
-				
-            </div>
-        </div>
-        <div class="inventory">
-            <div class="detail-title">Etat des stocks</div>
-            <Empty class="inventory-status"  :class="{ visible: storeStocks == 30 }"/>
-            <PartlyFilled class="inventory-status"  :class="{ visible: storeStocks == 60 }"/>
-            <WellFilled class="inventory-status"  :class="{ visible: storeStocks == 100 }"/>
-        </div>
-        <div class="rules">
-            <div class="detail-title">Respect des règles</div>
-            <div class="rules-icon" :class="{ active: storeDistance === 'true' }">
-                <IconDistance class="rules-icon" />
-            </div>
-            <div class="rules-icon" :class="{ active: storeMasks === 'true' }">
-                <IconMask class="rules-icon" />
-            </div>
-            <div class="rules-icon" :class="{ active: storeGloves === 'true' }">
-                <IconGloves class="rules-icon" />
-            </div>
-        </div>
+		<div class="store-contribution" v-if="storeNumberOfContribution > 0">
+			<div class="waiting">
+				<div class="detail-title">Temps d’attente</div>
+				<div>
+					<Clock class="waiting-picto" />
+					<div class="waiting-value" v-if="storeWaiting > 0">{{storeWaiting}} min en moyenne</div>
+					<div class="waiting-value" v-else>Non communiqué</div>
+					
+				</div>
+			</div>
+			<div class="inventory">
+				<div class="detail-title">Etat des stocks</div>
+				<Empty class="inventory-status"  :class="{ visible: storeStocks === 'empty' }"/>
+				<PartlyFilled class="inventory-status"  :class="{ visible: storeStocks === 'partly-filled' }"/>
+				<WellFilled class="inventory-status"  :class="{ visible: storeStocks === 'well-filled' }"/>
+			</div>
+			<div class="rules">
+				<div class="detail-title">Respect des règles</div>
+				<div class="rules-icon" :class="{ active: storeDistance == true }">
+					<IconDistance class="rules-icon" />
+				</div>
+				<div class="rules-icon" :class="{ active: storeMasks == true }">
+					<IconMask class="rules-icon" />
+				</div>
+				<div class="rules-icon" :class="{ active: storeGloves == true }">
+					<IconGloves class="rules-icon" />
+				</div>
+			</div>
+		</div>
+		<div class="store-no-contribution" v-else >
+			Soyez le premier à contribuer :) 
+		</div>	
         <button class="contribute" v-on:click="onContribute">Contribuer</button>
     </div>
 </template>
@@ -160,7 +165,6 @@
     }
 
     .detail {
-        /*visibility: hidden;*/
         position: absolute;
         bottom: 0;
         height: 430px;
@@ -182,6 +186,18 @@
         line-height: 32px;
         text-transform: uppercase;
         color: #FEAD54;
+    }
+
+    .store-no-contribution {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 28px;
+        /*text-transform: uppercase;
+        color: #FEAD54;*/
+		text-align: center;
+		height : 50px;
+		padding: 20px;
     }
 
     .waiting {
@@ -222,7 +238,6 @@
     }
 
     .inventory-status {
-        /*visibility: hidden;*/
         display: none;
         height: 32px;
     }
