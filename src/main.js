@@ -26,10 +26,13 @@ Vue.use(IconsPlugin);
 
 Vue.use(VueGtag, {
   config: {
-    id: "G-T6PBX9P3PC",
-    'anonymize_ip': true
+    id: "UA-161833177-1",
+    debug: true,
+    app_name: '#restezchezvous',
+    anonymize_ip: true,
   },
 });
+
 
 Vue.component('l-map', LMap);
 Vue.component('l-tile-layer', LTileLayer);

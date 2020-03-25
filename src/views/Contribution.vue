@@ -120,6 +120,11 @@
         },
 
         mounted: function(){
+            this.$gtag.pageview({
+                page_path: '/contribution',
+                page_title: "Contribution"
+            });
+
             this.input.ShopId = this.shopId;
             console.warn(this.id)
 
@@ -127,7 +132,7 @@
 
         methods: {
             onClose() {
-                this.$router.push('/home');
+                this.$router.push('/thankyou');
             },
 
             setStock(state){
@@ -174,7 +179,6 @@
                 }).then(result => {
                     //alert("Merci pour cette contribution : " + this.input.lieuId  + " " + result);
                     console.log(result);
-                    alert("Merci pour votre contribution !");
                     this.onClose();
                 }, error => {
                     console.error(error);

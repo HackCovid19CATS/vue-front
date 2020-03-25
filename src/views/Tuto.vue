@@ -50,6 +50,12 @@
             Swiper,
             SwiperSlide,
         },
+        mounted: function() {
+            this.$gtag.pageview({
+                page_path: '/tuto',
+                page_title: "Tutorial"
+            });
+        },
         methods: {
             onClose() {
                 this.$router.push('/home');

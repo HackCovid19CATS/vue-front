@@ -1,5 +1,8 @@
 <template>
-    <div class="box infos">
+    <div class="box">
+        <div class="bar infos">
+            <button type="button" class="close" aria-label="Close" @click="onClose()">x</button>
+        </div>
         <div class="title">Les consignes</div>
         <div class="subtitle">pour faire ses courses</div>
         <BeforeLeavingHomeComponent />
@@ -16,14 +19,27 @@
     import RespectingComponent from "../components/RespectingComponent";
     export default {
         name: "Infos",
-        components: {RespectingComponent, WhenYouGetHomeComponent, AtThePointOfSaleComponent, BeforeLeavingHomeComponent}
+        components: {RespectingComponent, WhenYouGetHomeComponent, AtThePointOfSaleComponent, BeforeLeavingHomeComponent},
+        mounted: function() {
+            this.$gtag.pageview({
+                page_path: '/infos',
+                page_title: "Informations"
+            });
+        },
+        methods: {
+            onClose() {
+                this.$router.push('/home');
+            },
+        },
     }
+
 </script>
 
 <style lang="scss" scoped>
+    @import '../scss/commun.scss';
     @import '../scss/infos.scss';
 
     .infos {
-        padding-top: 40px;
+        margin-bottom: 40px;
     }
 </style>

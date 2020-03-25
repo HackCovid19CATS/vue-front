@@ -25,7 +25,7 @@
         methods:{
 
             onInformation() {
-                this.$router.push('/infos/tuto');
+                this.$router.push('/tuto');
             },
 
             validAdress : function(q){
