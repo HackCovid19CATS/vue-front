@@ -21,6 +21,11 @@
         },
 
         mounted: function(){
+            this.$gtag.pageview({
+                page_path: '/map',
+                page_title: "Map"
+            });
+
             this.longitude = window.sessionStorage.getItem('userLong');
             this.latitude = window.sessionStorage.getItem('userLat');
             this.accuracy = window.sessionStorage.getItem('accuracy')

@@ -104,7 +104,6 @@
                         renderBullet(index, className) {
                             return `<span class="${className} swiper-pagination-bullet-custom"></span>`
                         },
-                        //dynamicBullets: true,
                     }
                 }
             }

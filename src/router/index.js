@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Welcome from "../views/Welcome";
 import Contribution from "../views/Contribution";
+//import VueGtag from "vue-gtag";
 
 Vue.use(VueRouter)
 
@@ -15,29 +16,6 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: () => import('../views/NewHome.vue')
-  },
-  {
-    path:'/subpage',
-    name:'Subpage',
-    component: () => import('../views/Subpage.vue')
-  },
-  {
-    path:'/subpage/:mess',
-    name:'Subpage',
-    component: () => import('../views/Subpage.vue') // Subpage params
-  },
-  {
-    path:'/connexion',
-    name:'Connexion',
-    component: () => import('../views/Connexion.vue')
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path: '/map',
@@ -61,7 +39,7 @@ const routes = [
     component: () => import('../views/Infos.vue')
   },
   {
-    path: '/infos/tuto',
+    path: '/tuto',
     name: 'Tuto',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -69,31 +47,28 @@ const routes = [
     component: () => import('../views/Tuto.vue')
   },
   {
-    path: '/contribution',
-    name: 'Contribution',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import('../views/Contribution.vue')
-  },
-  {
     path: '/contribution/:shopName/:shopId/:shopAdress',
     component: Contribution,
     props: true,
   },
-  {
-    path: '/welcome',
-    name: 'Welcome',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import('../views/Welcome.vue')
-  }
-
-]
+];
 
 const router = new VueRouter({
   routes
-})
+});
+
+/*
+Vue.use(VueGtag, {
+  config: {
+    id: "G-T6PBX9P3PC",
+    debug: true,
+    'anonymize_ip': true
+  },
+    router,
+      onReady () {
+    // ready
+  }
+});
+*/
 
 export default router
