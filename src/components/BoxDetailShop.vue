@@ -15,33 +15,40 @@
 			<!-- <div class="store-status-close" v-if="storeStatus === 'false'">Fermé :(</div> -->
 			<!-- <div class="store-status-null" v-else>Inconnu</div> -->
 		<!-- </div> -->
-        <div class="waiting">
-            <div class="detail-title">Temps d’attente</div>
-            <div>
-                <Clock class="waiting-picto" />
-                <div class="waiting-value" v-if="storeWaiting > 0">{{storeWaiting}} min en moyenne</div>
-				<div class="waiting-value" v-else>Non communiqué</div>
-				
-            </div>
-        </div>
-        <div class="inventory">
-            <div class="detail-title">Etat des stocks</div>
-            <Empty class="inventory-status"  :class="{ visible: storeStocks == 30 }"/>
-            <PartlyFilled class="inventory-status"  :class="{ visible: storeStocks == 60 }"/>
-            <WellFilled class="inventory-status"  :class="{ visible: storeStocks == 100 }"/>
-        </div>
-        <div class="rules">
-            <div class="detail-title">Respect des règles</div>
-            <div class="rules-icon" :class="{ active: storeDistance === 'true' }">
-                <IconDistance class="rules-icon" />
-            </div>
-            <div class="rules-icon" :class="{ active: storeMasks === 'true' }">
-                <IconMask class="rules-icon" />
-            </div>
-            <div class="rules-icon" :class="{ active: storeGloves === 'true' }">
-                <IconGloves class="rules-icon" />
-            </div>
-        </div>
+
+
+		<div class="store-contribution" v-if="storeNumberOfContribution > 0">
+			<div class="waiting">
+				<div class="detail-title">Temps d’attente</div>
+				<div>
+					<Clock class="waiting-picto" />
+					<div class="waiting-value" v-if="storeWaiting > 0">{{storeWaiting}} min en moyenne</div>
+					<div class="waiting-value" v-else>Non communiqué</div>
+					
+				</div>
+			</div>
+			<div class="inventory">
+				<div class="detail-title">Etat des stocks</div>
+				<Empty class="inventory-status"  :class="{ visible: storeStocks == 30 }"/>
+				<PartlyFilled class="inventory-status"  :class="{ visible: storeStocks == 60 }"/>
+				<WellFilled class="inventory-status"  :class="{ visible: storeStocks == 100 }"/>
+			</div>
+			<div class="rules">
+				<div class="detail-title">Respect des règles</div>
+				<div class="rules-icon" :class="{ active: storeDistance === 'true' }">
+					<IconDistance class="rules-icon" />
+				</div>
+				<div class="rules-icon" :class="{ active: storeMasks === 'true' }">
+					<IconMask class="rules-icon" />
+				</div>
+				<div class="rules-icon" :class="{ active: storeGloves === 'true' }">
+					<IconGloves class="rules-icon" />
+				</div>
+			</div>
+		</div>
+		<div class="store-contribution" v-else >
+			Soyez le premier à contribuer :) 
+		</div>	
         <button class="contribute" v-on:click="onContribute">Contribuer</button>
     </div>
 </template>
