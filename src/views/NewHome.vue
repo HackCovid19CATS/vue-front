@@ -3,7 +3,7 @@
 
         <div class="header">
             <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." v-on:keyup.enter="onEnter"/>
-            <Information class="icon-information" @click="onInformation()"/>
+
         </div>
         <div class="">
             <ul class="filters">
@@ -14,6 +14,11 @@
         </div>
 
         <div class="map" id="map"></div>
+
+        <div class="footer box">
+            <Information class="icon-information" @click="onInformation()"/>
+            <span style="margin-top: 21px!important;">Rappel des consignes pour faire ses courses</span>
+        </div>
 
 
         <box-detail-shop
@@ -414,12 +419,12 @@
 
     .map {
         width: 100%;
-        height: calc(100vh - 150px);
+        height: calc(100vh - 250px);
     }
 
     @media (max-width: 800px) {
         .map {
-            height: calc(100vh - 150px);
+            height: calc(100vh - 220px);
         }
     }
 
