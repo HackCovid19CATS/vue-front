@@ -186,9 +186,9 @@
             },
             setArea() {
                 this.area = L.circle([this.latitude, this.longitude], {
-                    color: 'teal',
-                    fillColor: 'teal',
-                    fillOpacity: 0.5,
+                    color: '#FEAD54',
+                    fillColor: '#D6D6D6',
+                    fillOpacity: 0.31,
                     radius: (this.accuracy * 0.360)
                 }).addTo(this.map);
             },
