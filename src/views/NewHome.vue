@@ -166,31 +166,45 @@
             areAllMarkersSelected() {
               return this.showGrocery && this.showMedical && this.showNews;
             },
+            setAllFiltersTo(booleanValue) {
+              this.showGrocery = booleanValue;
+              this.showNews = booleanValue;
+              this.showMedical = booleanValue;
+            },
             onShowGrocery() {
-                if (this.areAllMarkersSelected()) {
-                  this.removeMarkers();
-                  this.showMedical = false;
-                  this.showNews = false;
-                }
-              this.showGrocery = true;
+              this.removeMarkers();
+              if (this.areAllMarkersSelected()) {
+                this.setAllFiltersTo(false);
+                this.showGrocery = true;
+              } else if (!this.showNews && !this.showMedical) {
+                this.setAllFiltersTo(true);
+              } else {
+                this.showGrocery = !this.showGrocery;
+              }
               this.showStores();
             },
             onShowMedical() {
+              this.removeMarkers();
               if (this.areAllMarkersSelected()) {
-                this.removeMarkers();
-                this.showGrocery = false;
-                this.showNews = false;
+                this.setAllFiltersTo(false);
+                this.showMedical = true;
+              } else if (!this.showNews && !this.showGrocery) {
+                this.setAllFiltersTo(true);
+              } else {
+                this.showMedical = !this.showMedical;
               }
-              this.showMedical = true;
               this.showStores();
             },
             onShowNews() {
               this.removeMarkers();
               if (this.areAllMarkersSelected()) {
-                this.showGrocery = false;
-                this.showMedical = false;
+                this.setAllFiltersTo(false);
+                this.showNews = true;
+              } else if (!this.showGrocery && !this.showMedical) {
+                this.setAllFiltersTo(true);
+              } else {
+                this.showNews = !this.showNews;
               }
-              this.showNews = true;
               this.showStores();
             },
             setArea() {
