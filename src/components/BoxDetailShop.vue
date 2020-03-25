@@ -15,8 +15,6 @@
 			<!-- <div class="store-status-close" v-if="storeStatus === 'false'">Fermé :(</div> -->
 			<!-- <div class="store-status-null" v-else>Inconnu</div> -->
 		<!-- </div> -->
-
-
 		<div class="store-contribution" v-if="storeNumberOfContribution > 0">
 			<div class="waiting">
 				<div class="detail-title">Temps d’attente</div>
@@ -29,24 +27,24 @@
 			</div>
 			<div class="inventory">
 				<div class="detail-title">Etat des stocks</div>
-				<Empty class="inventory-status"  :class="{ visible: storeStocks == 30 }"/>
-				<PartlyFilled class="inventory-status"  :class="{ visible: storeStocks == 60 }"/>
-				<WellFilled class="inventory-status"  :class="{ visible: storeStocks == 100 }"/>
+				<Empty class="inventory-status"  :class="{ visible: storeStocks === 'empty' }"/>
+				<PartlyFilled class="inventory-status"  :class="{ visible: storeStocks === 'partly-filled' }"/>
+				<WellFilled class="inventory-status"  :class="{ visible: storeStocks === 'well-filled' }"/>
 			</div>
 			<div class="rules">
 				<div class="detail-title">Respect des règles</div>
-				<div class="rules-icon" :class="{ active: storeDistance === 'true' }">
+				<div class="rules-icon" :class="{ active: storeDistance == true }">
 					<IconDistance class="rules-icon" />
 				</div>
-				<div class="rules-icon" :class="{ active: storeMasks === 'true' }">
+				<div class="rules-icon" :class="{ active: storeMasks == true }">
 					<IconMask class="rules-icon" />
 				</div>
-				<div class="rules-icon" :class="{ active: storeGloves === 'true' }">
+				<div class="rules-icon" :class="{ active: storeGloves == true }">
 					<IconGloves class="rules-icon" />
 				</div>
 			</div>
 		</div>
-		<div class="store-contribution" v-else >
+		<div class="store-no-contribution" v-else >
 			Soyez le premier à contribuer :) 
 		</div>	
         <button class="contribute" v-on:click="onContribute">Contribuer</button>
@@ -167,7 +165,6 @@
     }
 
     .detail {
-        /*visibility: hidden;*/
         position: absolute;
         bottom: 0;
         height: 430px;
@@ -189,6 +186,18 @@
         line-height: 32px;
         text-transform: uppercase;
         color: #FEAD54;
+    }
+
+    .store-no-contribution {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 28px;
+        /*text-transform: uppercase;
+        color: #FEAD54;*/
+		text-align: center;
+		height : 50px;
+		padding: 20px;
     }
 
     .waiting {
@@ -229,7 +238,6 @@
     }
 
     .inventory-status {
-        /*visibility: hidden;*/
         display: none;
         height: 32px;
     }
