@@ -169,37 +169,28 @@
             onShowGrocery() {
                 if (this.areAllMarkersSelected()) {
                   this.removeMarkers();
-                  this.showGrocery = true;
                   this.showMedical = false;
                   this.showNews = false;
-                } else {
-                  this.removeMarkers();
-                  this.showGrocery = true;
                 }
+              this.showGrocery = true;
               this.showStores();
             },
             onShowMedical() {
               if (this.areAllMarkersSelected()) {
                 this.removeMarkers();
                 this.showGrocery = false;
-                this.showMedical = true;
                 this.showNews = false;
-              } else {
-                this.removeMarkers();
-                this.showMedical = true;
               }
+              this.showMedical = true;
               this.showStores();
             },
             onShowNews() {
+              this.removeMarkers();
               if (this.areAllMarkersSelected()) {
-                this.removeMarkers();
                 this.showGrocery = false;
                 this.showMedical = false;
-                this.showNews = true;
-              } else {
-                this.removeMarkers();
-                this.showNews = true;
               }
+              this.showNews = true;
               this.showStores();
             },
             setArea() {
