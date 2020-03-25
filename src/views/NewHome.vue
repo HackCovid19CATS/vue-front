@@ -421,8 +421,9 @@
     .footer {
         width: 100%;
         height: 78px;
-        background-color: white;
-        position: fixed;
+        //background-color: #079BAB;
+        //color : white;
+        position: absolute;
         bottom: 0;
     }
 
@@ -433,7 +434,23 @@
 
     @media (max-width: 800px) {
         .map {
-            height: calc(100vh - 220px);
+            height: calc(100vh - 305px);
+        }
+
+        .footer{
+            height: 50px;
+            padding-top: 10px;
+        }
+    }
+
+    @media (max-width: 375px) {
+        .map {
+            height: calc(100vh - 280px);
+        }
+
+        .footer {
+            height: 50px;
+            padding-top: 10px;
         }
     }
 
