@@ -5,15 +5,16 @@
             <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." v-on:keyup.enter="onEnter"/>
             <Information class="icon-information" @click="onInformation()"/>
         </div>
-
-        <div class="map" id="map"></div>
-        <div class="footer box">
+        <div class="">
             <ul class="filters">
                 <li><button :class="{ active: showGrocery }" @click="onShowGrocery()">Alimentation</button></li>
                 <li><button :class="{ active: showMedical }" @click="onShowMedical()">Pharmacie</button></li>
                 <li><button :class="{ active: showNews }" @click="onShowNews()">Tabac</button></li>
             </ul>
         </div>
+
+        <div class="map" id="map"></div>
+
 
         <box-detail-shop
                 @boxclosed="boxClosed($event)"
