@@ -197,37 +197,44 @@
                     icon : myIcon,
                 }).addTo(this.map).bindPopup(this.address);
             },
-            searchStore() {
-                const overpass_query = `
-                    [out:json];
-                    (
-                        node(around:1000.0, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
-                        node(around:1000.0, ${this.latitude}, ${this.longitude}) ["shop"];
-                        way(around:1000.0, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
-                        way(around:1000.0, ${this.latitude}, ${this.longitude}) ["shop"];
-                    );
-                    out center;
-                    `;
+			searchStore() {
+				let radius = 1000.0;
+				this.callStores(radius);
+            },
+			callStores(radius){
+				let overpass_query = `
+						[out:json];
+						(
+							node(around:${radius}, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
+							node(around:${radius}, ${this.latitude}, ${this.longitude}) ["shop"];
+							way(around:${radius}, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
+							way(around:${radius}, ${this.latitude}, ${this.longitude}) ["shop"];
+						);
+						out center;
+						`;
 				axios
                     .get('https://overpass-api.de/api/interpreter?data=' + overpass_query)
                     .then((response) => {
                         if (response.status === 200) {
 							// Ajout des établissements dans la liste
-                            this.stores = response.data.elements;
-                            this.showStores();
-                        }
+                            
+							/*if(response.data.elements === 0) {
+								radius = radius + 5000.0;
+								console.log("callStores --> radius : " + radius);
+								this.callStores(radius);
+							}*/
+							this.stores = response.data.elements;
+							this.showStores();
+                        } else {
+							console.log('une erreur est survenue : ' + response.status);
+						}
                     }).catch(error => console.log(error));
-            },
+			},
 			searchContributions(osmId) {
-				console.log("osmId : " + osmId);
 				axios
                     .get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OSMNodeId=' + osmId)
                     .then((response) => {
                         if (response.status === 200) {
-							console.log("response.data : " + response.data);
-							console.log("response.data.length : " + response.data.length);
-							console.log("esponse.data.etatDesStocks : " + response.data.etatDesStocks);
-							console.log("response.data : " + response.data);
 							if(response.data !== null) {
 								this.storeStocks = response.data.etatDesStocks;
 								this.storeStatus = response.data.ouvert;
@@ -249,7 +256,6 @@
 								this.storeTimeOfLastContribution = null;
 								this.storeDateLastContribution = null;
 							}
-							console.log(this);
                         }
                     })
 					.catch(error => console.log(error));
