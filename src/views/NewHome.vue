@@ -163,26 +163,47 @@
                 });
                 this.markers = [];
             },
+            areAllMarkersSelected() {
+              return this.showGrocery && this.showMedical && this.showNews;
+            },
             onShowGrocery() {
-                this.removeMarkers();
-                this.showGrocery = true;
-                this.showMedical = false;
-                this.showNews = false;
-                this.showStores();
+                if (this.areAllMarkersSelected()) {
+                  this.removeMarkers();
+                  this.showGrocery = true;
+                  this.showMedical = false;
+                  this.showNews = false;
+                  this.showStores();
+                } else {
+                  this.removeMarkers();
+                  this.showGrocery = !this.showGrocery;
+                  this.showStores();
+                }
             },
             onShowMedical() {
+              if (this.areAllMarkersSelected()) {
                 this.removeMarkers();
                 this.showGrocery = false;
                 this.showMedical = true;
                 this.showNews = false;
                 this.showStores();
+              } else {
+                this.removeMarkers();
+                this.showMedical = !this.showMedical;
+                this.showStores();
+              }
             },
             onShowNews() {
+              if (this.areAllMarkersSelected()) {
                 this.removeMarkers();
                 this.showGrocery = false;
                 this.showMedical = false;
                 this.showNews = true;
                 this.showStores();
+              } else {
+                this.removeMarkers();
+                this.showNews = !this.showNews;
+                this.showStores();
+              }
             },
             setArea() {
                 this.area = L.circle([this.latitude, this.longitude], {
