@@ -1,10 +1,5 @@
-// On gére 3 largeurs : Extra Small (définition par défaut)
-// la largeur max est fixée à 991px
-
-// Small devices (landscape phones, 576px and up)
-$small-device: 576px;
-// Medium devices (tablets, 768px and up)
-$medium-device: 768px;
+// Large devices (tablets, desktop, 992px and up)
+$large-device: 992px;
 
 .box {
   max-width: 991px;
@@ -27,14 +22,7 @@ $medium-device: 768px;
   margin-right: 20px;
 }
 
-@media (min-width: $small-device) {
-}
-
-@media (min-width: $medium-device) {
-  .box {
-    max-width: $medium-device;
-  }
-
+@media (min-width: $large-device) {
   .close {
     font-size: 48px;
   }

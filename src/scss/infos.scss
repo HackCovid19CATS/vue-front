@@ -1,7 +1,5 @@
-// Small devices (landscape phones, 576px and up)
-$small-device: 576px;
-// Medium devices (tablets, 768px and up)
-$medium-device: 768px;
+// Large devices (tablets, desktop, 992px and up)
+$large-device: 992px;
 
 ul {
   display: inline-block;
@@ -36,6 +34,8 @@ li {
 .picto {
   margin-top: 40px;
   margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
   width: 260px;
   height: 260px;
 }
@@ -75,32 +75,17 @@ li {
   color: #015468;
 }
 
-// Small devices (landscape phones, 576px and up)
-@media (min-width: $small-device) {
-  ul {
-    width: calc(100% - 120px);
-  }
-
-  li {
-    font-size: 18px;
-    line-height: 18px;
-  }
-
-  .directive {
-    font-size: 18px;
-    line-height: 24px;
-  }
-}
 
 // Medium devices (tablets, 768px and up)
-@media (min-width: $medium-device) {
+@media (min-width: $large-device) {
   ul {
+    width: 100%;
   }
 
   li {
-    font-size: 24px;
-    line-height: 24px;
-    margin-bottom: 50px;
+    font-size: 14px;
+    line-height: 14px;
+    margin-bottom: 10px;
   }
 
   li::before {
@@ -109,8 +94,8 @@ li {
   }
 
   .directive {
-    font-size: 22px;
-    line-height: 28px;
+    font-size: 20px;
+    line-height: 20px;
   }
 
 }

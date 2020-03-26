@@ -1,9 +1,8 @@
 <template>
-    <div id="app" class="box">
+    <div id="app" class="">
 
         <div class="header">
             <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." v-on:keyup.enter="onEnter"/>
-
         </div>
         <div class="">
             <ul class="filters">
@@ -15,8 +14,8 @@
 
         <div class="map" id="map"></div>
 
-        <div class="footer box">
-            <Information class="icon-information" @click="onInformation()"/>
+        <div class="footer link-info" @click="onInformation()">
+            <Information class="icon-information"/>
             <span>Rappel des consignes pour faire ses courses</span>
         </div>
 
@@ -155,7 +154,7 @@
                 this.$router.push('/contribution')
             },
             onInformation() {
-                this.$router.push('/infos');
+                this.$router.push('/tuto');
             },
             removeMarkers() {
                 this.markers.forEach(marker => {
@@ -427,48 +426,31 @@
     @import '../scss/commun.scss';
 
     .header {
-        height: 68px;
+        height: 70px;
         background-color: white;
         display: flex;
     }
 
     .footer {
         width: 100%;
-        height: 78px;
-        //background-color: #079BAB;
-        //color : white;
+        height: 50px;
+        line-height: 50px;
+        background-color: white;
         position: absolute;
+        font-size: 12px;
         bottom: 0;
     }
 
     .map {
         width: 100%;
-        height: calc(100vh - 250px);
-    }
-
-    @media (max-width: 800px) {
-        .map {
-            height: calc(100vh - 305px);
-        }
-
-        .footer{
-            height: 50px;
-            padding-top: 10px;
-        }
-    }
-
-    @media (max-width: 375px) {
-        .map {
-            height: calc(100vh - 280px);
-        }
-
-        .footer {
-            height: 50px;
-            padding-top: 10px;
-        }
+        height: calc(100vh - 120px);
     }
 
     ul.filters {
+        position: absolute;
+        top: 70px;
+        width: 100%;
+        z-index: 99999;
         margin-top: 14px;
         padding-left: 0px;
         list-style: none;
@@ -629,6 +611,10 @@
         display: inline-block;
         font-size: 16px;
         width: 100%;
+    }
+
+    .link-info {
+        cursor: pointer;
     }
 
 </style>

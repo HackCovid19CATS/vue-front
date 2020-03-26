@@ -26,14 +26,7 @@
         width: calc(100% - 40px);
     }
 
-    @media (min-width: $small-device) {
-        .message {
-            font-size: 24px;
-            line-height: 28px;
-        }
-    }
-
-    @media (min-width: $medium-device) {
+    @media (min-width: $large-device) {
         .message {
             font-size: 24px;
             line-height: 28px;
