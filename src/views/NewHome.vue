@@ -3,17 +3,23 @@
 
         <div class="header">
             <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." v-on:keyup.enter="onEnter"/>
-            <Information class="icon-information" @click="onInformation()"/>
-        </div>
 
-        <div class="map" id="map"></div>
-        <div class="footer box">
+        </div>
+        <div class="">
             <ul class="filters">
                 <li><button :class="{ active: showGrocery }" @click="onShowGrocery()">Alimentation</button></li>
                 <li><button :class="{ active: showMedical }" @click="onShowMedical()">Pharmacie</button></li>
                 <li><button :class="{ active: showNews }" @click="onShowNews()">Tabac</button></li>
             </ul>
         </div>
+
+        <div class="map" id="map"></div>
+
+        <div class="footer box">
+            <Information class="icon-information" @click="onInformation()"/>
+            <span>Rappel des consignes pour faire ses courses</span>
+        </div>
+
 
         <box-detail-shop
                 @boxclosed="boxClosed($event)"
@@ -157,32 +163,55 @@
                 });
                 this.markers = [];
             },
+            areAllMarkersSelected() {
+              return this.showGrocery && this.showMedical && this.showNews;
+            },
+            setAllFiltersTo(booleanValue) {
+              this.showGrocery = booleanValue;
+              this.showNews = booleanValue;
+              this.showMedical = booleanValue;
+            },
             onShowGrocery() {
-                this.removeMarkers();
+              this.removeMarkers();
+              if (this.areAllMarkersSelected()) {
+                this.setAllFiltersTo(false);
                 this.showGrocery = true;
-                this.showMedical = false;
-                this.showNews = false;
-                this.showStores();
+              } else if (!this.showNews && !this.showMedical) {
+                this.setAllFiltersTo(true);
+              } else {
+                this.showGrocery = !this.showGrocery;
+              }
+              this.showStores();
             },
             onShowMedical() {
-                this.removeMarkers();
-                this.showGrocery = false;
+              this.removeMarkers();
+              if (this.areAllMarkersSelected()) {
+                this.setAllFiltersTo(false);
                 this.showMedical = true;
-                this.showNews = false;
-                this.showStores();
+              } else if (!this.showNews && !this.showGrocery) {
+                this.setAllFiltersTo(true);
+              } else {
+                this.showMedical = !this.showMedical;
+              }
+              this.showStores();
             },
             onShowNews() {
-                this.removeMarkers();
-                this.showGrocery = false;
-                this.showMedical = false;
+              this.removeMarkers();
+              if (this.areAllMarkersSelected()) {
+                this.setAllFiltersTo(false);
                 this.showNews = true;
-                this.showStores();
+              } else if (!this.showGrocery && !this.showMedical) {
+                this.setAllFiltersTo(true);
+              } else {
+                this.showNews = !this.showNews;
+              }
+              this.showStores();
             },
             setArea() {
                 this.area = L.circle([this.latitude, this.longitude], {
-                    color: 'teal',
-                    fillColor: 'teal',
-                    fillOpacity: 0.5,
+                    color: '#FEAD54',
+                    fillColor: '#D6D6D6',
+                    fillOpacity: 0.31,
                     radius: (this.accuracy * 0.360)
                 }).addTo(this.map);
             },
@@ -197,37 +226,44 @@
                     icon : myIcon,
                 }).addTo(this.map).bindPopup(this.address);
             },
-            searchStore() {
-                const overpass_query = `
-                    [out:json];
-                    (
-                        node(around:1000.0, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
-                        node(around:1000.0, ${this.latitude}, ${this.longitude}) ["shop"];
-                        way(around:1000.0, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
-                        way(around:1000.0, ${this.latitude}, ${this.longitude}) ["shop"];
-                    );
-                    out center;
-                    `;
+			searchStore() {
+				let radius = 1000.0;
+				this.callStores(radius);
+            },
+			callStores(radius){
+				let overpass_query = `
+						[out:json];
+						(
+							node(around:${radius}, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
+							node(around:${radius}, ${this.latitude}, ${this.longitude}) ["shop"];
+							way(around:${radius}, ${this.latitude}, ${this.longitude}) ["amenity"~"pharmacy"];
+							way(around:${radius}, ${this.latitude}, ${this.longitude}) ["shop"];
+						);
+						out center;
+						`;
 				axios
                     .get('https://overpass-api.de/api/interpreter?data=' + overpass_query)
                     .then((response) => {
                         if (response.status === 200) {
 							// Ajout des établissements dans la liste
-                            this.stores = response.data.elements;
-                            this.showStores();
-                        }
+                            
+							/*if(response.data.elements === 0) {
+								radius = radius + 5000.0;
+								console.log("callStores --> radius : " + radius);
+								this.callStores(radius);
+							}*/
+							this.stores = response.data.elements;
+							this.showStores();
+                        } else {
+							console.log('une erreur est survenue : ' + response.status);
+						}
                     }).catch(error => console.log(error));
-            },
+			},
 			searchContributions(osmId) {
-				console.log("osmId : " + osmId);
 				axios
                     .get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OSMNodeId=' + osmId)
                     .then((response) => {
                         if (response.status === 200) {
-							console.log("response.data : " + response.data);
-							console.log("response.data.length : " + response.data.length);
-							console.log("esponse.data.etatDesStocks : " + response.data.etatDesStocks);
-							console.log("response.data : " + response.data);
 							if(response.data !== null) {
 								this.storeStocks = response.data.etatDesStocks;
 								this.storeStatus = response.data.ouvert;
@@ -249,7 +285,6 @@
 								this.storeTimeOfLastContribution = null;
 								this.storeDateLastContribution = null;
 							}
-							console.log(this);
                         }
                     })
 					.catch(error => console.log(error));
@@ -257,6 +292,7 @@
             },
             showOneStore(element) {
 				// Au clic sur un établissement, affichage du détail
+				this.storeName = '';
                 if (element.tags['name'] !== undefined) {
                     this.storeName = element.tags.name;
                 }
@@ -399,19 +435,36 @@
     .footer {
         width: 100%;
         height: 78px;
-        background-color: white;
+        //background-color: #079BAB;
+        //color : white;
         position: absolute;
         bottom: 0;
     }
 
     .map {
         width: 100%;
-        height: calc(100vh - 150px);
+        height: calc(100vh - 250px);
     }
 
     @media (max-width: 800px) {
         .map {
-            height: calc(100vh - 150px);
+            height: calc(100vh - 305px);
+        }
+
+        .footer{
+            height: 50px;
+            padding-top: 10px;
+        }
+    }
+
+    @media (max-width: 375px) {
+        .map {
+            height: calc(100vh - 280px);
+        }
+
+        .footer {
+            height: 50px;
+            padding-top: 10px;
         }
     }
 
@@ -456,7 +509,7 @@
     }
 
     .icon-information {
-        margin-top: 21px;
+        /*margin-top: 21px;*/
         margin-left: 20px;
         margin-right: 20px;
         width: 25px;
