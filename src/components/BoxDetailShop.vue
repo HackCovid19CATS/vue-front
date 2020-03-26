@@ -1,55 +1,58 @@
 <template>
 
-    <div class="detail box visible" v-if="value">
+	<!--
+    <div class="visible" style="position: absolute; left: 50%;" v-if="value">
+		<div class="detail" style="position: relative; left: -50%;">
+	-->
+		<div>
+			<button type="button" class="close" @click="maskBox" v-if="showClose === '1'">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} contribution(s)</div>
+			<div class="store-contribution" v-else >Aucune contribution</div>
+			<div class="store-information" v-if="storeName === ''" >Non référencé</div>
+			<div class="store-information" v-else >{{storeName}}</div>
+			<div class="store-information">{{storeAddress}}</div>
+			<!-- Commenté en attendant un avis métier sur l'affichage de cet indicateur -->
+			<!-- <div class="store-status"> -->
+				<!-- <div class="store-status-open" v-if="storeStatus === 'true'">Ouvert :)</div> -->
+				<!-- <div class="store-status-close" v-if="storeStatus === 'false'">Fermé :(</div> -->
+				<!-- <div class="store-status-null" v-else>Inconnu</div> -->
+			<!-- </div> -->
+			<div class="store-contribution" v-if="storeNumberOfContribution > 0">
+				<div class="waiting">
+					<div class="detail-title">Temps d’attente</div>
+					<div>
+						<Clock class="waiting-picto" />
+						<div class="waiting-value" v-if="storeWaiting > 0">{{storeWaiting}} min en moyenne</div>
+						<div class="waiting-value" v-else>Non communiqué</div>
 
-        <button type="button" class="close" @click="maskBox">
-            <span aria-hidden="true">&times;</span>
-        </button>
-		<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} contribution(s)</div>
-		<div class="store-contribution" v-else >Aucune contribution</div>
-        <div class="store-information" v-if="storeName === ''" >Non référencé</div>
-		<div class="store-information" v-else >{{storeName}}</div>
-        <div class="store-information">{{storeAddress}}</div>
-		<!-- Commenté en attendant un avis métier sur l'affichage de cet indicateur -->
-		<!-- <div class="store-status"> -->
-			<!-- <div class="store-status-open" v-if="storeStatus === 'true'">Ouvert :)</div> -->
-			<!-- <div class="store-status-close" v-if="storeStatus === 'false'">Fermé :(</div> -->
-			<!-- <div class="store-status-null" v-else>Inconnu</div> -->
-		<!-- </div> -->
-		<div class="store-contribution" v-if="storeNumberOfContribution > 0">
-			<div class="waiting">
-				<div class="detail-title">Temps d’attente</div>
-				<div>
-					<Clock class="waiting-picto" />
-					<div class="waiting-value" v-if="storeWaiting > 0">{{storeWaiting}} min en moyenne</div>
-					<div class="waiting-value" v-else>Non communiqué</div>
-					
+					</div>
+				</div>
+				<div class="inventory">
+					<div class="detail-title">Etat des stocks</div>
+					<Empty class="inventory-status"  :class="{ visible: storeStocks === 'empty' }"/>
+					<PartlyFilled class="inventory-status"  :class="{ visible: storeStocks === 'partly-filled' }"/>
+					<WellFilled class="inventory-status"  :class="{ visible: storeStocks === 'well-filled' }"/>
+				</div>
+				<div class="rules">
+					<div class="detail-title">Respect des règles</div>
+					<div class="rules-icon" :class="{ active: storeDistance == true }">
+						<IconDistance class="rules-icon" />
+					</div>
+					<div class="rules-icon" :class="{ active: storeMasks == true }">
+						<IconMask class="rules-icon" />
+					</div>
+					<div class="rules-icon" :class="{ active: storeGloves == true }">
+						<IconGloves class="rules-icon" />
+					</div>
 				</div>
 			</div>
-			<div class="inventory">
-				<div class="detail-title">Etat des stocks</div>
-				<Empty class="inventory-status"  :class="{ visible: storeStocks === 'empty' }"/>
-				<PartlyFilled class="inventory-status"  :class="{ visible: storeStocks === 'partly-filled' }"/>
-				<WellFilled class="inventory-status"  :class="{ visible: storeStocks === 'well-filled' }"/>
+			<div class="store-no-contribution" v-else >
+				Soyez le premier à contribuer :)
 			</div>
-			<div class="rules">
-				<div class="detail-title">Respect des règles</div>
-				<div class="rules-icon" :class="{ active: storeDistance == true }">
-					<IconDistance class="rules-icon" />
-				</div>
-				<div class="rules-icon" :class="{ active: storeMasks == true }">
-					<IconMask class="rules-icon" />
-				</div>
-				<div class="rules-icon" :class="{ active: storeGloves == true }">
-					<IconGloves class="rules-icon" />
-				</div>
-			</div>
+			<button class="contribute" v-on:click="onContribute">Contribuer</button>
 		</div>
-		<div class="store-no-contribution" v-else >
-			Soyez le premier à contribuer :) 
-		</div>	
-        <button class="contribute" v-on:click="onContribute">Contribuer</button>
-    </div>
 </template>
 
 <script>
@@ -76,11 +79,26 @@
 
         data : function(){
             return {
-                showBox: this.value,
+                //showBox: this.value,
             }
         },
 
-        props:["storeName" , "storeAddress" , "storeOsmId" , "storeStocks" , "storeStatus" , "storeWaiting" , "storeGloves" , "storeMasks" , "storeDistance" , "storeNumberOfContribution" , "storeTimeOfLastContribution" , "storeDateLastContribution" , "value"],
+        props:[
+			"showClose",
+			"storeName",
+			"storeAddress",
+			"storeOsmId",
+			"storeStocks",
+			"storeStatus",
+			"storeWaiting",
+			"storeGloves",
+			"storeMasks",
+			"storeDistance",
+			"storeNumberOfContribution" ,
+			"storeTimeOfLastContribution",
+			"storeDateLastContribution",
+			//"value"
+		],
 
         methods:{
 
@@ -166,21 +184,25 @@
     }
 
     .detail {
-        position: absolute;
         bottom: 0;
+		top: -380px;
+		min-width: 375px;
         height: 430px;
         background-color: white;
         z-index: 99999;
-        margin-left: 0px;
-        margin-top: 0px;
-        width: 100%;
         border-top-left-radius: 6px;
         border-top-right-radius: 6px;
         text-align: left;
         padding: 10px;
     }
 
-    .store-information {
+	@media (min-width: $large-device) {
+		.detail {
+			min-width: 800px;
+		}
+	}
+
+	.store-information {
         font-style: normal;
         font-weight: 600;
         font-size: 26px;
@@ -255,24 +277,22 @@
     }
 
     .rules-icon {
-        width: 32px;
-        height: 32px;
-        display: inline;
+		width: 32px;
+		height: 32px;
+		display: inline;
+		&.active {
+			position: relative;
 
-    &.active {
-         position: relative;
-
-    &::before {
-         content: " ";
-         background-image: url(/images/check.svg);
-         position: absolute;
-         height: 11px;
-         width: 16px;
-         top: 10px;
-         left: -18px;
-     }
-    }
-
+			&::before {
+				content: " ";
+				background-image: url(/images/check.svg);
+				position: absolute;
+				height: 11px;
+				width: 16px;
+				top: 10px;
+				left: -18px;
+			}
+		}
     }
 
     button.contribute {

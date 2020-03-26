@@ -13,7 +13,6 @@
 </template>
 
 <script>
-    //import { VBreakpoint } from 'vue-breakpoint-component';
     import { VBreakpoint } from '../components/VBreakpoint';
     import WelcomeSmall from "../components/WelcomeSmall";
     import WelcomeLarge from "../components/WelcomeLarge";
@@ -21,9 +20,9 @@
     export default {
         name: "Welcome",
         components: {
+            VBreakpoint,
             WelcomeSmall,
             WelcomeLarge,
-            VBreakpoint,
         },
         methods: {
             onContinue: function () {
