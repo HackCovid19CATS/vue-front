@@ -1,95 +1,33 @@
 <template>
-    <div class="box welcome">
-        <swiper class="swiper mi-height" :options="swiperOption">
-            <swiper-slide>
-                <BeforeLeavingHome class="welcome-picto"/>
-                <div class="title">
-                    <div class="line1">Quelques recommandations</div>
-                    <div class="line2">avant de sortir faire vos courses</div>
-                </div>
-                <div class="bullets">
-                    <ul>
-                        <li>Se munir de son autorisation datée et signée</li>
-                        <li>Privilégier les sorties seul</li>
-                        <li>Choisir un commerce à proximité</li>
-                        <li>Emporter ses propres sacs</li>
-                    </ul>
-                </div>
-            </swiper-slide>
-            <swiper-slide>
-                <AtThePointOfSale class="welcome-picto"/>
-                <div class="title">
-                    <div class="line1">Quelques recommandations</div>
-                    <div class="line2">sur le lieu de vente</div>
-                </div>
-                <div class="bullets">
-                    <ul>
-                        <li>Respecter les distances</li>
-                        <li>Nettoyer régulièrement votre caddie</li>
-                        <li>Les gants ne sont pas nécessaires</li>
-                        <li>Privilégier les paiements sans contact</li>
-                    </ul>
-                </div>
-            </swiper-slide>
-            <swiper-slide>
-                <WhenYouGetHome class="welcome-picto"/>
-                <div class="title">
-                    <div class="line1">Quelques recommandations</div>
-                    <div class="line2">en rentrant chez vous</div>
-                </div>
-                <div class="bullets">
-                    <ul>
-                        <li>Lavez-vous les mains</li>
-                        <li>Désinfectez les poignets de votre chariot</li>
-                        <li>Posez les paquets par terre pendant 3 à 4 h</li>
-                        <li>Enlevez les emballages et lavez les fruits et légumes</li>
-                    </ul>
-                </div>
-            </swiper-slide>
-            <swiper-slide>
-                <Respecting class="welcome-picto"/>
-                <div class="respecting">
-                    En respectant ces quelques consignes vous limiterez les risques<br />pour vous et pour le personnel présent dans les lieux de vente
-                </div>
-            </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
-            <div class="swiper-button-prev" slot="button-prev"></div>
-            <div class="swiper-button-next" slot="button-next"></div>
-        </swiper>
-        <div class="welcome-box">
-            <div class="bar">
-            </div>
-            <div class="welcome-title">Bienvenue</div>
-            <div class="welcome-message">
-                Se renseigner sur le temps d’attente, l’état des stocks et le respect des règles de sécurité est primordial avant de vous déplacer en magasin.
-                Aidez-nous à renseigner ces informations en partageant votre expérience !
-            </div>
-            <button class="contribute" v-on:click="onSubmit">Commencer</button>
+    <v-breakpoint>
+        <div slot-scope="scope">
+            <span v-if="scope.isSmall || scope.isMedium" style="font-size: 2rem">
+                <WelcomeSmall :onContinue="onContinue"/>
+            </span>
+
+            <span v-if="scope.isLarge || scope.isXlarge">
+                <WelcomeLarge :onContinue="onContinue"/>
+            </span>
         </div>
-    </div>
+    </v-breakpoint>
 </template>
 
 <script>
-    import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
-    import 'swiper/css/swiper.css'
-    import BeforeLeavingHome from '../assets/before_leaving_home.svg';
-    import AtThePointOfSale from '../assets/at_the_point_of_sale.svg';
-    import WhenYouGetHome from '../assets/when_you_get_home.svg';
-    import Respecting from '../assets/respecting.svg';
+    //import { VBreakpoint } from 'vue-breakpoint-component';
+    import { VBreakpoint } from '../components/VBreakpoint';
+    import WelcomeSmall from "../components/WelcomeSmall";
+    import WelcomeLarge from "../components/WelcomeLarge";
 
     export default {
         name: "Welcome",
         components: {
-            BeforeLeavingHome,
-            AtThePointOfSale,
-            WhenYouGetHome,
-            Respecting,
-            Swiper,
-            SwiperSlide,
+            WelcomeSmall,
+            WelcomeLarge,
+            VBreakpoint,
         },
         methods: {
-            onSubmit: function () {
-                this.$router.push('/home')
+            onContinue: function () {
+                this.$router.push('/tuto')
             },
         },
         data() {
@@ -354,4 +292,59 @@
         }
 
     }
+
+    .lg-welcome-view {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .lg-welcome-left {
+        text-align: center;
+        flex-grow: 1;
+    }
+
+    .lg-welcome-right {
+        width: 600px;
+    }
+
+    .lg-welcome-image {
+        width: 600px;
+    }
+
+    .lg-welcome-title {
+        color: rgb(1, 84, 104);
+        margin-top: 20%;
+        font-size: 52px;
+        font-style: normal;
+        font-weight: normal;
+        text-align: center;
+    }
+
+    .lg-welcome-message {
+        color: rgb(1, 84, 104);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: normal;
+        text-align: center;
+        margin-top: 20%;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    button.lg-contribute {
+        margin-top: 40px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #079BAB;
+        border-radius: 6px;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        width: calc(300px);
+    }
+
 </style>

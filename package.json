@@ -24,6 +24,7 @@
     "swiper": "^5.3.6",
     "vue": "^2.6.11",
     "vue-awesome-swiper": "^4.0.3",
+    "vue-breakpoint-component": "^1.2.6",
     "vue-cli-plugin-s3-deploy": "^4.0.0-rc3",
     "vue-gtag": "^1.6.2",
     "vue-router": "^3.1.5",

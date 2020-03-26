@@ -12,6 +12,8 @@ import 'leaflet/dist/leaflet.css';
 
 import VueGtag from "vue-gtag";
 
+import { Plugin as VBreakpoint } from 'vue-breakpoint-component';
+
 Vue.config.productionTip = false;
 
 new Vue({
@@ -33,6 +35,7 @@ Vue.use(VueGtag, {
   },
 });
 
+Vue.use(VBreakpoint);
 
 Vue.component('l-map', LMap);
 Vue.component('l-tile-layer', LTileLayer);

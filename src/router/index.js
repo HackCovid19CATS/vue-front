@@ -47,6 +47,14 @@ const routes = [
     component: () => import('../views/Tuto.vue')
   },
   {
+    path: '/test',
+    name: 'Test',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import('../views/Test')
+  },
+  {
     path: '/contribution/:shopName/:shopId/:shopAdress',
     component: Contribution,
     props: true,
