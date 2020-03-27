@@ -1,4 +1,10 @@
 // Large devices (tablets, desktop, 992px and up)
+$color-primary: #FEAD54;
+$color-secondary: #079BAB;
+$color-info: #015468;
+$color-gray: #C4C4C4;
+$color-lightgray: #ECECEC;
+
 $large-device: 992px;
 
 .box {
@@ -11,7 +17,7 @@ $large-device: 992px;
 
 .bar {
   text-align: right;
-  height: 20px;
+  height: 50px;
 }
 
 .close {

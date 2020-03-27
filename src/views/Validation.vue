@@ -1,27 +1,29 @@
 <template>
-    <div class="box">
-        <div class="bar">
-            <button type="button" class="close" aria-label="Close" @click="onClose()">x</button>
-        </div>
-        <ThankYou class="picto" />
-        <div class="title">
-            Merci pour votre contribution !
-        </div>
-        <div class="message">
-            En quelques clics, vous venez d'apporter des informations précieuses à vos voisins. Plus nous serons nombreux, plus nous serons sereins lors de nos
-            déplacements et plus nous ralentirons la propagation de l’épidémie.
-        </div>
-        <div class="community">Faites grandir la communauté, partagez !</div>
+    <div>
+        <v-breakpoint>
+            <div slot-scope="scope">
+                <span v-if="scope.isSmall || scope.isMedium" style="font-size: 2rem">
+                    <ValidationSmall :onClose="onClose"/>
+                </span>
+                <span v-if="scope.isLarge || scope.isXlarge">
+                    <ValidationLarge :onClose="onClose"/>
+                </span>
+            </div>
+        </v-breakpoint>
     </div>
 </template>
 
 <script>
-    import ThankYou from '../assets/thank_you.svg';
+    import { VBreakpoint } from 'vue-breakpoint-component';
+    import ValidationSmall from "../components/ValidationSmall";
+    import ValidationLarge from "../components/ValidationLarge";
 
     export default {
         name: "Validation",
         components: {
-            ThankYou,
+            VBreakpoint,
+            ValidationSmall,
+            ValidationLarge,
         },
         mounted: function() {
             this.$gtag.pageview({

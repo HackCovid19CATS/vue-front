@@ -158,7 +158,7 @@
 
     .map {
         width: 50%;
-        height: calc(100vh - 120px);
+        min-height: calc(100vh - 120px);
     }
 
     ul.filters {
@@ -230,7 +230,7 @@
         display: block;
         background-color: white;
         width: 50%;
-        height: calc(100vh - 120px);
+        min-height: calc(100vh - 120px);
     }
 
     .detail-message {

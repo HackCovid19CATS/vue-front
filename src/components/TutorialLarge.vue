@@ -14,6 +14,9 @@
         <div class="tuto-message">
             En respectant ces quelques consignes vous limiterez les risques pour vous et pour le personnel présent dans les lieux de vente
         </div>
+
+        <button class="lg-contribute" v-on:click="onClose">Commencer</button>
+
     </div>
 </template>
 
@@ -64,6 +67,22 @@
         width: 550px;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    button.lg-contribute {
+        margin-top: 40px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #079BAB;
+        border-radius: 6px;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        width: calc(300px);
     }
 
 </style>

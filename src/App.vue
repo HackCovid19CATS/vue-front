@@ -50,7 +50,7 @@
   }
 
   body{
-    background-color: #E5E5E5 !important;
+    //background-color: #E5E5E5 !important;
   }
 
   // Small devices (landscape phones, 576px and up)

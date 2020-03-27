@@ -1,41 +1,93 @@
 <template>
-    <v-breakpoint>
-        <div slot-scope="scope">
-            <span v-if="scope.isSmall || scope.isMedium" style="font-size: 2rem">
-                <ContributionSmall :onContinue="onContinue"/>
-            </span>
-
-            <span v-if="scope.isLarge || scope.isXlarge">
-                <ContributionLarge
-                        :onContinue="onContinue"
-                        :shopName="shopName"
-                        :shopId="shopId"
-                        :shopAddress="shopAddress"
-                />
-            </span>
+    <div class="box box-container">
+        <div class="bar">
+            <button type="button" class="close" aria-label="Close" @click="onClose()">
+                <span aria-hidden="true">×</span>
+            </button>
         </div>
-    </v-breakpoint>
+        <div class="title">Contribution</div>
+        <div class="message">
+            Vous êtes actuellement dans ce magasin ?<br />
+            Partagez votre expérience dès votre retour à la maison pour en informer les autres !
+        </div>
+        <div class="shop-information">
+            <div class="shop-name">{{shopName}}</div>
+            <div class="shop-address" v-if="shopAddress != 'null'">{{shopAddress}}</div>
+            <div class="shop-address" v-else> Addresse non disponible</div>
+        </div>
+        <div class="subtitle">Temps d’attente</div>
+        <div class="question">Combien de temps vous avez attendu ?</div>
+        <ul class="how-long">
+            <li :class="{active : indexInputAttente === 0}" @click="setTimeAttente(0 , 0)" style="cursor: pointer">0 min</li>
+            <li :class="{active : indexInputAttente === 1}" @click="setTimeAttente(10 , 1)" style="cursor: pointer">10 min</li>
+            <li :class="{active : indexInputAttente === 2}" @click="setTimeAttente(20 , 2)" style="cursor: pointer">20 min</li>
+            <li :class="{active : indexInputAttente === 3}" @click="setTimeAttente(30 , 3)" style="cursor: pointer">30 min</li>
+            <li :class="{active : indexInputAttente === 4}" @click="setTimeAttente(40 , 4)" style="cursor: pointer">+40 min</li>
+        </ul>
+        <div class="subtitle">Stock</div>
+        <div class="question">Quel est l’état du stock du magasin ?</div>
+        <ul class="stock">
+            <li :class="{active : input.etatDesStocks === 'empty' || input.etatDesStocks === 'partly-filled' || input.etatDesStocks === 'well-filled' }"
+                @click="setStock('empty')" style="cursor: pointer">Vide</li>
+            <li :class="{active : input.etatDesStocks === 'partly-filled' || input.etatDesStocks === 'well-filled' }"
+                @click="setStock('partly-filled')" style="cursor: pointer"> En partie rempli</li>
+            <li :class="{active : input.etatDesStocks === 'well-filled'}"
+                @click="setStock('well-filled')" style="cursor: pointer">Bien rempli</li>
+        </ul>
+        <div class="subtitle">Respect des règles</div>
+        <div class="question">
+            L’établissement respecte t-il les règles mise en place ?
+        </div>
+        <div :class="classDistance" style="margin-top: 32px" @click="setIconState('respectDesDistances')">
+            <Distance class="icon"/>
+            Respect des distances
+            <div class="checkbox"></div>
+        </div>
+        <div :class="classMask" style="margin-top: 16px" @click="setIconState('portDuMasque')">
+            <WearingMask class="icon" />
+            Port du masque
+            <div class="checkbox"></div>
+        </div>
+        <div :class="classGloves" style="margin-top: 16px" @click="setIconState('portDesGants')">
+            <Gloves class="icon" />
+            Port des gants
+            <div class="checkbox"></div>
+        </div>
+        <button :class="classBtnContribution" v-on:click="contribute">Contribuer</button>
+    </div>
 </template>
 
 <script>
-    import { VBreakpoint } from '../components/VBreakpoint';
-    import ContributionSmall from "../components/ContributionSmall";
-    import ContributionLarge from "../components/ContributionLarge";
+    import Distance from '../assets/distance.svg';
+    import WearingMask from '../assets/mask.svg';
+    import Gloves from '../assets/gloves.svg';
+    import contributionMixin from "../mixins/contributionMixin";
 
     export default {
-        name: "Contribution",
+        name: "ContributionSmall",
         components: {
-            VBreakpoint,
-            ContributionSmall,
-            ContributionLarge,
+            Distance,
+            WearingMask,
+            Gloves,
         },
         props:["shopName" , "shopId" , "shopAddress"],
 
-        mounted: function(){
-            this.$gtag.pageview({
-                page_path: '/contribution',
-                page_title: "Contribution"
-            });
+        mixins: [contributionMixin],
+
+        data: function () {
+            return {
+                inputTimeClicked : false ,
+                indexInputAttente : null,
+                input: {
+                    "etatDesStocks": null,
+                    "ouvert": true,
+                    "osmNodeId": null,
+                    "tempsAttente": null,
+                    "portDesGants": false,
+                    "portDuMasque": false,
+                    "respectDesDistances": false,
+                }
+            }
         },
 
         methods: {

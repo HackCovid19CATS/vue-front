@@ -35,23 +35,29 @@
     .lg-welcome-view {
         display: flex;
         flex-direction: row;
+        background-color: #015468;
+        min-height: 100vh;
     }
 
     .lg-welcome-left {
         text-align: center;
+        width: 50%;
         flex-grow: 1;
     }
 
     .lg-welcome-right {
-        width: 600px;
+        width: 50%;
+        flex-grow: 1;
+        margin-top: 170px;
     }
 
     .lg-welcome-image {
-        width: 600px;
+        width: 380px;
+        margin: auto;
     }
 
     .lg-welcome-title {
-        color: rgb(1, 84, 104);
+        color: white;
         margin-top: 20%;
         font-size: 52px;
         font-style: normal;
@@ -60,7 +66,7 @@
     }
 
     .lg-welcome-message {
-        color: rgb(1, 84, 104);
+        color: white;
         font-size: 16px;
         font-style: normal;
         font-weight: normal;
