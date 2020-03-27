@@ -2,12 +2,15 @@
     <v-breakpoint>
         <div slot-scope="scope">
             <span v-if="scope.isSmall || scope.isMedium" style="font-size: 2rem">
-                <ContributionSmall :onContinue="onContinue"/>
+                <ContributionSmall
+                        :shopName="shopName"
+                        :shopId="shopId"
+                        :shopAddress="shopAddress"
+                />
             </span>
 
             <span v-if="scope.isLarge || scope.isXlarge">
                 <ContributionLarge
-                        :onContinue="onContinue"
                         :shopName="shopName"
                         :shopId="shopId"
                         :shopAddress="shopAddress"

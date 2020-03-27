@@ -158,7 +158,6 @@
           padding-top: 5px;
           padding-bottom: 5px;
       }
-
     }
 
     .search {
@@ -200,6 +199,10 @@
 		.detail {
 			min-width: 800px;
 		}
+	}
+
+	.store-contribution {
+		font-size: 12px;
 	}
 
 	.store-information {
@@ -308,5 +311,11 @@
         font-size: 16px;
         width: 100%;
     }
+
+	@media (max-width: $large-device) {
+		.store-contribution {
+			font-size: 14px;
+		}
+	}
 
 </style>

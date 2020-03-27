@@ -248,6 +248,8 @@
     .rule {
         border-right: 6px;
         background: #ECECEC;
+        font-size: 12px;
+        color: $color-secondary;
         height: 63px;
         line-height: 63px;
         display: flex;
