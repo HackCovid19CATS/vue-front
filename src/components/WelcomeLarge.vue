@@ -1,12 +1,13 @@
 <template>
     <div class="lg-welcome-view">
         <div class="lg-welcome-left">
-            <div class="lg-welcome-title">BIENVENUE</div>
+            <div class="lg-welcome-slogan">Tous solidaires pour des courses plus sûres !</div>
+            <div class="lg-welcome-title">#restezchezvous</div>
             <div class="lg-welcome-message">
-                Se renseigner sur le temps d’attente, l’état des stocks et le respect des règles de sécurité est primordiale avant de vous déplacer en magasin.<br />
-                Aidez-nous à renseigner ces informations en partageant votre expérience !
+                <p>Vous souhaitez faire vos courses en toute sérénité ? Renseignez-vous sur les temps d'attente, l'état des stocks et le respect des règles de sécurité de vos commerces.</p>
+                <p>Partagez ici votre expérience pour en faire bénéficier vos voisins de quartier !</p>
             </div>
-            <button class="lg-contribute" v-on:click="onContinue">Commencer</button>
+            <button class="lg-welcome-start" v-on:click="onContinue">Commencer</button>
         </div>
         <div class="lg-welcome-right">
             <WelcomePico class="lg-welcome-image"/>
@@ -30,7 +31,6 @@
 
 <style lang="scss" scoped>
     @import '../scss/commun.scss';
-    @import '../scss/infos.scss';
 
     .lg-welcome-view {
         display: flex;
@@ -40,56 +40,54 @@
     }
 
     .lg-welcome-left {
+        margin-top: auto;
+        margin-bottom: auto;
         text-align: center;
         width: 50%;
         flex-grow: 1;
     }
 
-    .lg-welcome-right {
-        width: 50%;
-        flex-grow: 1;
-        margin-top: 170px;
-    }
-
-    .lg-welcome-image {
-        width: 380px;
-        margin: auto;
+    .lg-welcome-slogan {
+        color: white;
+        font-size: 16px;
+        line-height: 19px;
     }
 
     .lg-welcome-title {
         color: white;
-        margin-top: 20%;
-        font-size: 52px;
-        font-style: normal;
-        font-weight: normal;
-        text-align: center;
+        font-size: 24px;
+        line-height: 29px;
+        margin-top: 38px;
     }
 
     .lg-welcome-message {
         color: white;
         font-size: 16px;
-        font-style: normal;
-        font-weight: normal;
-        text-align: center;
-        margin-top: 20%;
+        margin-top: 33px;
         margin-left: 10%;
-        margin-right: 10%;
     }
 
-    button.lg-contribute {
-        margin-top: 40px;
-        margin-left: auto;
-        margin-right: auto;
+    button.lg-welcome-start {
+        width: 340px;
+        height: 42px;
+        margin-top: 91px;
         background-color: #079BAB;
         border-radius: 6px;
         border: none;
         color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
         font-size: 16px;
-        width: calc(300px);
+        line-height: 42px;
     }
 
+    .lg-welcome-right {
+        width: 50%;
+        flex-grow: 1;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .lg-welcome-image {
+        width: 386px;
+        margin: auto;
+    }
 </style>
