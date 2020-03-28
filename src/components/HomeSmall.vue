@@ -1,58 +1,62 @@
 <template>
-    <vue100vh :css="{height: '100rvh'}" class="home-container">
-
-        <div class="header">
-            <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." v-on:keyup.enter="onEnter"/>
-            <Magnifer class="icon-magnifer" />
-        </div>
-
-        <div>
-            <ul class="filters">
-                <li><button :class="{ active: showGrocery }" @click="onShowGrocery()">Alimentation</button></li>
-                <li><button :class="{ active: showMedical }" @click="onShowMedical()">Pharmacie</button></li>
-                <li><button :class="{ active: showNews }" @click="onShowNews()">Tabac</button></li>
-            </ul>
-        </div>
-
-        <div class="home-view">
-            <div class="map" id="map"></div>
-        </div>
-
-        <div style="position: absolute; bottom: 0; left: 50%;" v-if="this.clicked">
-            <div class="detail" style="position: relative; left: -50%;">
-                <box-detail-shop
-                        :showClose="1"
-                        @boxclosed="boxClosed($event)"
-                        :storeName="storeName"
-                        :storeAddress="storeAddress"
-                        :storePhone="storePhone"
-                        :storeOpeningHours="storeOpeningHours"
-                        :storeOsmId="storeOsmId"
-                        :linkOSM="linkOSM"
-                        :storeStocks="storeStocks"
-                        :storeStatus="storeStatus"
-                        :storeWaiting="storeWaiting"
-                        :storeGloves="storeGloves"
-                        :storeMasks="storeMasks"
-                        :storeDistance="storeDistance"
-                        :storeNumberOfContribution="storeNumberOfContribution"
-                        :storeTimeOfLastContribution="storeTimeOfLastContribution"
-                        :storeDateLastContribution="storeDateLastContribution"
-                        :selectedStore="selectedStore"
-                >
-                </box-detail-shop>
+    <div>
+        <vue100vh :css="{height: '100rvh'}" class="home-container" v-if="orientation === 'portrait'">
+            <div class="header">
+                <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." v-on:keyup.enter="onEnter"/>
+                <Magnifer class="icon-magnifer" />
             </div>
-        </div>
 
-        <div class="footer link-info" @click="onInformation()">
-            <Information class="icon-information"/>
-            <span>Rappel des consignes pour faire ses courses</span>
-        </div>
-    </vue100vh>
+            <div>
+                <ul class="filters">
+                    <li><button :class="{ active: showGrocery }" @click="onShowGrocery()">Alimentation</button></li>
+                    <li><button :class="{ active: showMedical }" @click="onShowMedical()">Pharmacie</button></li>
+                    <li><button :class="{ active: showNews }" @click="onShowNews()">Tabac</button></li>
+                </ul>
+            </div>
+
+            <div class="home-view">
+                <div class="map" id="map"></div>
+            </div>
+
+            <div style="position: absolute; bottom: 0; left: 50%;" v-if="this.clicked">
+                <div class="detail" style="position: relative; left: -50%;">
+                    <box-detail-shop
+                            :showClose="1"
+                            @boxclosed="boxClosed($event)"
+                            :storeName="storeName"
+                            :storeAddress="storeAddress"
+                            :storePhone="storePhone"
+                            :storeOpeningHours="storeOpeningHours"
+                            :storeOsmId="storeOsmId"
+                            :linkOSM="linkOSM"
+                            :storeStocks="storeStocks"
+                            :storeStatus="storeStatus"
+                            :storeWaiting="storeWaiting"
+                            :storeGloves="storeGloves"
+                            :storeMasks="storeMasks"
+                            :storeDistance="storeDistance"
+                            :storeNumberOfContribution="storeNumberOfContribution"
+                            :storeTimeOfLastContribution="storeTimeOfLastContribution"
+                            :storeDateLastContribution="storeDateLastContribution"
+                            :selectedStore="selectedStore"
+                    >
+                    </box-detail-shop>
+                </div>
+            </div>
+
+            <div class="footer link-info" @click="onInformation()">
+                <Information class="icon-information"/>
+                <span>Rappel des consignes pour faire ses courses</span>
+            </div>
+        </vue100vh>
+        <SwitchToPortrait v-else />
+    </div>
 </template>
 
 <script>
     import vue100vh from 'vue-100vh'
+    import { MobileOrientation } from 'mobile-orientation';
+    import SwitchToPortrait from "./SwitchToPortrait";
     import BoxDetailShop from "../components/BoxDetailShop";
     import Information from '../assets/information.svg';
     import Magnifer from '../assets/magnifer.svg';
@@ -63,6 +67,7 @@
 
         components: {
             vue100vh,
+            SwitchToPortrait,
             BoxDetailShop,
             Information,
             Magnifer,
@@ -70,6 +75,7 @@
 
         data: function(){
             return{
+                orientation: null,
                 latitude: 48.853123,
                 longitude: 2.349924,
                 address: 'Ma position',
@@ -107,6 +113,15 @@
         },
 
         mounted: function(){
+            const orientation = new MobileOrientation();
+            this.orientation = orientation.state;
+            orientation.on('portrait', (state) => {
+                this.orientation = state;
+            });
+            orientation.on('landscape', (state) => {
+                this.orientation = state
+            });
+
             this.accuracy = 2000;
             this.locateMe();
         },

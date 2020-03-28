@@ -1,30 +1,49 @@
 <template>
-    <div class="box">
-        <div class="bar">
-            <button type="button" class="close" aria-label="Close" @click="onContinue()">x</button>
+    <div>
+        <div class="box" v-if="orientation === 'portrait'">
+            <div class="bar">
+                <button type="button" class="close" aria-label="Close" @click="onContinue()">x</button>
+            </div>
+            <ThankYou class="picto" />
+            <div class="title">
+                Merci pour votre contribution !
+            </div>
+            <div class="message">
+                En quelques clics, vous venez d'apporter des informations précieuses à vos voisins. Plus nous serons nombreux, plus nous serons sereins lors de nos
+                déplacements et plus nous ralentirons la propagation de l’épidémie.
+            </div>
+            <div class="community">Faites grandir la communauté, partagez !</div>
+            <button class="validation-return" v-on:click="onContinue">Retour à la carte</button>
         </div>
-        <ThankYou class="picto" />
-        <div class="title">
-            Merci pour votre contribution !
-        </div>
-        <div class="message">
-            En quelques clics, vous venez d'apporter des informations précieuses à vos voisins. Plus nous serons nombreux, plus nous serons sereins lors de nos
-            déplacements et plus nous ralentirons la propagation de l’épidémie.
-        </div>
-        <div class="community">Faites grandir la communauté, partagez !</div>
-        <button class="validation-return" v-on:click="onContinue">Retour à la carte</button>
+        <SwitchToPortrait v-else />
     </div>
 </template>
 
 <script>
+    import { MobileOrientation } from 'mobile-orientation';
+    import SwitchToPortrait from "./SwitchToPortrait";
     import ThankYou from '../assets/thank_you.svg';
 
     export default {
         name: "ValidationSmall",
         components: {
+            SwitchToPortrait,
             ThankYou,
         },
+        data: function () {
+            return {
+                orientation: null,
+            }
+        },
         mounted: function() {
+            const orientation = new MobileOrientation();
+            this.orientation = orientation.state;
+            orientation.on('portrait', (state) => {
+                this.orientation = state;
+            });
+            orientation.on('landscape', (state) => {
+                this.orientation = state
+            });
             this.$gtag.pageview({
                 page_path: '/validation',
                 page_title: "Validation"

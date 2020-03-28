@@ -7,8 +7,8 @@ ul {
   padding-left: 0px;
   text-align: left;
   list-style: none;
-  margin-bottom: 40px;
-  margin-top: 40px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 li::before {
@@ -24,7 +24,7 @@ li {
   font-size: 12px;
   line-height: 12px;
   color: #000000;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .bullets{
@@ -35,12 +35,12 @@ li {
 }
 
 .picto {
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
-  width: 260px;
-  height: 260px;
+  width: 130px;
+  height: 130px;
 }
 
 .title {
@@ -83,6 +83,8 @@ li {
 @media (min-width: $large-device) {
   ul {
     width: 100%;
+    margin-bottom: 40px;
+    margin-top: 40px;
   }
 
   li {
@@ -101,4 +103,12 @@ li {
     line-height: 20px;
   }
 
+  .picto {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 260px;
+    height: 260px;
+  }
 }

@@ -3,7 +3,7 @@ import { extend } from 'vue-breakpoint-component';
 // Default configuration:
 const config = {
     breakpoints: {
-        small: '(min-width: 375px)',
+        small: '(min-width: 320px)',
         medium: '(min-width: 768px)',
         large: '(min-width: 992px)',
         xlarge: '(min-width: 1200px)'

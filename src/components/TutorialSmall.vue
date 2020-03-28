@@ -1,37 +1,42 @@
 <template>
-    <div class="tuto-view">
-        <div class="bar">
-            <button type="button" class="close" aria-label="Close" @click="onClose()">x</button>
+    <div>
+        <div class="tuto-view" v-if="orientation === 'portrait'">
+            <div class="bar">
+                <button type="button" class="close" aria-label="Close" @click="onClose()">x</button>
+            </div>
+            <swiper class="swiper" :options="swiperOption">
+                <swiper-slide>
+                    <div class="title">Les consignes</div>
+                    <div class="subtitle">pour faire ses courses</div>
+                    <BeforeLeavingHomeComponent />
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="title">Les consignes</div>
+                    <div class="subtitle">pour faire ses courses</div>
+                    <AtThePointOfSaleComponent />
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="title">Les consignes</div>
+                    <div class="subtitle">pour faire ses courses</div>
+                    <WhenYouGetHomeComponent />
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="title">Les consignes</div>
+                    <div class="subtitle">pour faire ses courses</div>
+                    <RespectingComponent />
+                </swiper-slide>
+                <div class="swiper-pagination" slot="pagination"></div>
+                <div class="swiper-button-prev" slot="button-prev"></div>
+                <div class="swiper-button-next" slot="button-next"></div>
+            </swiper>
         </div>
-        <swiper class="swiper" :options="swiperOption">
-            <swiper-slide>
-                <div class="title">Les consignes</div>
-                <div class="subtitle">pour faire ses courses</div>
-                <BeforeLeavingHomeComponent />
-            </swiper-slide>
-            <swiper-slide>
-                <div class="title">Les consignes</div>
-                <div class="subtitle">pour faire ses courses</div>
-                <AtThePointOfSaleComponent />
-            </swiper-slide>
-            <swiper-slide>
-                <div class="title">Les consignes</div>
-                <div class="subtitle">pour faire ses courses</div>
-                <WhenYouGetHomeComponent />
-            </swiper-slide>
-            <swiper-slide>
-                <div class="title">Les consignes</div>
-                <div class="subtitle">pour faire ses courses</div>
-                <RespectingComponent />
-            </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
-            <div class="swiper-button-prev" slot="button-prev"></div>
-            <div class="swiper-button-next" slot="button-next"></div>
-        </swiper>
+        <SwitchToPortrait v-else />
     </div>
 </template>
 
 <script>
+    import { MobileOrientation } from 'mobile-orientation';
+    import SwitchToPortrait from "./SwitchToPortrait";
     import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
     import 'swiper/css/swiper.css'
     import BeforeLeavingHomeComponent from "../components/BeforeLeavingHomeComponent";
@@ -45,6 +50,7 @@
             onClose: { type: Function },
         },
         components: {
+            SwitchToPortrait,
             RespectingComponent,
             WhenYouGetHomeComponent,
             AtThePointOfSaleComponent,
@@ -52,14 +58,9 @@
             Swiper,
             SwiperSlide,
         },
-        mounted: function() {
-            this.$gtag.pageview({
-                page_path: '/tuto',
-                page_title: "Tutorial"
-            });
-        },
         data() {
             return {
+                orientation: null,
                 swiperOption: {
                     navigation: {
                         nextEl: '.swiper-button-next',
@@ -73,7 +74,21 @@
                     }
                 }
             }
-        }
+        },
+        mounted: function() {
+            this.$gtag.pageview({
+                page_path: '/tuto',
+                page_title: "Tutorial"
+            });
+            const orientation = new MobileOrientation();
+            this.orientation = orientation.state;
+            orientation.on('portrait', (state) => {
+                this.orientation = state;
+            });
+            orientation.on('landscape', (state) => {
+                this.orientation = state
+            });
+        },
     }
 </script>
 
