@@ -1,35 +1,33 @@
 <template>
-  <div class="home">
+    <v-breakpoint>
+        <div slot-scope="scope">
+            <span v-if="scope.isSmall || scope.isMedium" style="font-size: 2rem">
+                <HomeSmall />
+            </span>
 
-
-    <div v-if="width < 800">
-      <img src="../assets/ÇA-mini.png" height="100" width="170"/>
-    </div>
-    <div v-else>
-      <img alt="Vue logo" src="../assets/cats.png">
-    </div>
-
-    <HelloWorld msg="Bienvenue sur le site de prototypage"/>
-  </div>
+            <span v-if="scope.isLarge || scope.isXlarge">
+                <HomeLarge />
+            </span>
+        </div>
+    </v-breakpoint>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+    import { VBreakpoint } from '../components/VBreakpoint';
+    import HomeSmall from "../components/HomeSmall";
+    import HomeLarge from "../components/HomeLarge";
 
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  },
-  data:function(){
-    return {
-      width:null,
+    export default {
+        name: "NewHome",
+
+        components: {
+            VBreakpoint,
+            HomeSmall,
+            HomeLarge,
+        },
     }
-  },
-  mounted() {
-    this.width = window.innerWidth
-    console.warn(this.width)
-  }
-}
 </script>
+
+<style lang="scss" scoped>
+
+</style>

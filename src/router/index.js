@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: () => import('../views/NewHome.vue')
+    component: () => import('../views/Home.vue')
   },
   {
     path: '/map',
@@ -55,14 +55,6 @@ const routes = [
     component: () => import('../views/LegalNotice')
   },
   {
-    path: '/test',
-    name: 'Test',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import('../views/Test')
-  },
-  {
     path: '/contribution/:shopId',
     component: Contribution,
     props: true,
@@ -82,19 +74,5 @@ const routes = [
 const router = new VueRouter({
   routes
 });
-
-/*
-Vue.use(VueGtag, {
-  config: {
-    id: "G-T6PBX9P3PC",
-    debug: true,
-    'anonymize_ip': true
-  },
-    router,
-      onReady () {
-    // ready
-  }
-});
-*/
 
 export default router
