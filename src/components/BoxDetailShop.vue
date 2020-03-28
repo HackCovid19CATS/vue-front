@@ -5,8 +5,8 @@
 		<div class="detail" style="position: relative; left: -50%;">
 	-->
 		<div>
-			<div class="bar">
-				<button type="button" class="close" style="margin-right: 0px" @click="maskBox" v-if="showClose == '1'">X</button>
+			<div class="bar" v-if="showClose == '1'">
+				<button type="button" class="close" style="margin-right: 0px" @click="maskBox">X</button>
 			</div>
 			<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} <span v-if="storeNumberOfContribution == 1">contribution</span><span v-else>contributions</span></div>
 			<!--
@@ -14,6 +14,7 @@
 			-->
 			<div class="store-name">{{storeName}}</div>
 			<div class="store-address" v-if="storeAddress !== ''">{{storeAddress}}</div>
+			<a :href="linkOSM" target="_blank" v-if="showLink" style="font-size: 8px">Lien vers OpenStreetMap</a>
 			<div class="store-phone" v-if="storePhone !== ''">
 				<a :href="storePhone" class="call">Appeler</a>
 			</div>
@@ -28,7 +29,7 @@
 					<div class="detail-title">Temps d’attente à l'extérieur</div>
 					<div>
 						<Clock class="waiting-picto" />
-						<div class="waiting-value" v-if="storeWaiting > 0">{{storeWaiting}} min en moyenne</div>
+						<div class="waiting-value" v-if="storeWaiting >= 0">{{storeWaiting}} min en moyenne</div>
 						<div class="waiting-value" v-else>Non communiqué</div>
 
 					</div>
@@ -84,11 +85,12 @@
 			IconGlovesKo,
         },
 
-        data : function(){
-            return {
-                //showBox: this.value,
-            }
-        },
+		data : function(){
+			return {
+				showLink: false,
+				//showBox: this.value,
+			}
+		},
 
         props:[
 			"showClose",
@@ -97,6 +99,7 @@
 			"storePhone",
 			"storeOpeningHours",
 			"storeOsmId",
+			"linkOSM",
 			"storeStocks",
 			"storeStatus",
 			"storeWaiting",
@@ -125,8 +128,10 @@
 			},
 		},
 
-        mounted() {
-        }
+		mounted() {
+			console.log(window.location.hostname);
+			this.showLink = (window.location.hostname === 'localhost') || (window.location.hostname === '127.0.0.1');
+		}
     }
 </script>
 
@@ -212,18 +217,18 @@
 
 	@media (min-width: $large-device) {
 		.store-name {
-			margin-top: 60px;
+			margin-top: 10px;
 			font-size: 26px;
 			line-height: 32px;
 		}
 	}
 
 	.store-address {
-		margin-top: 20px;
+		margin-top: 10px;
 		font-style: normal;
 		font-weight: 600;
-		font-size: 16px;
-		line-height: 19px;
+		font-size: 12px;
+		line-height: 14px;
 		text-transform: uppercase;
 		color: #FEAD54;
 		text-align: left;
@@ -231,8 +236,8 @@
 
 	@media (min-width: $large-device) {
 		.store-address {
-			font-size: 26px;
-			line-height: 32px;
+			font-size: 22px;
+			line-height: 26px;
 		}
 	}
 
@@ -260,7 +265,7 @@
 	}
 
     .waiting {
-        margin-top: 40px;
+        margin-top: 30px;
         display: flex;
         //justify-content: space-between;
     }
@@ -293,7 +298,7 @@
     }
 
     .inventory {
-        margin-top: 40px;
+        margin-top: 30px;
         display: flex;
         //justify-content: space-between;
     }
@@ -309,7 +314,7 @@
     }
 
     .rules {
-        margin-top: 40px;
+        margin-top: 30px;
         display: flex;
     }
 

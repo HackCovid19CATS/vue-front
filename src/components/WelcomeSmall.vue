@@ -1,5 +1,5 @@
 <template>
-    <div class="welcome-view">
+    <vue100vh :css="{height: '100rvh'}" class="welcome-view">
         <div class="welcome-container">
             <WelcomeLogo class="welcome-logo" />
             <div class="welcome-title">Tous solidaires pour des courses plus sûres !</div>
@@ -11,10 +11,11 @@
             </div>
             <button class="welcome-button" v-on:click="onContinue">Commencer</button>
         </div>
-    </div>
+    </vue100vh>
 </template>
 
 <script>
+    import vue100vh from 'vue-100vh'
     import WelcomeLogo from '../assets/welcome-logo.svg';
 
     export default {
@@ -23,6 +24,7 @@
             onContinue: { type: Function },
         },
         components: {
+            vue100vh,
             WelcomeLogo,
         }
     }

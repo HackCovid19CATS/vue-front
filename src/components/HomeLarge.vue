@@ -1,8 +1,12 @@
 <template>
-    <div id="app" class="">
-
+    <vue100vh :css="{height: '100rvh'}" class="home-container">
         <div class="header">
-            <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." v-on:keyup.enter="onEnter"/>
+            <input class="search"
+                   type="text"
+                   placeholder="Chercher un magasin, pharmacie, ..."
+                   v-model.lazy="queryString"
+                   v-on:keyup.enter="onEnter"
+            />
             <Magnifer class="icon-magnifer" />
         </div>
 
@@ -35,6 +39,7 @@
                             :storePhone="storePhone"
                             :storeOpeningHours="storeOpeningHours"
                             :storeOsmId="storeOsmId"
+                            :linkOSM="linkOSM"
                             :storeStocks="storeStocks"
                             :storeStatus="storeStatus"
                             :storeWaiting="storeWaiting"
@@ -56,10 +61,11 @@
             <Information class="icon-information"/>
             <span>Rappel des consignes pour faire ses courses</span>
         </div>
-    </div>
+    </vue100vh>
 </template>
 
 <script>
+    import vue100vh from 'vue-100vh'
     import mapMixin from "../mixins/mapMixin";
     import BoxDetailShop from "../components/BoxDetailShop";
     import Information from '../assets/information.svg';
@@ -69,6 +75,7 @@
         name: "HomeLarge",
 
         components: {
+            vue100vh,
             BoxDetailShop,
             Information,
             Magnifer,
@@ -97,6 +104,7 @@
                 storeOpeningHours: null,
                 storeId: null,
                 storeOsmId : null,
+                linkOSM: '',
                 storeStocks : null, // 'empty', 'partly-filled', 'well-filled'
                 storeStatus : null,
                 storeWaiting : null,
@@ -107,7 +115,8 @@
                 storeNumberOfContribution : null,
                 storeTimeOfLastContribution : null,
                 storeDateLastContribution : null,
-                clicked:false
+                queryString: '',
+                clicked: false,
             }
         },
 
@@ -151,19 +160,25 @@
         line-height: 50px;
         background-color: #079BAB;
         color: white;
-        position: absolute;
+        //position: absolute;
         font-size: 16px;
         bottom: 0;
     }
 
+    .home-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
     .home-view {
+        flex-grow: 1;
         display: flex;
         flex-direction: row;
     }
 
     .map {
         width: 50%;
-        min-height: calc(100vh - 120px);
     }
 
     ul.filters {
@@ -235,7 +250,6 @@
         display: block;
         background-color: white;
         width: 50%;
-        min-height: calc(100vh - 120px);
     }
 
     .detail-message {

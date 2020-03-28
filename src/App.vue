@@ -49,7 +49,7 @@
     color: #42b983;
   }
 
-  body{
+  body {
     //background-color: #E5E5E5 !important;
   }
 

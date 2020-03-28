@@ -3,18 +3,21 @@ import L from "leaflet";
 
 export default {
     methods: {
-        test(value) {
-            alert(value);
-        },
-
         locateMe: function () {
-            let options = {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
-            };
+            if (this.$store.state.address === null || this.$store.state.latitude === null || this.$store.state.longitude === null) {
+                let options = {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                };
 
-            navigator.geolocation.getCurrentPosition(this.showMyLocation, this.locateError, options);
+                navigator.geolocation.getCurrentPosition(this.showMyLocation, this.locateError, options);
+            } else {
+                this.queryString = this.$store.state.address;
+                this.latitude = this.$store.state.latitude;
+                this.longitude = this.$store.state.longitude;
+                this.constructMap();
+            }
         },
 
         locateError : function(err){
@@ -25,31 +28,36 @@ export default {
         showMyLocation : function(position){
             this.latitude = position.coords.latitude;
             this.longitude = position.coords.longitude;
-
             this.constructMap();
         },
 
-        onEnter(event) {
-            const query = event.target.value.split(' ').join('%20');
-            axios
-                .get(`https://nominatim.openstreetmap.org/search/${query}?format=json&addressdetails=1&limit=1`)
-                .then((response) => {
-                    if (response.status === 200) {
-                        this.latitude = response.data[0]['lat'];
-                        this.longitude = response.data[0]['lon'];
-                        if (this.area !== null) {
-                            this.map.removeLayer(this.area);
+        onEnter() {
+            if (this.queryString.length > 0) {
+                this.$store.state.address = this.queryString;
+                const query = this.queryString.split(' ').join('%20');
+                axios
+                    .get(`https://nominatim.openstreetmap.org/search/${query}?format=json&addressdetails=1&limit=1`)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            this.latitude = response.data[0]['lat'];
+                            this.$store.state.latitude = this.latitude;
+                            this.longitude = response.data[0]['lon'];
+                            this.$store.state.longitude = this.longitude;
+                            if (this.area !== null) {
+                                this.map.removeLayer(this.area);
+                            }
+                            if (this.myLocation !== null) {
+                                this.map.removeLayer(this.myLocation);
+                            }
+                            this.removeMarkers();
+                            this.map.panTo(new L.LatLng(this.latitude, this.longitude));
+                            this.setArea();
+                            this.setMyLocation();
+                            this.searchStore();
+                            console.log(this.$store.state.address);
                         }
-                        if (this.myLocation !== null) {
-                            this.map.removeLayer(this.myLocation);
-                        }
-                        this.removeMarkers();
-                        this.map.panTo(new L.LatLng(this.latitude, this.longitude));
-                        this.setArea();
-                        this.setMyLocation();
-                        this.searchStore();
-                    }
-                });
+                    });
+            }
         },
 
         removeMarkers() {
@@ -164,11 +172,12 @@ export default {
         },
 
         searchContributions(osmId) {
+            // https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OSMNodeId=31987380
             axios
                 .get('https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store?OSMNodeId=' + osmId)
                 .then((response) => {
                     if (response.status === 200) {
-                        if(response.data !== null) {
+                        if(response.data !== null && JSON.stringify(response.data) !== JSON.stringify({})) {
                             this.storeStocks = response.data.etatDesStocks;
                             this.storeStatus = response.data.ouvert;
                             this.storeWaiting = response.data.tempsAttente;
@@ -196,6 +205,7 @@ export default {
         },
 
         showOneStoreDetail(element) {
+            this.linkOSM = `https://www.openstreetmap.org/${element.type}/${element.id}`
             this.storeName = 'Nom du magasin inconnu';
             if (element.tags['name'] !== undefined) {
                 this.storeName = element.tags.name;
@@ -251,7 +261,7 @@ export default {
         },
         showOneStore(element) {
             // Au clic sur un établissement, affichage du détail
-            if (element.tags['addr:street'] === undefined) {
+            if (element.tags['addr:street'] === undefined && element.lat !== undefined && element.lon !== undefined) {
                 axios
                     .get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${element.lat}&lon=${element.lon}`)
                     .then((response) => {

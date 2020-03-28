@@ -1,7 +1,7 @@
 <template>
     <div>
         <BeforeLeavingHome class="picto" />
-        <div class="directive">Avant de sortie de chez soi</div>
+        <div class="directive">Avant de sortir de chez soi</div>
         <div class="bullets">
             <ul>
                 <li>Se munir de son autorisation datée et signée</li>

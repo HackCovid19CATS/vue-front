@@ -1,5 +1,5 @@
 <template>
-    <div class="lg-welcome-view">
+    <vue100vh :css="{height: '100rvh'}" class="lg-welcome-view">
         <div class="lg-welcome-left">
             <div class="lg-welcome-slogan">Tous solidaires pour des courses plus sûres !</div>
             <div class="lg-welcome-title">#restezchezvous</div>
@@ -12,10 +12,11 @@
         <div class="lg-welcome-right">
             <WelcomePico class="lg-welcome-image"/>
         </div>
-    </div>
+    </vue100vh>
 </template>
 
 <script>
+    import vue100vh from 'vue-100vh'
     import WelcomePico from "../assets/welcome.svg";
 
     export default {
@@ -24,6 +25,7 @@
             onContinue: { type: Function },
         },
         components: {
+            vue100vh,
             WelcomePico
         },
     }
@@ -36,7 +38,6 @@
         display: flex;
         flex-direction: row;
         background-color: #015468;
-        min-height: 100vh;
     }
 
     .lg-welcome-left {

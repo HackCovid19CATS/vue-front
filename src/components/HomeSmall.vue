@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="">
+    <vue100vh :css="{height: '100rvh'}" class="home-container">
 
         <div class="header">
             <input class="search" type="text" placeholder="Chercher un magasin, pharmacie, ..." v-on:keyup.enter="onEnter"/>
@@ -14,11 +14,11 @@
             </ul>
         </div>
 
-        <div>
+        <div class="home-view">
             <div class="map" id="map"></div>
         </div>
 
-        <div style="position: absolute; left: 50%;" v-if="this.clicked">
+        <div style="position: absolute; bottom: 0; left: 50%;" v-if="this.clicked">
             <div class="detail" style="position: relative; left: -50%;">
                 <box-detail-shop
                         :showClose="1"
@@ -28,6 +28,7 @@
                         :storePhone="storePhone"
                         :storeOpeningHours="storeOpeningHours"
                         :storeOsmId="storeOsmId"
+                        :linkOSM="linkOSM"
                         :storeStocks="storeStocks"
                         :storeStatus="storeStatus"
                         :storeWaiting="storeWaiting"
@@ -47,10 +48,11 @@
             <Information class="icon-information"/>
             <span>Rappel des consignes pour faire ses courses</span>
         </div>
-    </div>
+    </vue100vh>
 </template>
 
 <script>
+    import vue100vh from 'vue-100vh'
     import BoxDetailShop from "../components/BoxDetailShop";
     import Information from '../assets/information.svg';
     import Magnifer from '../assets/magnifer.svg';
@@ -60,6 +62,7 @@
         name: "HomeSmall",
 
         components: {
+            vue100vh,
             BoxDetailShop,
             Information,
             Magnifer,
@@ -86,6 +89,7 @@
                 storePhone: null,
                 storeOpeningHours: null,
                 storeId: null,
+                linkOSM: '',
                 storeOsmId : null,
                 storeStocks : null, // 'empty', 'partly-filled', 'well-filled'
                 storeStatus : null,
@@ -97,7 +101,8 @@
                 storeNumberOfContribution : null,
                 storeTimeOfLastContribution : null,
                 storeDateLastContribution : null,
-                clicked:false
+                queryString: '',
+                clicked: false,
             }
         },
 
@@ -134,6 +139,12 @@
 <style lang="scss" scoped>
     @import '../scss/commun.scss';
 
+    .home-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
     .header {
         height: 70px;
         background-color: white;
@@ -146,14 +157,19 @@
         line-height: 50px;
         background-color: #079BAB;
         color: white;
-        position: absolute;
+        //position: absolute;
         font-size: 12px;
         bottom: 0;
     }
 
+    .home-view {
+        flex-grow: 1;
+        height: calc(100% - 120px);
+    }
+
     .map {
+        height: 100%;
         width: 100%;
-        height: calc(100vh - 120px);
     }
 
     ul.filters {
@@ -218,9 +234,9 @@
     .detail {
         //visibility: hidden;
         position: absolute;
-        bottom: 200px;
-        height: 630px;
-        margin-top: -430px;
+        bottom: 50px;
+        height: 490px;
+        //margin-top: -230px;
         background-color: white;
         z-index: 99999;
         margin-left: 5px;
