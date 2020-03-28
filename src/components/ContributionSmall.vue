@@ -12,8 +12,8 @@
         </div>
         <div class="shop-information">
             <div class="shop-name">{{shopName}}</div>
-            <div class="shop-address" v-if="shopAddress != 'null'">{{shopAddress}}</div>
-            <div class="shop-address" v-else> Addresse non disponible</div>
+            <div class="shop-address" v-if="shopAddress !== undefined">{{shopAddress}}</div>
+            <div class="shop-address" v-else>Adresse non disponible</div>
         </div>
         <div class="subtitle">Temps d’attente</div>
         <div class="question">Combien de temps vous avez attendu ?</div>

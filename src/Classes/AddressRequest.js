@@ -25,8 +25,6 @@ class AddressRequest {
             if (request.status == 200){
                 // Success!
                 data = JSON.parse(request.responseText);
-                console.log(data.results[0])
-
                 return data.results[0];
 
             } else if (request.status <= 500){

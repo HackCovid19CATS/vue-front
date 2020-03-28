@@ -3,16 +3,16 @@
         <div slot-scope="scope">
             <span v-if="scope.isSmall || scope.isMedium" style="font-size: 2rem">
                 <ContributionSmall
-                        :shopName="shopName"
                         :shopId="shopId"
+                        :shopName="shopName"
                         :shopAddress="shopAddress"
                 />
             </span>
 
             <span v-if="scope.isLarge || scope.isXlarge">
                 <ContributionLarge
-                        :shopName="shopName"
                         :shopId="shopId"
+                        :shopName="shopName"
                         :shopAddress="shopAddress"
                 />
             </span>
@@ -32,7 +32,7 @@
             ContributionSmall,
             ContributionLarge,
         },
-        props:["shopName" , "shopId" , "shopAddress"],
+        props:["shopId", "shopName" , "shopAddress"],
 
         mounted: function(){
             this.$gtag.pageview({

@@ -10,11 +10,9 @@
             Partagez votre expérience dès votre retour à la maison pour en informer les autres !
         </div>
         <div class="shop-information">
-            <div class="shop-name">{{shopName}}</div>
-            <div class="shop-name">{{shopAddress}}</div>
-            <div class="shop-name">{{shopId}}</div>
-            <div class="shop-address" v-if="shopAddress != 'null'">{{shopAddress}}</div>
-            <div class="shop-address" v-else> Addresse non disponible</div>
+            <div class="shop-name">{{this.shopName}}</div>
+            <div class="shop-address" v-if="this.shopAddress !== undefined">{{this.shopAddress}}xxx</div>
+            <div class="shop-address" v-else>Adresse non disponible</div>
         </div>
         <div class="contribution">
             <div class="column">
@@ -143,6 +141,12 @@
         font-size: 18px;
         line-height: 40px;
         color: #FFFFFF;
+    }
+
+    .shop-address {
+        color: white;
+        font-size: 12px;
+        line-height: 15px;
     }
 
     .contribution {

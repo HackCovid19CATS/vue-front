@@ -145,7 +145,6 @@
                     if (request.status == 200){
                         // Success!
                         data = JSON.parse(request.responseText);
-                        console.log(data.results[0])
 
                         let results = data.results[0];
                         let components = results.components;
@@ -163,17 +162,17 @@
                     } else if (request.status <= 500){
                         // We reached our target server, but it returned an error
 
-                        console.log("unable to geocode! Response code: " + request.status);
+                        console.warn("unable to geocode! Response code: " + request.status);
                         data = JSON.parse(request.responseText);
-                        console.log(data.status.message);
+                        console.warn(data.status.message);
                     } else {
-                        console.log("server error");
+                        console.warn("server error");
                     }
                 };
 
                 request.onerror = function() {
                     // There was a connection error of some sort
-                    console.log("unable to connect to server");
+                    console.warn("unable to connect to server");
                 };
 
                 request.send();  // make the request

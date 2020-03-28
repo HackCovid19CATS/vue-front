@@ -12,8 +12,7 @@
 			<!--
 			<div class="store-contribution" v-else >Aucune contribution</div>
 			-->
-			<div class="store-name" v-if="storeName === ''" >Non référencé</div>
-			<div class="store-name" v-else >{{storeName}}</div>
+			<div class="store-name">{{storeName}}</div>
 			<div class="store-address" v-if="storeAddress !== ''">{{storeAddress}}</div>
 			<div class="store-phone" v-if="storePhone !== ''">
 				<a :href="storePhone" class="call">Appeler</a>
@@ -110,20 +109,23 @@
 			//"value"
 		],
 
-        methods:{
+		methods: {
+			onContribute: function () {
+				if (this.storeName === '') {
+					this.$router.push(`/contribution/${this.storeOsmId}`);
+				} else if (this.storeAddress === '') {
+					this.$router.push(`/contribution/${this.storeOsmId}/${this.storeName.replace('/', '-')}`);
+				} else {
+					this.$router.push(`/contribution/${this.storeOsmId}/${this.storeName}/${this.storeAddress.replace('/', '-')}`);
+				}
+			},
 
-            onContribute: function () {
-                this.$router.push(`/contribution/${this.storeName}/${this.storeOsmId}/${this.storeAddress}`);
-            },
-
-            maskBox: function () {
-                this.$emit('boxclosed' , false);
-            },
-        },
+			maskBox: function () {
+				this.$emit('boxclosed' , false);
+			},
+		},
 
         mounted() {
-            console.log("detail : " +  this.value);
-            console.log("show close:" + this.showClose);
         }
     }
 </script>

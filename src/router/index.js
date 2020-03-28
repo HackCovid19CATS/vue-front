@@ -63,7 +63,17 @@ const routes = [
     component: () => import('../views/Test')
   },
   {
-    path: '/contribution/:shopName/:shopId/:shopAdress',
+    path: '/contribution/:shopId',
+    component: Contribution,
+    props: true,
+  },
+  {
+    path: '/contribution/:shopId/:shopName',
+    component: Contribution,
+    props: true,
+  },
+  {
+    path: '/contribution/:shopId/:shopName/:shopAddress',
     component: Contribution,
     props: true,
   },

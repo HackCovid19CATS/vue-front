@@ -153,15 +153,14 @@ export default {
 
                         /*if(response.data.elements === 0) {
                             radius = radius + 5000.0;
-                            console.log("callStores --> radius : " + radius);
                             this.callStores(radius);
                         }*/
                         this.stores = response.data.elements;
                         this.showStores();
                     } else {
-                        console.log('une erreur est survenue : ' + response.status);
+                        console.error('une erreur est survenue : ' + response.status);
                     }
-                }).catch(error => console.log(error));
+                }).catch(error => console.error(error));
         },
 
         searchContributions(osmId) {
@@ -192,28 +191,16 @@ export default {
                         }
                     }
                 })
-                .catch(error => console.log(error));
+                .catch(error => console.error(error));
 
         },
 
-        showOneStore(element) {
-            console.log("showOneStore");
-            console.log(element.id);
-            if (element.tags.name !== undefined) {
-                console.log(element.tags.name);
-            } else {
-                console.log("name not defined")
-            }
-            if (element.tags.opening_hours !== undefined) {
-                console.log(element.tags.opening_hours);
-            } else {
-                console.log("opening hours not defined")
-            }
-            // Au clic sur un établissement, affichage du détail
-            this.storeName = '';
+        showOneStoreDetail(element) {
+            this.storeName = 'Nom du magasin inconnu';
             if (element.tags['name'] !== undefined) {
                 this.storeName = element.tags.name;
             }
+
             let address = '';
             let housenumber = '';
             let street = '';
@@ -236,12 +223,8 @@ export default {
                 address = address + ', ';
             }
             address = address + city;
+            this.storeAddress = address;
 
-            if (address.length > 0) {
-                this.storeAddress = address;
-            } else {
-                this.storeAddress = null;
-            }
             if (element.id !== undefined) {
                 this.storeOsmId = element.id;
             }
@@ -265,7 +248,34 @@ export default {
             this.showBoxDetail();
 
             this.searchContributions(this.storeOsmId);
+        },
+        showOneStore(element) {
+            // Au clic sur un établissement, affichage du détail
+            if (element.tags['addr:street'] === undefined) {
+                axios
+                    .get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${element.lat}&lon=${element.lon}`)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            let address = "";
+                            if (response.data.address.cycleway !== undefined) {
+                                address = response.data.address.cycleway;
+                            }
+                            if (response.data.address.county !== undefined) {
+                                if (address.length > 0) {
+                                    address += ", ";
+                                }
+                                address += response.data.address.county;
+                            }
+                            if (address.length > 0) {
+                                element.tags['addr:street'] = address;
+                            }
+                        }
+                        this.showOneStoreDetail(element);
+                    });
 
+            } else {
+                this.showOneStoreDetail(element);
+            }
         },
 
         showStores() {

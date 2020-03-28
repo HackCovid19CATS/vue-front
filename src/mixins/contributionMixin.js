@@ -74,8 +74,7 @@ export default {
                 "url": "https://qztfkr37s9.execute-api.eu-west-3.amazonaws.com/dev/store",
                 "data": this.input ,
                 "headers": {"content-type": "application/json"}
-            }).then(result => {
-                console.log(result);
+            }).then(() => {
                 this.$router.push('/thankyou');
             }, error => {
                 console.error(error);
