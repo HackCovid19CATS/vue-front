@@ -5,14 +5,19 @@
 		<div class="detail" style="position: relative; left: -50%;">
 	-->
 		<div>
-			<button type="button" class="close" @click="maskBox" v-if="showClose === '1'">
-				<span aria-hidden="true">&times;</span>
-			</button>
-			<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} contribution(s)</div>
+			<div class="bar">
+				<button type="button" class="close" style="margin-right: 0px" @click="maskBox" v-if="showClose == '1'">X</button>
+			</div>
+			<div class="store-contribution" v-if="storeNumberOfContribution > 0">{{storeDateLastContribution}} {{storeTimeOfLastContribution}} - {{storeNumberOfContribution}} <span v-if="storeNumberOfContribution == 1">contribution</span><span v-else>contributions</span></div>
+			<!--
 			<div class="store-contribution" v-else >Aucune contribution</div>
-			<div class="store-information" v-if="storeName === ''" >Non référencé</div>
-			<div class="store-information" v-else >{{storeName}}</div>
-			<div class="store-information">{{storeAddress}}</div>
+			-->
+			<div class="store-name" v-if="storeName === ''" >Non référencé</div>
+			<div class="store-name" v-else >{{storeName}}</div>
+			<div class="store-address" v-if="storeAddress !== ''">{{storeAddress}}</div>
+			<div class="store-phone" v-if="storePhone !== ''">
+				<a :href="storePhone" class="call">Appeler</a>
+			</div>
 			<!-- Commenté en attendant un avis métier sur l'affichage de cet indicateur -->
 			<!-- <div class="store-status"> -->
 				<!-- <div class="store-status-open" v-if="storeStatus === 'true'">Ouvert :)</div> -->
@@ -21,7 +26,7 @@
 			<!-- </div> -->
 			<div class="store-contribution" v-if="storeNumberOfContribution > 0">
 				<div class="waiting">
-					<div class="detail-title">Temps d’attente</div>
+					<div class="detail-title">Temps d’attente à l'extérieur</div>
 					<div>
 						<Clock class="waiting-picto" />
 						<div class="waiting-value" v-if="storeWaiting > 0">{{storeWaiting}} min en moyenne</div>
@@ -31,50 +36,53 @@
 				</div>
 				<div class="inventory">
 					<div class="detail-title">Etat des stocks</div>
-					<Empty class="inventory-status"  :class="{ visible: storeStocks === 'empty' }"/>
-					<PartlyFilled class="inventory-status"  :class="{ visible: storeStocks === 'partly-filled' }"/>
-					<WellFilled class="inventory-status"  :class="{ visible: storeStocks === 'well-filled' }"/>
+					<div class="empty" :class="{ active: storeStocks === 'empty' || storeStocks === 'partly-filled' }">Vide</div>
+					<div class="partly-filled" :class="{ active: storeStocks === 'partly-filled' || storeStocks === 'well-filled'}">En partie<br />rempli</div>
+					<div class="well-filled" :class="{ active: storeStocks === 'well-filled' }">Bien<br />rempli</div>
 				</div>
 				<div class="rules">
 					<div class="detail-title">Respect des règles</div>
-					<div class="rules-icon" :class="{ active: storeDistance == true }">
-						<IconDistance class="rules-icon" />
+					<div class="rules-icon" :class="{ active: storeDistance === true }">
+						<IconDistance v-if="storeDistance === true" class="rules-icon" />
+						<IconDistanceKo v-else class="rules-icon" />
 					</div>
-					<div class="rules-icon" :class="{ active: storeMasks == true }">
-						<IconMask class="rules-icon" />
+					<div class="rules-icon" :class="{ active: storeMasks === true }">
+						<IconMask v-if="storeMasks === true" class="rules-icon" />
+						<IconMaskKo v-else class="rules-icon" />
 					</div>
-					<div class="rules-icon" :class="{ active: storeGloves == true }">
-						<IconGloves class="rules-icon" />
+					<div class="rules-icon" :class="{ active: storeGloves === true }">
+						<IconGloves v-if="storeGloves === true" class="rules-icon" />
+						<IconGlovesKo v-else class="rules-icon" />
 					</div>
 				</div>
 			</div>
 			<div class="store-no-contribution" v-else >
 				Soyez le premier à contribuer :)
 			</div>
-			<button class="contribute" v-on:click="onContribute">Contribuer</button>
+			<button class="contribute" v-on:click="onContribute"><span>Contribuer</span></button>
 		</div>
 </template>
 
 <script>
 
     import Clock from '../assets/clock.svg';
-    import Empty from '../assets/empty.svg';
-    import PartlyFilled from '../assets/partly-filled.svg';
-    import WellFilled from '../assets/well-filled.svg';
-    import IconDistance from '../assets/icon-distance.svg';
-    import IconMask from '../assets/icon-mask.svg';
-    import IconGloves from '../assets/icon-gloves.svg';
+    import IconDistance from '../assets/icon_distance.svg';
+    import IconDistanceKo from '../assets/icon_distance_ko.svg';
+    import IconMask from '../assets/icon_mask.svg';
+    import IconMaskKo from '../assets/icon_mask_ko.svg';
+    import IconGloves from '../assets/icon_gloves.svg';
+    import IconGlovesKo from '../assets/icon_gloves_ko.svg';
 
     export default {
         name: "BoxDetailShop",
         components : {
             Clock,
-            Empty,
-            PartlyFilled,
-            WellFilled,
             IconDistance,
+			IconDistanceKo,
             IconMask,
-            IconGloves
+			IconMaskKo,
+            IconGloves,
+			IconGlovesKo,
         },
 
         data : function(){
@@ -87,6 +95,8 @@
 			"showClose",
 			"storeName",
 			"storeAddress",
+			"storePhone",
+			"storeOpeningHours",
 			"storeOsmId",
 			"storeStocks",
 			"storeStatus",
@@ -113,12 +123,12 @@
 
         mounted() {
             console.log("detail : " +  this.value);
+            console.log("show close:" + this.showClose);
         }
     }
 </script>
 
 <style lang="scss" scoped>
-
     @import '../scss/commun.scss';
 
     .header {
@@ -182,43 +192,57 @@
         cursor: pointer;
     }
 
-    .detail {
-        bottom: 0;
-		top: -380px;
-		min-width: 375px;
-        height: 430px;
-        background-color: white;
-        z-index: 99999;
-        border-top-left-radius: 6px;
-        border-top-right-radius: 6px;
-        text-align: left;
-        padding: 10px;
-    }
+	.store-contribution {
+		font-size: 12px;
+		text-align: center;
+	}
+
+	.store-name {
+		margin-top: 20px;
+		font-style: normal;
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 19px;
+		text-transform: uppercase;
+		color: #FEAD54;
+		text-align: left;
+	}
 
 	@media (min-width: $large-device) {
-		.detail {
-			min-width: 800px;
+		.store-name {
+			margin-top: 60px;
+			font-size: 26px;
+			line-height: 32px;
 		}
 	}
 
-	.store-contribution {
-		font-size: 12px;
+	.store-address {
+		margin-top: 20px;
+		font-style: normal;
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 19px;
+		text-transform: uppercase;
+		color: #FEAD54;
+		text-align: left;
 	}
 
-	.store-information {
-        font-style: normal;
-        font-weight: 600;
-        font-size: 26px;
-        line-height: 32px;
-        text-transform: uppercase;
-        color: #FEAD54;
-    }
+	@media (min-width: $large-device) {
+		.store-address {
+			font-size: 26px;
+			line-height: 32px;
+		}
+	}
+
+	.store-phone {
+		text-align: left;
+	}
 
     .store-no-contribution {
         font-style: normal;
         font-weight: 600;
-        font-size: 20px;
-        line-height: 28px;
+        font-size: 14px;
+        line-height: 17px;
         /*text-transform: uppercase;
         color: #FEAD54;*/
 		text-align: center;
@@ -226,16 +250,25 @@
 		padding: 20px;
     }
 
+	@media (min-width: $large-device) {
+		.store-no-contribution {
+			font-size: 20px;
+			line-height: 28px;
+		}
+	}
+
     .waiting {
         margin-top: 40px;
         display: flex;
-        justify-content: space-between;
+        //justify-content: space-between;
     }
 
     .detail-title {
         display: inline;
-        float: left;
         line-height: 18px;
+		width: 180px;
+		text-align: left;
+		margin-right: 20px;
     }
 
     .waiting-picto {
@@ -260,7 +293,7 @@
     .inventory {
         margin-top: 40px;
         display: flex;
-        justify-content: space-between;
+        //justify-content: space-between;
     }
 
     .inventory-status {
@@ -276,27 +309,41 @@
     .rules {
         margin-top: 40px;
         display: flex;
-        justify-content: space-between;
     }
 
     .rules-icon {
 		width: 32px;
 		height: 32px;
 		display: inline;
-		&.active {
-			position: relative;
-
-			&::before {
-				content: " ";
-				background-image: url(/images/check.svg);
-				position: absolute;
-				height: 11px;
-				width: 16px;
-				top: 10px;
-				left: -18px;
-			}
-		}
+		margin-right: 20px;
     }
+
+	a.call {
+		margin-top: 35px;
+		display: inline-block;
+		height: 36px;
+		width: 120px;
+		background-color: #079BAB;
+		border-radius: 6px;
+		border: none;
+		color: white;
+		padding-left: 10px;
+		text-align: center;
+		font-size: 12px;
+		line-height: 36px;
+		text-decoration: none;
+
+		&::before {
+			content: " ";
+			background-image: url(/images/phone.svg);
+			background-repeat: no-repeat;
+			position: absolute;
+			margin-left: -25px;
+			margin-top: 10px;
+			height: 21px;
+			width: 18px;
+		}
+	}
 
     button.contribute {
         margin-top: 35px;
@@ -312,10 +359,56 @@
         width: 100%;
     }
 
-	@media (max-width: $large-device) {
-		.store-contribution {
-			font-size: 14px;
+	.empty {
+		height: 27px;
+		width: 60px;
+		border-top-left-radius: 6px;
+		border-bottom-left-radius: 6px;
+		background-color: #ECECEC;
+		color: #5E5E5E;
+		font-size: 8px;
+		line-height: 27px;
+		text-align: center;
+
+		&.active {
+			background-color: $color-info;
+			color: white;
 		}
 	}
 
+	.partly-filled {
+		height: 27px;
+		width: 60px;
+		background-color: #ECECEC;
+		color: #5E5E5E;
+		font-size: 8px;
+		line-height: 13px;
+		border-left: solid #5E5E5E 1px;
+		text-align: center;
+
+		&.active {
+			background-color: $color-info;
+			color: white;
+			border-left: solid white 1px;
+		}
+	}
+
+	.well-filled {
+		height: 27px;
+		width: 60px;
+		border-top-right-radius: 6px;
+		border-bottom-right-radius: 6px;
+		background-color: #ECECEC;
+		color: #5E5E5E;
+		font-size: 8px;
+		line-height: 13px;
+		border-left: solid #5E5E5E 1px;
+		text-align: center;
+
+		&.active {
+			background-color: $color-info;
+			color: white;
+			border-left: solid white 1px;
+		}
+	}
 </style>

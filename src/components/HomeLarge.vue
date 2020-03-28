@@ -18,6 +18,7 @@
             <div class="detail" v-if="storeSelected === false">
                 <div class="detail-title">LES MAGASINS</div>
                 <div class="detail-subtitle">Proche de chez vous</div>
+                <hr class="detail-separator" />
                 <div class="detail-message">Vous n’avez pas sélectionné de magasin :)</div>
             </div>
 
@@ -31,6 +32,8 @@
                             @boxclosed="boxClosed($event)"
                             :storeName="storeName"
                             :storeAddress="storeAddress"
+                            :storePhone="storePhone"
+                            :storeOpeningHours="storeOpeningHours"
                             :storeOsmId="storeOsmId"
                             :storeStocks="storeStocks"
                             :storeStatus="storeStatus"
@@ -90,6 +93,8 @@
                 accuracy: null,
                 storeName: null,
                 storeAddress: null,
+                storePhone: null,
+                storeOpeningHours: null,
                 storeId: null,
                 storeOsmId : null,
                 storeStocks : null, // 'empty', 'partly-filled', 'well-filled'
@@ -247,6 +252,7 @@
     .detail-subtitle {
         color: rgb(7, 155, 171);
         font-size: 28px;
+        text-align: center;
     }
 
     .detail-title {

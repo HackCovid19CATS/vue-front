@@ -25,6 +25,8 @@
                         @boxclosed="boxClosed($event)"
                         :storeName="storeName"
                         :storeAddress="storeAddress"
+                        :storePhone="storePhone"
+                        :storeOpeningHours="storeOpeningHours"
                         :storeOsmId="storeOsmId"
                         :storeStocks="storeStocks"
                         :storeStatus="storeStatus"
@@ -81,6 +83,8 @@
                 accuracy: null,
                 storeName: null,
                 storeAddress: null,
+                storePhone: null,
+                storeOpeningHours: null,
                 storeId: null,
                 storeOsmId : null,
                 storeStocks : null, // 'empty', 'partly-filled', 'well-filled'
@@ -214,8 +218,8 @@
     .detail {
         //visibility: hidden;
         position: absolute;
-        bottom: 0;
-        height: 430px;
+        bottom: 200px;
+        height: 630px;
         margin-top: -430px;
         background-color: white;
         z-index: 99999;

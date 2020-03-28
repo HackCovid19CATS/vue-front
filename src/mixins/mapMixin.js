@@ -177,7 +177,7 @@ export default {
                             this.storeMasks = response.data.portDuMasque;
                             this.storeDistance = response.data.respectDesDistances;
                             this.storeNumberOfContribution = response.data.nombreDeContribution;
-                            this.storeTimeOfLastContribution = response.data.heureDerniereContribution;
+                            this.storeTimeOfLastContribution = response.data.heureDerniereContribution.substring(0, 5);
                             this.storeDateLastContribution = response.data.dateDeContribution;
                         } else {
                             this.storeStocks = null;
@@ -198,6 +198,17 @@ export default {
 
         showOneStore(element) {
             console.log("showOneStore");
+            console.log(element.id);
+            if (element.tags.name !== undefined) {
+                console.log(element.tags.name);
+            } else {
+                console.log("name not defined")
+            }
+            if (element.tags.opening_hours !== undefined) {
+                console.log(element.tags.opening_hours);
+            } else {
+                console.log("opening hours not defined")
+            }
             // Au clic sur un établissement, affichage du détail
             this.storeName = '';
             if (element.tags['name'] !== undefined) {
@@ -239,6 +250,16 @@ export default {
             }
             if (element.lat !== undefined) {
                 this.storeLat = element.lat;
+            }
+
+            this.storePhone = '';
+            if (element.tags['phone'] !== undefined) {
+                this.storePhone = 'tel:' + element.tags['phone'];
+            }
+
+            this.storeOpeningHours = '';
+            if (element.tags['opening_hours'] !== undefined) {
+                this.storeOpeningHours = element.tags['opening_hours'];
             }
 
             this.showBoxDetail();

@@ -45,9 +45,9 @@
         background-color: white;
         height: 100vh;
     }
+
     .tuto-title {
         color: rgb(254, 173, 84);
-        //fontFamily: "Montserrat-Regular",
         font-size: 48px;
     }
 
@@ -64,6 +64,7 @@
     .tuto-message {
         color: rgb(1, 84, 104);
         font-size: 17px;
+        font-weight: bold;
         width: 550px;
         margin-left: auto;
         margin-right: auto;
