@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <title>CA-Coté - Internet Explorer</title>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: center;
+            margin: 0;
+        }
+
+        .lg-browser-view {
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+            background-color: #015468;
+        }
+
+        .lg-browser-left {
+            margin-top: auto;
+            margin-bottom: auto;
+            text-align: center;
+            width: 50%;
+            flex-grow: 1;
+        }
+
+        .lg-browser-slogan {
+            color: white;
+            font-size: 16px;
+            line-height: 19px;
+        }
+
+        .lg-browser-title {
+            color: white;
+            font-size: 24px;
+            line-height: 29px;
+            margin-top: 38px;
+        }
+
+        .lg-browser-message {
+            color: white;
+            font-size: 16px;
+            margin-top: 33px;
+            margin-left: 10%;
+        }
+
+        .lg-browser-list {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: row;
+            margin-left: 20%;
+            margin-right: 20%;
+            justify-content: space-between;
+        }
+
+        .lg-browser-logo {
+            width: 100px;
+            height: 100px;
+        }
+
+        .lg-browser-right {
+            width: 50%;
+            flex-grow: 1;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .lg-browser-image {
+            width: 386px;
+            margin: auto;
+        }
+
+        .lg-browser-name {
+            color: white;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="lg-browser-view">
+        <div class="lg-browser-left">
+            <div class="lg-browser-slogan">Tous solidaires pour des courses plus sûres !</div>
+            <div class="lg-browser-title">#restezchezvous</div>
+            <div class="lg-browser-message">
+                <p>Ce site a été construit dans un délai très contraint et nous n’avons pas pu réaliser les développements pour assurer un fonctionnement avec Internet Explorer.</p>
+                <p>Nous vous suggérons d’utiliser un des navigateurs ci-dessous.</p>
+            </div>
+            <div class="lg-browser-list">
+                <div>
+                    <a href="https://support.apple.com/downloads/safari">
+                        <img src="images/safari-logo.svg" class="lg-browser-logo" />
+                    </a>
+                    <p class="lg-browser-name">Safari</p>
+                </div>
+                <div>
+                    <a href="https://www.google.com/intl/fr_fr/chrome/">
+                        <img src="images/chrome-logo.svg" class="lg-browser-logo" />
+                    </a>
+                    <p class="lg-browser-name">Chrome</p>
+                </div>
+                <div>
+                    <a href="https://www.mozilla.org/fr/firefox/new/">
+                        <img src="images/firefox-logo.svg" class="lg-browser-logo" />
+                    </a>
+                    <p class="lg-browser-name">Firefox</p>
+                </div>
+            </div>
+        </div>
+        <div class="lg-browser-right">
+            <img src="images/welcome.svg" class="lg-browser-image" />
+        </div>
+    </div>
+</body>
+</html>

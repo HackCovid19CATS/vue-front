@@ -31,6 +31,7 @@
         },
         data() {
             return {
+                notSupported: true, //this.$browserDetect.isIE,
                 swiperOption: {
                     navigation: {
                         nextEl: '.swiper-button-next',
@@ -45,6 +46,10 @@
                 }
             }
         },
+        mounted() {
+            //console.log("Is Safari: " + this.$browserDetect.isSafari);
+            //console.log("Is IE: " + this.$browserDetect.isIE);
+        }
     }
 </script>
 
