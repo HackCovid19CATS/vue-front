@@ -22,7 +22,7 @@
     "opencage-api-client": "^0.7.1",
     "popper.js": "^1.16.1",
     "sass-loader": "^8.0.2",
-    "swiper": "^5.3.6",
+    "swiper": "^6.5.1",
     "vue": "^2.6.11",
     "vue-100vh": "^0.1.1",
     "vue-awesome-swiper": "^4.0.3",
